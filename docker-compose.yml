@@ -1,0 +1,31 @@
+version: '3'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: api/Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - app
+      - management-tool
+
+  app:
+    build:
+      context: .
+      dockerfile: app/Dockerfile
+    ports:
+      - "3001:3001"
+    depends_on:
+      - api
+      - management-tool
+
+  management-tool:
+    build:
+      context: .
+      dockerfile: management-tool/Dockerfile
+    ports:
+      - "3002:3002"
+    depends_on:
+      - api
+      - app
