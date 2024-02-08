@@ -1,31 +1,27 @@
-version: '3'
+version: '3.8'
 services:
-  api:
-    build:
-      context: .
-      dockerfile: api/Dockerfile
+  backend:
+    container_name: photomong-backend
+    build: ./backend
     ports:
-      - "3000:3000"
-    depends_on:
-      - app
-      - management-tool
+      - "8080:8080"
+    volumes:
+      - ./backend:/usr/src/app
+    command: npm start            
+
+  admin:
+    container_name: photomong-admin
+    build: ./admin
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./admin:/usr/src/app      
 
   app:
-    build:
-      context: .
-      dockerfile: app/Dockerfile
+    container_name: photomong-app
+    build: ./app
     ports:
-      - "3001:3001"
-    depends_on:
-      - api
-      - management-tool
-
-  management-tool:
-    build:
-      context: .
-      dockerfile: management-tool/Dockerfile
-    ports:
-      - "3002:3002"
-    depends_on:
-      - api
-      - app
+      - "3000:3000"
+    volumes:
+      - ./app:/usr/src/app
+    command: npm start

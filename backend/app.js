@@ -18,10 +18,7 @@ app.use(morgan('tiny'));
 // Routers
 app.use(`${api}/ads`, productRouter);
 
-mongoose.connect(process.env.MONGODB_CONNECT, {
-        useNewUrlParser: true,
-        useUnifiedTopology: true,
-    })
+mongoose.connect(process.env.MONGODB_CONNECT)
     .then(() => {
         console.log('Database connection is ready...');
     })
