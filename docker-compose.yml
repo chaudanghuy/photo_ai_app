@@ -7,16 +7,7 @@ services:
       - "8080:8080"
     volumes:
       - ./backend:/usr/src/app
-    command: npm start            
-
-  admin:
-    container_name: photomong-admin
-    build: ./admin
-    ports:
-      - "8000:8000"
-    volumes:
-      - ./admin:/usr/src/app      
-
+    command: npm start                   
   app:
     container_name: photomong-app
     build: ./app

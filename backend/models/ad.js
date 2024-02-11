@@ -5,26 +5,14 @@ const adSchema = mongoose.Schema({
         type: String,
         required: true,
     },
-    description: {
+    photo: {
         type: String,
         required: true,
     },
-    start_date: Date,
-    end_date: Date,
-    budget: {
-        type: Number,
-        required: true,
-        min: 0,
-    },
-    images: [{
-        type: String,
-    }],
-    status: String,
-    image: String,
-    advertiser: {
+    video: String,
+    device_id: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Advertiser',
-        required: true,
+        ref: 'Device',
     },
     date_created: {
         type: Date,
