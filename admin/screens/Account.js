@@ -29,12 +29,12 @@ const Account = () => {
           <Text style={styles.menuText}>Notification</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.menuItem}>
-          <Icon type="ionicon" name="document-text" color="#000" />
-          <Text style={styles.menuText}>Product Manual</Text>
+          <Icon type="ionicon" name="pricetag" color="#000" />
+          <Text style={styles.menuText}>Effects</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.menuItem}>
-          <Icon type="ionicon" name="pricetag" color="#000" />
-          <Text style={styles.menuText}>Coupon</Text>
+          <Icon type="ionicon" name="settings" color="#000" />
+          <Text style={styles.menuText}>Settings</Text>
         </TouchableOpacity>
       </View>
       <View style={styles.toggleContainer}>

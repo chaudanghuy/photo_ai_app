@@ -1,32 +1,20 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { View, TextInput, Button, StyleSheet } from "react-native";
-import axios from "axios";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useAuth } from "../context/AuthContext";
 
-const Login = ({navigation}) => {
+const Login = ({ navigation }) => {
      const [email, setEmail] = useState("");
      const [password, setPassword] = useState("");
-
-     const apiUrl = process.env.API_URL;
+     const { signIn } = useAuth();
 
      const handleLogin = async () => {
           try {
-               const response = await axios.post("http://localhost:8080/api/v1/accounts/login", {
-                    email: email,
-                    password: password
-               });
-
-               if (response.data.token) {
-                    AsyncStorage.setItem('token', response.data.token);
-                    navigation.navigate("Homepage");
-               } else {
-                    console.log('Login failed');
-               }
-          } catch(error) {
+               await signIn(email, password);
+          } catch (error) {
                console.log(error);
           }
      }
-     
+
      return (
           <View style={styles.container}>
                <TextInput
@@ -61,6 +49,6 @@ const styles = StyleSheet.create({
           borderWidth: 1,
           padding: 10,
      },
-});     
+});
 
 export default Login;
