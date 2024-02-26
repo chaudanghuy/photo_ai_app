@@ -31,7 +31,7 @@ app.use(`${api}/accounts`, accountRouter);
 
 mongoose.connect(process.env.MONGODB_CONNECT)
     .then(() => {
-        console.log('Database connection is ready...');
+        console.log('Database connection is ready for test...');
     })
     .catch((err) => {
         console.log(err);
