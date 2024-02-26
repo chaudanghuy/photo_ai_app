@@ -20,4 +20,12 @@ const storeSchema = mongoose.Schema({
     is_active: Boolean,
 });
 
-const Store = mongoose.model('Store', storeSchema);
+storeSchema.virtual('id').get(function() {
+    return this._id.toHexString();
+});
+
+storeSchema.set('toJSON', {
+    virtual: true,
+});
+
+exports.Store = mongoose.model('Store', storeSchema);

@@ -1,14 +1,15 @@
-const mongoose = require('mongoose');
+ const mongoose = require('mongoose');
 
 const deviceSchema = mongoose.Schema({
-    code: {
-        type: String,
-        required: true,
+    name: String,
+    number: String,
+    photo_shooting_time: String,
+    photo_suffer_time: String,
+    store_id: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'Store'
     },
-    photo_time: {
-        shooting_time: String,
-        shutter_time: String,
-    },
+    photo_work_time: String,    
     print_price: [{
         type: String,
         required: true,
@@ -16,7 +17,7 @@ const deviceSchema = mongoose.Schema({
     product_price: [{
         product_name: String,
         price: String,
-    }],
+    }],    
     contact_number_for_failure: String,
     status: {
         type: String,
