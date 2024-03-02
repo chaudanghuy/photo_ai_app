@@ -15,4 +15,22 @@ router.get(`/:id`, async(req, res) => {
     if (!store) {
         return res.status(500).send('Store cannot be found!');
     }
-})
+});
+
+router.post(`/`, async(req, res) => {
+    let store = new Store({
+        code: req.body.code,
+        name: req.body.name,
+        address: req.body.address,
+        is_active: req.body.is_active,
+    });
+
+    store = await store.save();
+
+    if (!store) {
+        return res.status(404).send('Store cannot be created!');
+    }
+    return res.send(store);
+});
+
+module.exports = router;

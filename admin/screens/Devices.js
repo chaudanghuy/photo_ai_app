@@ -1,39 +1,83 @@
 import * as React from "react";
-import { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView } from "react-native";
+import { useState, useEffect } from "react";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, SafeAreaView, ActivityIndicator, FlatList } from "react-native";
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { Button } from "react-native-elements";
 import Device from "./Device";
+import { useAuth } from "../context/AuthContext";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from 'axios';
 
 const Root = createStackNavigator();
 
-const DeviceCard = ({ room, status, deviceNumber, basePrice, extraPrintPrice, consumablesRemaining, updateTime, navigation, handleEditFormShow }) => {
-  return (
-    <TouchableOpacity onPress={() => handleEditFormShow(true)}>
-      <View style={styles.card}>
-        <View style={styles.cardHeader}>
-          <Text style={styles.roomText}>{room}</Text>
-          <View style={[styles.statusIndicator, { backgroundColor: status === 'online' ? 'green' : 'red' }]} />
-          <Text style={styles.statusText}>{status}</Text>
-        </View>
-        <View style={styles.cardContent}>
-          <Text>Device Number: {deviceNumber}</Text>
-          <Text>Base Price: {basePrice}</Text>
-          <Text>Extra Print Price: {extraPrintPrice}</Text>
-          <Text>Consumables Remaining: {consumablesRemaining}</Text>
-          <Text>Device Update Time: {updateTime}</Text>
-        </View>
-        {/* Icon from react-native-vector-icons or your own custom icon */}
-      </View>
-    </TouchableOpacity>
-  );
-}
-
 const Devices = () => {
-  const [text, onChangeText] = useState('Search Device name/number..');
-  const [statusFilter, setStatusFilter] = useState('all');
+  const [text, onChangeText] = useState('Search Device..');
+  const [statusFilter, setStatusFilter] = useState('online');
   const [showForm, setShowForm] = useState(false);
+  const [myDevices, setMyDevices] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [filteredDevices, setFilteredDevices] = useState([]);
+  const [deviceId, setDeviceId] = useState(null);
+  const [stores, setStores] = useState([]);
+
+  useEffect(() => {
+    const fetchDevices = async () => {
+      try {
+        const userToken = await AsyncStorage.getItem('userToken');
+        const response = await fetch('http://localhost:8080/api/v1/devices', {
+          method: 'GET',
+          headers: {
+            'Authorization': `Bearer ${userToken}`,
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const data = await response.json();
+        setMyDevices(data);
+        setIsLoading(false);
+      } catch (error) {
+        console.error('There was an error!', error);
+      }
+    };
+
+    fetchDevices();
+  }, []);
+
+  useEffect(() => {
+    filterDevices();
+  }, [searchQuery, statusFilter, myDevices]);
+
+  useEffect(() => {
+      const fetchStores = async () => {
+        try {
+          const userToken = await AsyncStorage.getItem('userToken');
+          const response = await fetch('http://localhost:8080/api/v1/stores', {
+            method: 'GET',
+            headers: {
+              'Authorization': `Bearer ${userToken}`,
+              'Content-Type': 'application/json',
+            },
+          });
+
+          if (!response.ok) {
+            throw new Error('Network response was not ok');
+          }
+
+          const data = await response.json();
+          setStores(data);          
+        } catch(error) {
+
+        }
+      };
+
+      fetchStores();
+  }, []);
 
   function RadioButton(props) {
     return (
@@ -68,61 +112,90 @@ const Devices = () => {
     setStatusFilter(value);
   };
 
-  function handleEditFormShow(showFormToAddOrEdit) {
-    setShowForm(showFormToAddOrEdit);
+  function handleEditFormShow(isShowForm = true, chooseDevice = null) {
+    setShowForm(isShowForm);
+    if (chooseDevice === null) return setDeviceId(null);
+    setDeviceId(chooseDevice);
+  }  
+
+  const filterDevices = () => {
+    let tempDevices = [...myDevices];
+
+    if (statusFilter) {
+      tempDevices = tempDevices.filter(device => device.status === statusFilter);
+    }
+
+    if (searchQuery) {
+      tempDevices = tempDevices.filter(device =>
+        device.name.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+    }
+
+    setFilteredDevices(tempDevices);
   }
 
-  const devices = [
-    {
-      room: 'ROOM1',
-      status: 'online',
-      deviceNumber: 'TFD2024110-0601-0-PAHBY...',
-      basePrice: '0.01',
-      extraPrintPrice: '20000',
-      consumablesRemaining: '582',
-      updateTime: '2024/02/11 21:22'
-    },
-    {
-      room: 'ROOM2',
-      status: 'online',
-      deviceNumber: 'TFD2024109-05994-PAHBY...',
-      basePrice: '10000',
-      extraPrintPrice: '20000',
-      consumablesRemaining: '36',
-      updateTime: '2024/01/27 01:02'
-    },
-    // ...add more devices as needed
-  ];
+  const DeviceCard = ({ _id, number, status, name, print_price, contact_number_for_failure, date_created, handleEditFormShow }) => {
+    return (
+      <TouchableOpacity onPress={() => handleEditFormShow(true, _id)}>
+        <View style={styles.card}>
+          <View style={styles.cardHeader}>
+            <Text style={styles.roomText}>{name}</Text>
+            <View style={[styles.statusIndicator, { backgroundColor: status === 'online' ? 'green' : 'red' }]} />
+            <Text style={styles.statusText}>{status}</Text>
+          </View>
+          <View style={styles.cardContent}>
+            <Text>Device: {number}</Text>
+            <Text>Base Price: {print_price}</Text>
+            <Text>Consumables Remaining: {contact_number_for_failure}</Text>
+            <Text>Device Update Time: {date_created}</Text>
+          </View>
+          {/* Icon from react-native-vector-icons or your own custom icon */}
+        </View>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
-      {/* <View style={styles.header}>
-        <Text style={styles.deviceCount}>4/6</Text>
-        <Text>Number of Devices Online</Text>
-      </View> */}
-
-      {showForm ? (<Device handleEditFormShow={handleEditFormShow} />) :
+      {showForm ? (<Device deviceId={deviceId} handleEditFormShow={handleEditFormShow} stores={stores}/>) :
 
         (<><View style={styles.searchBar}>
           <SafeAreaView>
             <TextInput
               style={styles.input}
-              onChangeText={onChangeText}
-              value={text}
+              onChangeText={setSearchQuery}
+              placeholder={text}
+              value={searchQuery}
             />
           </SafeAreaView>
 
-          <View style={{ flexDirection: 'row', justifyContent: 'flex-start', margin: 10 }}>
-            <RadioButton value="All" />
-            <RadioButton value="Online" />
-            <RadioButton value="Offline" />
-          </View>
+          <TouchableOpacity
+            style={styles.radioButton}
+            onPress={() => setStatusFilter('online')}>
+            <Text style={styles.radioText}>Online</Text>
+            {statusFilter === 'online' && <View style={styles.radioDot} />}
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.radioButton}
+            onPress={() => setStatusFilter('offline')}>
+            <Text style={styles.radioText}>Offline</Text>
+            {statusFilter === 'offline' && <View style={styles.radioDot} />}
+          </TouchableOpacity>
         </View>
 
-          {devices.map(device => (
-            <DeviceCard key={device.deviceNumber} {...device} handleEditFormShow={handleEditFormShow} />
-          ))}
-
+          <View style={styles.container}>
+            {isLoading ? (
+              <ActivityIndicator size="large" color="#0000ff" />
+            ) : (
+              <FlatList
+                data={filteredDevices}
+                keyExtractor={item => item.id}
+                renderItem={({ item }) => (
+                  <DeviceCard {...item} handleEditFormShow={handleEditFormShow} />
+                )}
+              />
+            )}
+          </View>
 
           <View style={styles.buttonContainer}>
             <Button title={'Add Device'} onPress={() => setShowForm(true)} />
@@ -217,6 +290,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
+  },
+  radioButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: '#f0f0f0',
+    padding: 10,
+    borderRadius: 20,
+  },
+  radioText: {
+    marginRight: 10,
+  },
+  radioDot: {
+    height: 10,
+    width: 10,
+    borderRadius: 5,
+    backgroundColor: 'blue',
   },
 });
 

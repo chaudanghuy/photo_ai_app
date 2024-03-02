@@ -13,6 +13,7 @@ const api = process.env.API_URL;
 const productRouter = require('./routers/ads');
 const deviceRouter = require('./routers/devices');
 const accountRouter = require('./routers/accounts');
+const storeRouter = require('./routers/stores');
 
 // Middleware
 app.use(express.json());
@@ -28,6 +29,7 @@ app.use((err, req, res, next) => {
 app.use(`${api}/ads`, productRouter);
 app.use(`${api}/devices`, deviceRouter);
 app.use(`${api}/accounts`, accountRouter);
+app.use(`${api}/stores`, storeRouter);
 
 mongoose.connect(process.env.MONGODB_CONNECT)
     .then(() => {

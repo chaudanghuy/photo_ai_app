@@ -14,21 +14,18 @@ export function AuthProvider({ children }) {
 
   const signIn = async (email, password) => {
     try {
-      setUserToken('testToken');
-      setCurrentUser('testUser');
+      const response = await axios.post("http://localhost:8080/api/v1/accounts/login", {
+        email: email,
+        password: password
+      });
 
-      // const response = await axios.post("http://localhost:8080/api/v1/accounts/login", {
-      //   email: email,
-      //   password: password
-      // });
-
-      // if (response.data.token) {
-      //   setUserToken(response.data.token);
-      //   setCurrentUser(response.data.account);
-      //   await AsyncStorage.setItem('userToken', response.data.token);
-      // } else {
-      //   console.log('Login failed');
-      // }
+      if (response.data.token) {
+        setUserToken(response.data.token);
+        setCurrentUser(response.data.account);
+        await AsyncStorage.setItem('userToken', response.data.token);
+      } else {
+        console.log('Login failed');
+      }
     } catch (error) {
       console.log(error);
     }
