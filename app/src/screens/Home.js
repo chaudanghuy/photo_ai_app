@@ -1,17 +1,23 @@
 import React, { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import '../App.css'; // Make sure to create an appropriate CSS file for styling
 import { useNavigate } from 'react-router-dom';
 import { StyleSheet } from 'react-native';
 import photomong from '../assets/photomong.png';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faGlobe } from '@fortawesome/free-solid-svg-icons';
+import i18n from '../translations/i18n';
 
 function App() {
-  const [language, setLanguage] = useState('English');
+  const [language, setLanguage] = useState('en');
   const navigate = useNavigate();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const storedLanguage = sessionStorage.getItem('language');
     if (storedLanguage) {
       setLanguage(storedLanguage);
+      i18n.changeLanguage(storedLanguage);
     }
   }, []);
 
@@ -19,6 +25,7 @@ function App() {
     const selectedLanguage = e.target.value;
     setLanguage(selectedLanguage);
     sessionStorage.setItem('language', selectedLanguage);
+    i18n.changeLanguage(selectedLanguage);
   };
 
   return (
@@ -31,8 +38,12 @@ function App() {
             onChange={handleChangeLanguage}
             style={{ borderRadius: '10px', backgroundColor: 'pink', padding: '15px 66px', fontSize: '1.1rem' }}
           >
-            <option value="English">English</option>
-            <option value="Korean">Korean</option>
+            <option value="en">
+              <FontAwesomeIcon icon={faGlobe} /> {t('language.en')}
+            </option>
+            <option value="ko">
+              <FontAwesomeIcon icon={faGlobe} /> {t('language.ko')}
+            </option>
           </select>
         </div>
 
@@ -41,7 +52,7 @@ function App() {
         </div>
         <div className="start-button">
           <button onClick={() => navigate('/filter')} style={{ borderRadius: '20px', backgroundColor: 'pink', color: 'white', padding: '20px 50px', fontSize: '1.5em' }}>
-            {language === 'English' ? 'LET\'S START' : '시작하기'}
+            {t('home.takePhoto')}
           </button>
         </div>
       </header>
