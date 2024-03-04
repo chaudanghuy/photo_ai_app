@@ -12,6 +12,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/filter" element={<Filter />} />
+        <Route path="/frame" element={<Frame />} />
       </Routes>
     </Router>
   );

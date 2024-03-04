@@ -1,85 +1,52 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
+import { useTranslation } from 'react-i18next';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import '../css/App.css';
 
-const Frame = () => {
+function Frame() {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
   // These would be replaced with actual images for your products
-  const photoStripImage = require('../images/photostrip.png');
-  const multiFrameImage = require('../images/photostrip.png');
+  const frames = [
+    { id: 1, name: 'PHOTOSTRIP', image: require('../assets/frames/b1/photostrip.jpg'), price: '80.000 VND/1+1 ẢNH IN' },
+    { id: 2, name: 'MULTIFRAME', image: require('../assets/frames/b1/multiframe.jpg'), price: '80.000 VND/1 ẢNH IN' },
+  ];
 
   return (
-    <View style={styles.container}>
-      <View style={styles.navigation}>
-        <TouchableOpacity style={styles.navButton}>
-          <Text style={styles.navButtonText}>go back</Text>
-        </TouchableOpacity>
-        {/* Add other navigation buttons */}
-      </View>
-      <View style={styles.productsContainer}>
-        <View style={styles.productCard}>
-          <Text style={styles.productTitle}>PHOTOSTRIP</Text>
-          <Image source={photoStripImage} style={styles.productImage} />
-          <Text style={styles.priceText}>80.000 VND / 1 ẢNH IN</Text>
-          {/* Add button or touchable for selection */}
-        </View>
-        <View style={styles.productCard}>
-          <Text style={styles.productTitle}>MULTI-FRAME</Text>
-          <Image source={multiFrameImage} style={styles.productImage} />
-          <Text style={styles.priceText}>80.000 VND / 1 ẢNH IN</Text>
-          {/* Add button or touchable for selection */}
-        </View>
-      </View>
-      {/* Add any additional UI elements as needed */}
-    </View>
+    <div className="container">
+      <div className="menu-bar">
+        <button className="menu-button-pink active" onClick={() => navigate('/filter')}>
+          <FontAwesomeIcon icon={faArrowLeft} /> {t('menu.goBack')}
+        </button>
+        <button className="menu-button">{t('menu.filter')}</button>
+        <button className="menu-button active">{t('menu.frame')}</button>
+        <button className="menu-button">{t('menu.payment')}</button>
+        <button className="menu-button">{t('menu.photography')}</button>
+        <button className="menu-button">{t('menu.printing')}</button>
+        <button className="menu-button">{t('menu.photomong')}</button>
+      </div>
+      <div className="body-container">
+        <div className="vertical-frame-frame left-frame-frame">
+          <div className="frame-content-frame">
+            <div className="header-frame">{frames[0].name}</div>
+            <img src={frames[0].image} alt="Photo" className="photo-frame" />
+            <button className="footer-button-frame">{frames[0].price}</button>
+          </div>
+        </div>
+        <div className="vertical-frame-frame right-frame-frame">
+          <div className="frame-content-frame">
+            <div className="header-frame">{frames[1].name}</div>
+            <img src={frames[1].image} alt="Photo" className="photo-frame" />
+            <button className="footer-button-frame">{frames[1].price}</button>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#FBEAFF', // Replace with the actual background color from your design
-  },
-  navigation: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    padding: 10,
-    // Add styles for your navigation bar
-  },
-  navButton: {
-    // Add styles for your navigation buttons
-  },
-  navButtonText: {
-    // Add styles for the text inside your navigation buttons
-  },
-  productsContainer: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    alignItems: 'center',
-    // Add padding or margins as needed
-  },
-  productCard: {
-    backgroundColor: '#FFFFFF', // Replace with the actual card background color from your design
-    borderRadius: 10,
-    padding: 20,
-    alignItems: 'center',
-    // Add shadow or other styles as needed
-  },
-  productTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-    // Add color or other styles as needed
-  },
-  productImage: {
-    width: 150, // Replace with the actual width from your design
-    height: 150, // Replace with the actual height from your design
-    marginBottom: 10,
-    // Add resizeMode or other styles as needed
-  },
-  priceText: {
-    fontSize: 16,
-    // Add color or other styles as needed
-  },
-  // Add additional styles as needed
-});
 
 export default Frame;

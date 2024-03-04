@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import '../css/Filter.css';
+import '../css/App.css';
 import bigSkinSmooth from '../assets/filters/bigSkinSmooth.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -160,7 +160,7 @@ function Filter() {
             <div className="text-container">
               <h2 className="bold-text h2Left">{selectedItem}</h2>
               <h3 className="italic-text h3Left">{t('filter.by')} Photomong</h3>
-              <button className="rounded-button">{t('filter.confirm')}</button>
+              <button className="rounded-button" onClick={() => navigate('/frame')}>{t('filter.confirm')}</button>
             </div>
           </div>
         </div>

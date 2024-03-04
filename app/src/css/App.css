@@ -244,3 +244,84 @@
   justify-content: center;
   color: white;
 }
+
+.vertical-frame-frame {
+  width: 48%;
+  height: 70vh;
+  border-radius: 20px;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 200px;
+}
+
+.left-frame-frame {
+  margin-right: 20px;
+  background-color: #f9eaec;
+  /* Updated spacing */
+}
+
+.right-frame-frame {
+  margin-left: 20px;
+  background-color: #f9eaec;
+  /* Updated spacing */
+}
+
+.frame-content-frame {
+  background-color: #f9eaec;
+  border-radius: 10px;
+  padding-bottom: 20px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.header-frame {
+  background-color: #ed93a0;
+  color: white;
+  padding: 10px;
+  text-align: center;
+  border-radius: 20px 20px 0 0;
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.photo-frame {
+  flex-grow: 1;
+  /* Allow the image to grow to fill the available space */
+  width: auto;
+  /* Ensure the image scales proportionally */
+  max-width: fit-content;
+  /* Ensure the image does not exceed the frame width */
+}
+
+.footer-button-frame {
+  border: none;
+  background-color: white;
+  border-radius: 20px;
+  padding: 20px 20px;
+  margin: 25px;
+  cursor: pointer;
+  width: 85%;
+  text-align: center;
+  color: black;
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.frame-content-frame:hover {
+  border: 5px solid pink;
+  /* Add border on hover */
+  border-radius: 10px;
+  /* Add rounded corners on hover */
+}
+
+.frame-content-frame:active {
+  border: 5px solid pink;
+  /* Add border when clicked */
+  border-radius: 10px;
+  /* Add rounded corners when clicked */
+}
