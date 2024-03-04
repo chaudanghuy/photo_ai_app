@@ -6,6 +6,7 @@ import bigSkinSmooth from '../assets/filters/bigSkinSmooth.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import i18n from '../translations/i18n';
+import Slider from '../components/Slider';
 
 function Filter() {
   const navigate = useNavigate();
@@ -140,11 +141,7 @@ function Filter() {
       </div>
       <div className="body-container">
         <div className="vertical-frame left-frame">
-          <div className="brightness-bar">
-            <button onClick={increaseBrightness}>+</button>
-            <input className="brightnessRange" type="range" min="0" max="100" value={brightness} onChange={(e) => setBrightness(e.target.value)} orient="vertical" />
-            <button onClick={decreaseBrightness}>-</button>
-          </div>
+          <Slider min={30} max={100} value={brightness} onChange={(e) => setBrightness(e.target.value)} />          
           <h3 className="brightness-text">{t('filter.intensity')}</h3>
         </div>
         <div className="horizontal-frame">
