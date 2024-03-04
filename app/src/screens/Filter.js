@@ -8,6 +8,75 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import i18n from '../translations/i18n';
 import Slider from '../components/Slider';
 
+const DEFAULT_OPTIONS = [
+  //personality
+  {
+    name: 'Brightness',
+    property: 'brightness',
+    value: 100,
+    range: {
+      min: 0,
+      max: 200
+    },
+    unit: '%'
+  },
+  // natural look
+  {
+    name: 'Contrast',
+    property: 'contrast',
+    value: 100,
+    range: {
+      min: 0,
+      max: 200
+    },
+    unit: '%'
+  },
+  // perfect pink
+  {
+    name: 'Saturation',
+    property: 'saturate',
+    value: 100,
+    range: {
+      min: 0,
+      max: 200
+    },
+    unit: '%'
+  },
+  // classic
+  {
+    name: 'Sepia',
+    property: 'sepia',
+    value: 0,
+    range: {
+      min: 0,
+      max: 100
+    },
+    unit: '%'
+  },
+  // black and white
+  {
+    name: 'Grayscale',
+    property: 'grayscale',
+    value: 0,
+    range: {
+      min: 0,
+      max: 100
+    },
+    unit: '%'
+  },
+  // skin smooth
+  {
+    name: 'Hue Rotate',
+    property: 'hue-rotate',
+    value: 0,
+    range: {
+      min: 0,
+      max: 360
+    },
+    unit: 'deg'
+  },
+]
+
 function Filter() {
   const navigate = useNavigate();
   const [language, setLanguage] = useState('en');
@@ -18,6 +87,10 @@ function Filter() {
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
   const [filterEffect, setFilterEffect] = useState(null);
+  const [selectedOptionIndex, setSelectedOptionIndex] = useState(0)
+  const [options, setOptions] = useState(DEFAULT_OPTIONS)
+  const [sliderChange, setSliderChange] = useState(false);
+  const [selectedOption, setSelectedOption] = useState(DEFAULT_OPTIONS[selectedOptionIndex])
 
   const { t } = useTranslation();
   const videoRef = useRef(null);
@@ -43,12 +116,12 @@ function Filter() {
   ];
 
   const selectedFilterEffects = [
-    { id: 1, name: t('items.personality'), effect: 'brightness(1.2) saturate(1.1) contrast(1.1)' },
-    { id: 2, name: t('items.natural'), effect: 'contrast(180%)' },
-    { id: 3, name: t('items.perfect'), effect: 'saturate(1.2) contrast(1.1) brightness(1.1)' },
+    { id: 1, name: t('items.personality'), effect: 'brightness(1.2) saturate(1.1) contrast(1.1) blur(1px) hue-rotate(10deg)' },
+    { id: 2, name: t('items.natural'), effect: 'sepia(0.1) hue-rotate(20deg)' },
+    { id: 3, name: t('items.perfect'), effect: 'brightness(1.1) contrast(0.9) saturate(1.5) hue-rotate(330deg)' },
     { id: 4, name: t('items.classic'), effect: 'sepia(0.3) saturate(1.2) contrast(0.8)' },
     { id: 5, name: t('items.bnw'), effect: 'grayscale(1)' },
-    { id: 6, name: t('items.skin'), effect: 'blur(0.5px) brightness(1.1) contrast(1.1) saturate(0.8)' },
+    { id: 6, name: t('items.skin'), effect: 'blur(1px) brightness(1.1) contrast(0.9) saturate(1.2) hue-rotate(5deg)' },
     { id: 99, name: t('items.default'), effect: 'none' },
   ];
 
@@ -81,13 +154,25 @@ function Filter() {
     }
   };
 
-  const handleBrightnessChange = (e) => {
-    const newBrightness = e.target.value;
-    const video = videoRef.current;
-    if (video) {
-      video.style.filter = `brightness(${newBrightness}%)`;
-    }
-  };
+  function handleSliderChange(value) {
+    setSliderChange(true);
+    setOptions(prevOptions => {
+      return prevOptions.map((option, index) => {
+        if (index !== selectedOptionIndex) return option
+        return { ...option, value: value }
+      })
+    })
+  }
+
+  function getImageStyle() {
+    if (sliderChange === false && filterEffect) return { filter: filterEffect };
+    const filters = options.map(option => {
+      return `${option.property}(${option.value}${option.unit})`
+    })
+    console.log('filters:', filters);
+
+    return { filter: filters.join(' ') }
+  }
 
   const startCamera = async () => {
     try {
@@ -120,10 +205,14 @@ function Filter() {
   };
 
   const handleItemClick = (item, index) => {
+    setSliderChange(false);
     setSelectedItem(item.name);
     setSelectedFilter(selectedFilters[index].image);
     setSelectedSquare(index);
     setFilterEffect(selectedFilterEffects[index].effect);
+    setSelectedOption(options[index]);
+    setSelectedOptionIndex(index);
+    console.log('selectedOption:', index);
   };
 
   return (
@@ -141,13 +230,13 @@ function Filter() {
       </div>
       <div className="body-container">
         <div className="vertical-frame left-frame">
-          <Slider min={30} max={100} value={brightness} onChange={(e) => setBrightness(e.target.value)} />          
+          <Slider min={selectedOption.range.min} max={selectedOption.range.max} value={selectedOption.value} handleChange={handleSliderChange} />
           <h3 className="brightness-text">{t('filter.intensity')}</h3>
         </div>
         <div className="horizontal-frame">
           {stream && (
             <>
-              <video ref={videoRef} autoPlay muted className="video" style={{ filter: filterEffect }} />
+              <video ref={videoRef} autoPlay muted className="video" style={getImageStyle()} />
               <canvas ref={canvasRef} style={{ display: 'none' }} />
             </>
           )}
