@@ -2,7 +2,6 @@ import React, { useState, useRef, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import '../css/App.css';
-import bigSkinSmooth from '../assets/filters/bigSkinSmooth.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import i18n from '../translations/i18n';
@@ -78,10 +77,8 @@ const DEFAULT_OPTIONS = [
 ]
 
 function Filter() {
-  const navigate = useNavigate();
-  const [language, setLanguage] = useState('en');
-  const [stream, setStream] = useState(null);
-  const [imgSrc, setImgSrc] = useState('');
+  const navigate = useNavigate();  
+  const [stream, setStream] = useState(null);  
   const [brightness, setBrightness] = useState(50);
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedSquare, setSelectedSquare] = useState(null);
@@ -140,19 +137,7 @@ function Filter() {
 
   useEffect(() => {
     startCamera();
-  }, []);
-
-  const increaseBrightness = (e) => {
-    if (brightness < 100) {
-      setBrightness(brightness + 10);
-    }
-  };
-
-  const decreaseBrightness = (e) => {
-    if (brightness > 0) {
-      setBrightness(brightness - 10);
-    }
-  };
+  }, []);  
 
   function handleSliderChange(value) {
     setSliderChange(true);
@@ -184,25 +169,7 @@ function Filter() {
     } catch (error) {
       console.error('Error accessing camera:', error);
     }
-  };
-
-  const stopCamera = () => {
-    if (stream) {
-      stream.getTracks().forEach(track => track.stop());
-      setStream(null);
-    }
-  };
-
-  const captureImage = () => {
-    const video = videoRef.current;
-    const canvas = canvasRef.current;
-    const context = canvas.getContext('2d');
-    if (video && canvas) {
-      canvas.width = video.videoWidth;
-      canvas.height = video.videoHeight;
-      context.drawImage(video, 0, 0, canvas.width, canvas.height);
-    }
-  };
+  };  
 
   const handleItemClick = (item, index) => {
     setSliderChange(false);
@@ -244,7 +211,7 @@ function Filter() {
         <div className="vertical-frame right-frame">
           <div className="right-content">
             <div className="image-container">
-              <img src={selectedFilter} alt="Your Image" className="imageRight" />
+              <img src={selectedFilter} alt="Filter Effect" className="imageRight" />
             </div>
             <div className="text-container">
               <h2 className="bold-text h2Left">{selectedItem}</h2>

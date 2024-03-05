@@ -1,5 +1,4 @@
 import React from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
@@ -33,14 +32,14 @@ function Frame() {
         <div className="vertical-frame-frame left-frame-frame">
           <div className="frame-content-frame">
             <div className="header-frame">{frames[0].name}</div>
-            <img src={frames[0].image} alt="Photo" className="photo-frame" />
+            <img src={frames[0].image} alt="PhotoStrip" className="photo-frame" />
             <button className="footer-button-frame">{frames[0].price}</button>
           </div>
         </div>
         <div className="vertical-frame-frame right-frame-frame">
           <div className="frame-content-frame">
             <div className="header-frame">{frames[1].name}</div>
-            <img src={frames[1].image} alt="Photo" className="photo-frame" />
+            <img src={frames[1].image} alt="MultiFrame" className="photo-frame" />
             <button className="footer-button-frame">{frames[1].price}</button>
           </div>
         </div>
