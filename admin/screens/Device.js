@@ -5,6 +5,7 @@ import * as Yup from 'yup';
 import { Input } from 'react-native-elements';
 import { Picker } from '@react-native-picker/picker';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import axios from 'axios';
 
 // Validation Schema
 const EditDeviceSchema = Yup.object().shape({
@@ -28,6 +29,7 @@ const EditDeviceSchema = Yup.object().shape({
 const Device = ({ deviceId, handleEditFormShow, stores }) => {
   const [myDevice, setMyDevice] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [submmited, setSubmmited] = useState(false);
 
   useEffect(() => {
     // Fetch device by id
@@ -47,6 +49,21 @@ const Device = ({ deviceId, handleEditFormShow, stores }) => {
 
     fetchDevice();
   }, [deviceId]);
+
+  const handleSubmit = async (values) => {
+    try {
+      const token = await AsyncStorage.getItem('userToken');
+      const response = await axios.put(`http://localhost:8080/api/v1/devices/${deviceId}`, values, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+      });
+      setSubmmited(true);                
+    } catch (error) {
+      console.error('There was an error!', error);
+    }
+  };
 
   return (
     <>
@@ -68,10 +85,23 @@ const Device = ({ deviceId, handleEditFormShow, stores }) => {
             stores: stores
           }}
           validationSchema={EditDeviceSchema}
-          onSubmit={values => console.log(values)}
+          onSubmit={handleSubmit}
         >
-          {({ handleChange, handleBlur, handleSubmit, values, setFieldValue }) => (
+          {({ handleChange, handleBlur, handleSubmit, values, setFieldValue, submitted }) => (            
             <ScrollView>
+              <View style={styles.row}>                
+                <View style={styles.pickerContainer}>
+                  <Picker
+                    selectedValue={values.store_id}
+                    onValueChange={(itemValue, itemIndex) => setFieldValue('store_id', itemValue)}
+                    style={styles.picker}
+                  >
+                    {values.stores.map(store => (
+                      <Picker.Item key={store.id} label={store.name} value={store.id} />
+                    ))}
+                  </Picker>
+                </View>
+              </View>
               <Input
                 label="Name"
                 onChangeText={handleChange('name')}
@@ -96,21 +126,7 @@ const Device = ({ deviceId, handleEditFormShow, stores }) => {
                 onBlur={handleBlur('photo_suffer_time')}
                 value={String(values.photo_suffer_time)}
                 keyboardType="numeric"
-              />
-              <View style={styles.row}>
-                <Text style={styles.label}>Store</Text>
-                <View style={styles.pickerContainer}>
-                  <Picker
-                    selectedValue={values.store_id}
-                    onValueChange={(itemValue, itemIndex) => setFieldValue('store_id', itemValue)}
-                    style={styles.picker}
-                  >
-                    {values.stores.map(store => (
-                      <Picker.Item key={store.id} label={store.name} value={store.id} />
-                    ))}
-                  </Picker>
-                </View>
-              </View>
+              />              
               <Input
                 label="Photo Work Time"
                 onChangeText={handleChange('photo_work_time')}
@@ -158,10 +174,10 @@ const Device = ({ deviceId, handleEditFormShow, stores }) => {
                 onChangeText={handleChange('status')}
                 onBlur={handleBlur('status')}
                 value={values.status}
-              />
-              <Button onPress={handleSubmit} title="Submit" />
+              />              
+              <Button type="submit" disabled={submitted} onPress={handleSubmit} title="Submit" />            
               <Button onPress={() => handleEditFormShow(false)} title='Go Back' color='#000' />
-            </ScrollView>
+            </ScrollView>            
           )}
         </Formik>
       )};
@@ -195,9 +211,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#ddd',
     borderRadius: 4,
-    overflow: 'hidden',
+    overflow: 'hidden',    
   },
   picker: {
+    padding: 15,
     flex: 1,
     ...Platform.select({
       android: {

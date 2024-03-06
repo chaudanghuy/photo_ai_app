@@ -48,6 +48,31 @@ router.post(`/`, async(req, res) => {
     return res.send(device);
 });
 
+// Update device
+router.put('/:id', async (req, res) => {
+    const device = await Device.findByIdAndUpdate(
+        req.params.id,
+        {
+            name: req.body.name,
+            number: req.body.number,
+            photo_shooting_time: req.body.photo_shooting_time,
+            photo_suffer_time: req.body.photo_suffer_time,
+            store_id: req.body.store_id,
+            photo_work_time: req.body.photo_work_time,
+            print_price: req.body.print_price,
+            product_price: req.body.product_price,
+            contact_number_for_device_failure: req.body.contact_number_for_device_failure,
+            status: req.body.status,
+        },
+        { new: true }
+    );
+
+    if (!device) {
+        return res.status(404).send('the device cannot be updated!');
+    }
+    return res.send(device);
+});
+
 router.delete('/:id', async (req, res) => {    
     const device = await Device.deleteOne({_id: req.params.id});    
     if (device) {
