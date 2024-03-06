@@ -78,8 +78,7 @@ const DEFAULT_OPTIONS = [
 
 function Filter() {
   const navigate = useNavigate();  
-  const [stream, setStream] = useState(null);  
-  const [brightness, setBrightness] = useState(50);
+  const [stream, setStream] = useState(null);    
   const [selectedItem, setSelectedItem] = useState(null);
   const [selectedSquare, setSelectedSquare] = useState(null);
   const [selectedFilter, setSelectedFilter] = useState(null);
@@ -87,7 +86,7 @@ function Filter() {
   const [selectedOptionIndex, setSelectedOptionIndex] = useState(0)
   const [options, setOptions] = useState(DEFAULT_OPTIONS)
   const [sliderChange, setSliderChange] = useState(false);
-  const [selectedOption, setSelectedOption] = useState(DEFAULT_OPTIONS[selectedOptionIndex])
+  const [selectedOption, setSelectedOption] = useState(DEFAULT_OPTIONS[selectedOptionIndex])  
 
   const { t } = useTranslation();
   const videoRef = useRef(null);
@@ -124,8 +123,7 @@ function Filter() {
 
   useEffect(() => {
     const storedLanguage = sessionStorage.getItem('language');
-    if (storedLanguage) {
-      setLanguage(storedLanguage);
+    if (storedLanguage) {      
       i18n.changeLanguage(storedLanguage);
     }
   }, []);
@@ -187,11 +185,11 @@ function Filter() {
       <div className="menu-bar">
         <button className="menu-button-pink active" onClick={() => navigate('/')}>
           <FontAwesomeIcon icon={faArrowLeft} /> {t('menu.goBack')}
-        </button>
-        <button className="menu-button active">{t('menu.filter')}</button>
+        </button>        
         <button className="menu-button">{t('menu.frame')}</button>
         <button className="menu-button">{t('menu.payment')}</button>
         <button className="menu-button">{t('menu.photography')}</button>
+        <button className="menu-button active">{t('menu.filter')}</button>
         <button className="menu-button">{t('menu.printing')}</button>
         <button className="menu-button">{t('menu.photomong')}</button>
       </div>

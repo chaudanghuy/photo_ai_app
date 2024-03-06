@@ -48,10 +48,10 @@ function App() {
         </div>
 
         <div className="logo-container">
-          <img src={photomong} alt="Photo App Logo" style={{ width: '512px' }} />
+          <img src={photomong} alt="PhotoMong" style={{ width: '512px' }} />
         </div>
         <div className="start-button">
-          <button onClick={() => navigate('/filter')} style={{ borderRadius: '20px', backgroundColor: 'pink', color: 'white', padding: '20px 50px', fontSize: '1.5em' }}>
+          <button onClick={() => navigate('/frame')} style={{ borderRadius: '20px', backgroundColor: 'pink', color: 'white', padding: '20px 50px', fontSize: '1.5em' }}>
             {t('home.takePhoto')}
           </button>
         </div>

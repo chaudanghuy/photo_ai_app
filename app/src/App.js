@@ -10,8 +10,8 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/filter" element={<Filter />} />
         <Route path="/frame" element={<Frame />} />
+        <Route path="/filter" element={<Filter />} />        
       </Routes>
     </Router>
   );
