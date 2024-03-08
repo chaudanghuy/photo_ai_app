@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import i18n from '../translations/i18n';
+import i18n from '../../translations/i18n';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import '../css/App.css';
+import '../../css/App.css';
 
-function Frame2() {
+function FrameBackground() {
      const { t } = useTranslation();
      const navigate = useNavigate();
      const [selectedSquare, setSelectedSquare] = useState(null);
@@ -39,7 +39,7 @@ function Frame2() {
                <div className='frame-body-container'>
                     <h1 className='title-frame-2'>Choose your favorite frame</h1>
                     <div className="frame-row">
-                         <div className="image-row" onClick={() => navigate('/frame3')}>
+                         <div className="image-row" onClick={() => navigate('/frame-step-2')}>
                               {filters.map((item, index) => (
                                    <div key={item.id} className={`square ${selectedSquare === index ? 'square-selected' : ''}`} onClick={() => handleItemClick(item, index)}>
                                         <img src={item.image} alt={item.name} className="image" />
@@ -54,4 +54,4 @@ function Frame2() {
      );
 }
 
-export default Frame2;
+export default FrameBackground;

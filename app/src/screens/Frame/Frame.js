@@ -3,14 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import i18n from '../translations/i18n';
-import '../css/App.css';
+import i18n from '../../translations/i18n';
+import '../../css/App.css';
 
 function Frame() {
   const { t } = useTranslation();
   const navigate = useNavigate();  
 
-  const folderIMG = require("../assets/frames/folder2.jpg")
+  const folderIMG = require("../../assets/Frames/folder2.jpg")
   const frameListRow1 = [
     { name: 'Stripx2', price: '70.000vnd', image: folderIMG },
     { name: '2-cutx2', price: '100.000vnd', image: folderIMG },
@@ -32,7 +32,7 @@ function Frame() {
   return (
     <div className="container">
       <div className="menu-bar">
-        <button className="menu-button-pink active" onClick={() => navigate('/filter')}>
+        <button className="menu-button-pink active" onClick={() => navigate('/')}>
           <FontAwesomeIcon icon={faArrowLeft} /> {t('menu.goBack')}
         </button>
         <button className="menu-button active">{t('menu.frame')}</button>
@@ -60,7 +60,7 @@ const FrameBody = ({ frame1, frame2 }) => {
             <div 
               className="filter-column" 
               key={index} 
-              onClick={() => navigate('/frame2')}
+              onClick={() => navigate('/frame-step-2')}
             >
               <h3>{item.name}</h3>
               <div className="image-container" style={{ backgroundImage: `url(${item.image})` }}>
@@ -73,7 +73,11 @@ const FrameBody = ({ frame1, frame2 }) => {
       <div className="filter-row">
         {frame2.map((item, index) => {
           return (
-            <div className="filter-column" key={index}>
+            <div 
+              className="filter-column" 
+              key={index}
+              onClick={() => navigate('/frame-step-2')}
+            >
               <h3>{item.name}</h3>
               <div className="image-container" style={{ backgroundImage: `url(${item.image})` }}>
                 <span>{item.price}</span>

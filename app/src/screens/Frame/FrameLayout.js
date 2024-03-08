@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-import i18n from '../translations/i18n';
-import '../css/App.css';
+import i18n from '../../translations/i18n';
+import '../../css/App.css';
 
-function FrameThird() {
+function FrameLayout() {
      const { t } = useTranslation();
      const navigate = useNavigate();
      const [selectedSquare, setSelectedSquare] = useState(null);
@@ -26,7 +26,7 @@ function FrameThird() {
      return (
           <div className='container'>
                <div className="menu-bar">
-                    <button className="menu-button-pink active" onClick={() => navigate('/frame2')}>
+                    <button className="menu-button-pink active" onClick={() => navigate('/frame-step-1')}>
                          <FontAwesomeIcon icon={faArrowLeft} /> {t('menu.goBack')}
                     </button>
                     <button className="menu-button active">{t('menu.frame')}</button>
@@ -56,4 +56,4 @@ function FrameThird() {
      );
 }
 
-export default FrameThird;
+export default FrameLayout;
