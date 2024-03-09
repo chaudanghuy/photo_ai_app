@@ -6,7 +6,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import i18n from '../../translations/i18n';
 import '../../css/Payment.css';
 
-function PaymentMOMO() {
+function QR() {
      const { t } = useTranslation();
      const navigate = useNavigate();
      const [selectedSquare, setSelectedSquare] = useState(null);
@@ -23,4 +23,4 @@ function PaymentMOMO() {
      );
 }
 
-export default PaymentMOMO;
+export default QR;

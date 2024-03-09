@@ -1,6 +1,6 @@
 import React from "react";
 
-function PaymentResult() {
+function Result() {
      return (
           <div>
                <h1>Payment Result</h1>
@@ -8,4 +8,4 @@ function PaymentResult() {
      );
 }
 
-export default PaymentResult;
+export default Result;

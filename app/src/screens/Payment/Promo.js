@@ -1,6 +1,6 @@
 import React from "react";
 
-function PaymentPromo() {
+function Promo() {
      return (
           <div>
                <h1>Payment Promo</h1>
@@ -8,4 +8,4 @@ function PaymentPromo() {
      );
 }
 
-export default PaymentPromo;
+export default Promo;
