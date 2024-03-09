@@ -20,14 +20,12 @@
 .go-back {
     position: absolute;
     /* Position div absolutely within the container */
-    top: 9px;
-    margin-top: -12px;
-    margin-left: -25px;
-    left: 236px;
+    top: 4.5%;
+    left: 14%;
     /* Distance from left of container */
-    width: 100px;
+    width: 8%;
     /* Set width of the div */
-    height: 100px;
+    height: 10%;
     /* Set height of the div */
     background-image: url('../assets/Common/goback.png');
     /* Specify the path to your initial background image */
@@ -43,4 +41,25 @@
     /* Specify the path to your hover background image */
     cursor: pointer;
     /* Change cursor on hover */
+}
+
+.topSection,
+.bottomSection {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    margin-bottom: 20px;
+}
+
+.column {
+    width: 30%;
+}
+
+.imageDiv {
+    width: 100%;
+    height: 200px;
+    /* Adjust height as needed */
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }
