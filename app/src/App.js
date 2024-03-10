@@ -22,13 +22,13 @@ function App() {
         <Route path="/frame" element={<Frame />} />
         <Route path="/frame-step-2" element={<Background />} />
         <Route path="/frame-step-3" element={<Layout />} />
-        <Route path="/payment" element={<Payment />} />        
+        <Route path="/payment" element={<Payment />} />
         <Route path="/payment-result" element={<Result />} />
         <Route path="/payment-cash" element={<Cash />} />
-        <Route path="/payment-momo" element={<QR />} />
+        <Route path="/payment-qr" element={<QR />} />
         <Route path="/payment-promo" element={<Promo />} />
-        <Route path="/photo" element={<Photo />} />        
-        <Route path="/photo-choose" element={<Choose />} />                                
+        <Route path="/photo" element={<Photo />} />
+        <Route path="/photo-choose" element={<Choose />} />
         <Route path="/print" element={<Print />} />
       </Routes>
     </Router>

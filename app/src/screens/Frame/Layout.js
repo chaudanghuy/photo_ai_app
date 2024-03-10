@@ -1,59 +1,69 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import i18n from '../../translations/i18n';
-import '../../css/App.css';
+import '../../css/Frame.css';
+import Background from './Background';
+// Import images
+import confirm from '../../assets/Frame/Layout/confirm.png';
+import confirm_click from '../../assets/Frame/Layout/confirm_click.png';
+
 
 function Layout() {
+     const [hoveredImage, setHoveredImage] = useState(null);
+     const [hoverImageButton, setHoverImageButton] = useState(null);
+     const [layoutBackground, setLayoutBackground] = useState(null);
      const { t } = useTranslation();
      const navigate = useNavigate();
-     const [selectedSquare, setSelectedSquare] = useState(null);
 
-     const filters = [
-          { id: 1, name: 'Seasons', image: 'https://placehold.co/500' },
-          { id: 2, name: 'Party', image: 'https://placehold.co/500' },
-          { id: 3, name: 'Cartoon', image: 'https://placehold.co/500' },
-          { id: 4, name: 'Minimalism', image: 'https://placehold.co/500' },
-          { id: 5, name: 'Collab', image: 'https://placehold.co/500' },
-     ];
+     useEffect(() => {
+          const storedLanguage = sessionStorage.getItem('language');
+          if (storedLanguage) {
+               i18n.changeLanguage(storedLanguage);
+          }
 
-     const handleItemClick = (item, index) => {
-          setSelectedSquare(index);
+          const sessionStyleBg = sessionStorage.getItem('styleBg');
+          if (sessionStyleBg) {
+               let layoutBg = require(`../../assets/Frame/Layout/Seasons/BG.png`);
+               if (sessionStyleBg == 'seasons') {
+                    layoutBg = require(`../../assets/Frame/Layout/Seasons/BG.png`);
+               } else if (sessionStyleBg == 'party') {
+                    layoutBg = require(`../../assets/Frame/Layout/Party/BG.png`);
+               } else if (sessionStyleBg == 'cartoon') {
+                    layoutBg = require(`../../assets/Frame/Layout/Cartoon/BG.png`);
+               } else if (sessionStyleBg == 'minimalism') {
+                    layoutBg = require(`../../assets/Frame/Layout/Minimalism/BG.png`);
+               } else if (sessionStyleBg == 'collab') {
+                    layoutBg = require(`../../assets/Frame/Layout/Collab/BG.png`);
+               }
+               setLayoutBackground(layoutBg);
+          }
+     }, []);
+
+     const handleMouseEnter = (image) => {
+          setHoveredImage(image);
+     }
+
+     const handleMouseLeave = () => {
+          setHoveredImage(null);
+     }
+
+     const goToPayment = () => {
+          navigate('/payment');
      }
 
      return (
-          <div className='container'>
-               <div className="menu-bar">
-                    <button className="menu-button-pink active" onClick={() => navigate('/frame-step-1')}>
-                         <FontAwesomeIcon icon={faArrowLeft} /> {t('menu.goBack')}
-                    </button>
-                    <button className="menu-button active">{t('menu.frame')}</button>
-                    <button className="menu-button">{t('menu.payment')}</button>
-                    <button className="menu-button">{t('menu.photography')}</button>
-                    <button className="menu-button">{t('menu.filter')}</button>
-                    <button className="menu-button">{t('menu.printing')}</button>
-                    <button className="menu-button">{t('menu.photomong')}</button>
-               </div>
-               <div className='frame-body-container'>
-                    <h1 className='title-frame-2'>Party The good times Roll</h1>
-                    <div className="frame-row">
-                         <div className="image-row">
-                              {filters.map((item, index) => (
-                                   <div key={item.id} className={`rectangle ${selectedSquare === index ? 'rectangle-selected' : ''}`} onClick={() => handleItemClick(item, index)}>
-                                        <img src={item.image} alt={item.name} className="image" />                                        
-                                   </div>
-                              ))}
-                         </div>
-                    </div>                    
-               </div>
-               <p className="content">
-                    <p>Here's another year of laughing together,</p>
-                    <button className="confirm-frame-button" onClick={() => navigate('/payment')}>Confirm</button>
-               </p>
+          <div className='layout-container' style={{ backgroundImage: `url(${layoutBackground})` }}>
+               <div className="go-back" onClick={() => navigate("/frame-step-2")}></div>
+               <div
+                    className="confirm-layout-button"
+                    style={{ backgroundImage: `url(${hoverImageButton === confirm ? confirm_click : confirm})` }}
+                    onMouseEnter={() => setHoverImageButton(confirm)}
+                    onMouseLeave={() => setHoverImageButton(null)}
+                    onClick={goToPayment}
+               ></div>
           </div>
      );
-}
+};
 
 export default Layout;

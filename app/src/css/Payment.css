@@ -1,150 +1,10 @@
-.container {
-     width: 100%;
-     height: 100vh;
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-}
-
-.menu-bar {
-     width: 80%;
-     height: 80px;
-     background-color: white;
-     display: flex;
-     justify-content: space-evenly;
-     align-items: center;
-     border: 2px solid black;
-     border-radius: 20px;
-     margin-top: 20px;
-}
-
-.menu-button {
-     border: none;
-     background-color: transparent;
-     color: black;
-     padding: 10px 20px;
-     border-radius: 20px;
-     cursor: pointer;
-     transition: border-color 0.3s;
-     font-size: 1.2rem;
-     font-weight: bold;
-}
-
-.menu-button.active {
-     border: 1px solid black;
-}
-
-.menu-button:hover {
-     border: 1px solid black;
-}
-
-.menu-button-pink {
-     border: none;
-     background-color: pink;
-     color: black;
-     padding: 10px 20px;
-     border-radius: 20px;
-     cursor: pointer;
-     transition: border-color 0.3s;
-     font-size: 1.2rem;
-     font-weight: bold;
-}
-
-.menu-button-pink.active {
-     border: 1px solid black;
-}
-
-.body-container {
-     width: 80%;
-     height: 60%;
-     /* Adjusted for the menu bar height */
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     margin-top: 5px;
-     /* Distance between menu bar and frames */
-}
-
-/* First Page */
 .payment-container {
-     width: 80%;
-     height: 60%;
-     /* Adjusted for the menu bar height */
-     display: flex;
-     justify-content: space-between;
-     align-items: center;
-     margin-top: 5px;
-     /* Distance between menu bar and frames */
-     flex-direction: column;
-}
-
-.title-frame-2 {
-     font-size: 24px;
-     margin-top: 100px;
-     text-align: left;
-}
-
-.frame-row {
-     display: flex;
-     justify-content: center;
-     margin-top: 20px;
-     flex-wrap: wrap;
-}
-
-.image-row {
-     display: flex;
-     justify-content: center;
-     margin-top: 10px;
-     /* Distance from the frames */
-}
-
-.image {
-     width: 150px;
-     height: 150px;
-     border-radius: 10px;
-     margin-top: 10px;
-}
-
-.text {
-     text-align: center;
-     margin-top: 5px;
-     font-size: 1.5rem;
-}
-
-.rectangle {
-     width: 185px;
-     height: 550px;
-     background-color: #E1E1E1;
-     border-radius: 10px;
-     margin: 0 12px;
-     display: flex;
-     flex-direction: column;
-     align-items: center;
-}
-
-.rectangle-selected {
-     border: 5px solid pink;
-}
-
-.rectangle:hover {
-     border: 5px solid pink;
-     /* Pink border on hover */
-     box-shadow: 0 0 10px rgba(255, 105, 180, 0.5);
-     /* Pink shadow on hover */
-}
-
-/* End First Page */
-
-
-/* MOMO */
-
-.qr-container {
      position: relative;
      width: 100vw;
      /* Full width of the viewport */
      height: 100vh;
      /* Full height of the viewport */
-     background-image: url('../assets/Payment/QR.png');
+     background-image: url('../assets/Payment/BG.png');
      /* Specify the path to your background image */
      background-size: contain;
      background-repeat: no-repeat;
@@ -157,4 +17,215 @@
      /* Add additional styles for your payment content if needed */
 }
 
-/* MOMO */
+.go-back {
+     position: absolute;
+     /* Position div absolutely within the container */
+     top: 4.5%;
+     left: 14%;
+     /* Distance from left of container */
+     width: 8%;
+     /* Set width of the div */
+     height: 10%;
+     /* Set height of the div */
+     background-image: url('../assets/Common/goback.png');
+     /* Specify the path to your initial background image */
+     background-size: contain;
+     background-repeat: no-repeat;
+     /* Cover the entire div */
+     transition: background-image 0.3s;
+     /* Add transition for smooth effect */
+}
+
+.go-back:hover {
+     background-image: url('../assets/Common/gobackhover.png');
+     /* Specify the path to your hover background image */
+     cursor: pointer;
+     /* Change cursor on hover */
+}
+
+.payment-line {
+     position: absolute;
+     top: 100;
+     left: 11%;
+     width: 77%;
+     height: 250px;
+     display: flex;
+     justify-content: center;
+}
+
+.payment-method {
+     width: 50%;
+     height: 170%;
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+     transition: background-image 0.3s ease;
+}
+
+.payment-method.hovered {
+     cursor: pointer;
+}
+
+/** Cash **/
+.cash-container {
+     position: relative;
+     width: 100vw;
+     /* Full width of the viewport */
+     height: 100vh;
+     /* Full height of the viewport */
+     background-image: url('../assets/Payment/Cash/BG.png');
+     /* Specify the path to your background image */
+     background-size: contain;
+     background-repeat: no-repeat;
+     /* Cover the entire container */
+     background-position: center;
+     /* Center the background image */
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     /* Add additional styles for your payment content if needed */
+}
+
+.paid-cash {
+     position: absolute;
+     top: 29%;
+     left: 11%;
+     width: 30%;
+     height: 30%;
+     background-image: url('../assets/Payment/Cash/paid.png');
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+}
+
+.insert-cash {
+     position: absolute;
+     top: calc(29% + 100px);
+     left: 11%;
+     width: 30%;
+     height: 30%;
+     background-image: url('../assets/Payment/Cash/inserted.png');
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+}
+
+.done-button {
+     position: absolute;
+     bottom: 20px;
+     left: 16%;
+     width: 19%;
+     height: 40%;
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+     background-image: url('../assets/Payment/Cash/done.png');
+}
+
+/** Cash **/
+
+/** QR **/
+.qr-container {
+     position: relative;
+     width: 100vw;
+     /* Full width of the viewport */
+     height: 100vh;
+     /* Full height of the viewport */
+     background-image: url('../assets/Payment/QR/BG.png');
+     /* Specify the path to your background image */
+     background-size: contain;
+     background-repeat: no-repeat;
+     /* Cover the entire container */
+     background-position: center;
+     /* Center the background image */
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     /* Add additional styles for your payment content if needed */
+}
+
+/** QR **/
+
+
+/** Promo **/
+.promo-container {
+     position: relative;
+     width: 100vw;
+     /* Full width of the viewport */
+     height: 100vh;
+     /* Full height of the viewport */
+     background-image: url('../assets/Payment/Promo/BG.png');
+     /* Specify the path to your background image */
+     background-size: contain;
+     background-repeat: no-repeat;
+     /* Cover the entire container */
+     background-position: center;
+     /* Center the background image */
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     /* Add additional styles for your payment content if needed */
+}
+
+.promo-form {
+     position: absolute;
+     top: 100px;
+     right: 0;
+     width: 50%;
+     height: 100%;
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+}
+
+.code-input {
+     position: absolute;
+     top: 26%;
+     left: 52%;
+     transform: translate(-50%, -50%);
+     width: 55%;
+     height: calc(100% - 20px);
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+}
+
+.redeem-button {
+     position: absolute;
+     top: 25%;
+     width: 39%;
+     height: 30%;
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+     left: 30%;
+}
+
+.form-buttons {
+     display: flex;
+     flex-direction: column;
+     width: 55%;
+     height: 71%;
+     position: absolute;
+     top: 55%;
+     left: 26%;
+}
+
+.form-button-container {
+     display: flex;
+     justify-content: center;
+     width: 88%;
+     height: 10%;
+}
+
+.form-button-container .form-button {
+     position: relative;
+     width: 31%;
+     height: 100%;
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+     margin: 3px;
+}
+
+/** QR **/

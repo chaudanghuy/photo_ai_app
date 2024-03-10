@@ -43,12 +43,20 @@
     /* Change cursor on hover */
 }
 
-.topSection,
-.bottomSection {
+.topSection {
     display: flex;
     width: 100%;
     justify-content: space-around;
     margin-bottom: 20px;
+}
+
+.bottomSection {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    bottom: 20px;
+    margin: 0 auto;
+    position: absolute;
 }
 
 .column {
@@ -56,10 +64,96 @@
 }
 
 .imageDiv {
-    width: 100%;
+    width: 50%;
     height: 200px;
     /* Adjust height as needed */
     background-size: contain;
     background-repeat: no-repeat;
     background-position: center;
+    left: 65%;
+    bottom: 65%;
+    position: relative;
 }
+
+/* Background */
+.style-container {
+    position: relative;
+    width: 100vw;
+    /* Full width of the viewport */
+    height: 100vh;
+    /* Full height of the viewport */
+    background-image: url('../assets/Frame/Style/BG.png');
+    /* Specify the path to your background image */
+    background-size: contain;
+    background-repeat: no-repeat;
+    /* Cover the entire container */
+    background-position: center;
+    /* Center the background image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Add additional styles for your payment content if needed */
+}
+
+.style-section {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 20px;
+}
+
+.image-style-div {
+    width: 80%;
+    height: 350px;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    left: 0%;
+    bottom: 5%;
+    position: relative;
+    margin-top: 100px;
+}
+
+.style-column {
+    width: 15%;
+}
+
+/* Background */
+
+
+/** Layout **/
+.layout-container {
+    position: relative;
+    width: 100vw;
+    /* Full width of the viewport */
+    height: 100vh;
+    /* Full height of the viewport */
+    /* Specify the path to your background image */
+    background-size: contain;
+    background-repeat: no-repeat;
+    /* Cover the entire container */
+    background-position: center;
+    /* Center the background image */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* Add additional styles for your payment content if needed */
+}
+
+.confirm-layout-button {
+    position: absolute;
+    bottom: 0px;
+    right: 10%;
+    width: 20%;
+    height: 30%;
+    background-size: contain;
+    background-position: center;
+    transition: background-image 0.3s ease;
+    background-repeat: no-repeat;
+}
+
+.confirm-layout-button:hover {
+    cursor: pointer;
+}
+
+/** Layout **/

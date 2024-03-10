@@ -1,57 +1,50 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import i18n from '../../translations/i18n';
-import '../../css/Payment.css';
+import "../../css/Payment.css";
+import cash from '../../assets/Payment/cash.png';
+import cash_click from '../../assets/Payment/cash_click.png';
+import momo from '../../assets/Payment/momo.png';
+import momo_click from '../../assets/Payment/momo_click.png';
+import zalopay from '../../assets/Payment/zalopay.png';
+import zalopay_click from '../../assets/Payment/zalopay_click.png';
+import promo from '../../assets/Payment/promo.png';
+import promo_click from '../../assets/Payment/promo_click.png';
 
 function Payment() {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const [selectedSquare, setSelectedSquare] = useState(null);
+  const [hoveredImage, setHoveredImage] = useState(null);
 
-  const filters = [
-    { id: 1, name: 'CASH', image: 'https://placehold.co/500', url: '/payment-cash' },
-    { id: 2, name: 'MOMO', image: 'https://placehold.co/500', url: '/payment-momo' },
-    { id: 3, name: 'ZALOPAY', image: 'https://placehold.co/500', url: '/payment-zalo'},
-    { id: 4, name: 'PROMOTION CODE', image: 'https://placehold.co/500', url: '/payment-promo' },
-  ];
+  const handleMouseEnter = (image) => {
+    setHoveredImage(image);
+  }
 
-  const handleItemClick = (item, index) => {
-    setSelectedSquare(index);
-    navigate(item.url);
+  const handleMouseLeave = () => {
+    setHoveredImage(null);
+  }
+
+  const goToPay = (method) => {
+    if (method === 'cash') {
+      navigate('/payment-cash');
+    } else if (method === 'momo') {
+      navigate('/payment-qr');
+    } else if (method === 'zalopay') {
+      navigate('/payment-qr');
+    } else if (method === 'promo') {
+      navigate('/payment-promo');
+    }
   }
 
   return (
-    <div className='container'>
-      <div className="menu-bar">
-        <button className="menu-button-pink active" onClick={() => navigate('/frame-step-2')}>
-          <FontAwesomeIcon icon={faArrowLeft} /> {t('menu.goBack')}
-        </button>
-        <button className="menu-button">{t('menu.frame')}</button>
-        <button className="menu-button active">{t('menu.payment')}</button>
-        <button className="menu-button">{t('menu.photography')}</button>
-        <button className="menu-button">{t('menu.filter')}</button>
-        <button className="menu-button">{t('menu.printing')}</button>
-        <button className="menu-button">{t('menu.photomong')}</button>
-      </div>
-      <div className='frame-body-container'>
-        <h1 className='title-frame-2'>PLEASE SELECT A PAYMENT METHOD</h1>
-        <div className="frame-row">
-          <div className="image-row">
-            {filters.map((item, index) => (
-              <div 
-                key={item.id} 
-                className={`rectangle ${selectedSquare === index ? 'rectangle-selected' : ''}`} 
-                onClick={() => handleItemClick(item, index)}
-              >
-                <img src={item.image} alt={item.name} className="image" />
-                <div className="text">{item.name}</div>
-              </div>
-            ))}
-          </div>
-        </div>
+    <div className='payment-container'>
+      <div className="go-back" onClick={() => navigate("/frame-step-3")}></div>
+      <div className="payment-line">
+        <div className="payment-method" style={{ backgroundImage: `url(${hoveredImage === cash ? cash_click : cash})` }} onMouseEnter={() => handleMouseEnter(cash)} onMouseLeave={handleMouseLeave} onClick={() => goToPay('cash')}></div>
+        <div className="payment-method" style={{ backgroundImage: `url(${hoveredImage === momo ? momo_click : momo})` }} onMouseEnter={() => handleMouseEnter(momo)} onMouseLeave={handleMouseLeave} onClick={() => goToPay('momo')}></div>
+        <div className="payment-method" style={{ backgroundImage: `url(${hoveredImage === zalopay ? zalopay_click : zalopay})` }} onMouseEnter={() => handleMouseEnter(zalopay)} onMouseLeave={handleMouseLeave} onClick={() => goToPay('zalopay')}></div>
+        <div className="payment-method" style={{ backgroundImage: `url(${hoveredImage === promo ? promo_click : promo})` }} onMouseEnter={() => handleMouseEnter(promo)} onMouseLeave={handleMouseLeave} onClick={() => goToPay('promo')}></div>
       </div>
     </div>
   );
