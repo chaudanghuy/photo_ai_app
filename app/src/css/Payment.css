@@ -19,12 +19,9 @@
 
 .go-back {
      position: absolute;
-     /* Position div absolutely within the container */
-     top: 4.5%;
-     left: 14%;
-     /* Distance from left of container */
-     width: 8%;
-     /* Set width of the div */
+     top: 4.1%;
+     left: 11.6%;
+     width: 9%;
      height: 10%;
      /* Set height of the div */
      background-image: url('../assets/Common/goback.png');
@@ -55,7 +52,7 @@
 
 .payment-method {
      width: 50%;
-     height: 170%;
+     height: 160%;
      background-size: contain;
      background-repeat: no-repeat;
      background-position: center;
@@ -112,10 +109,10 @@
 
 .done-button {
      position: absolute;
-     bottom: 20px;
-     left: 16%;
-     width: 19%;
-     height: 40%;
+     bottom: 0px;
+     left: 35%;
+     width: 22%;
+     height: 35%;
      background-size: contain;
      background-repeat: no-repeat;
      background-position: center;
@@ -229,3 +226,25 @@
 }
 
 /** QR **/
+
+/** Result **/
+.payment-result-container {
+     position: relative;
+     width: 100vw;
+     /* Full width of the viewport */
+     height: 100vh;
+     /* Full height of the viewport */
+     background-image: url('../assets/Payment/Result/BG.png');
+     /* Specify the path to your background image */
+     background-size: contain;
+     background-repeat: no-repeat;
+     /* Cover the entire container */
+     background-position: center;
+     /* Center the background image */
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     /* Add additional styles for your payment content if needed */
+}
+
+/** Result **/

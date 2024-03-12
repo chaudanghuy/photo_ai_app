@@ -11,6 +11,8 @@ import Promo from './screens/Payment/Promo';
 import Result from './screens/Payment/Result';
 import Photo from './screens/Photo/Photo';
 import Choose from './screens/Photo/Choose';
+import Filter from './screens/Filter';
+import Sticker from './screens/Sticker';
 import Print from './screens/Print';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
@@ -29,6 +31,8 @@ function App() {
         <Route path="/payment-promo" element={<Promo />} />
         <Route path="/photo" element={<Photo />} />
         <Route path="/photo-choose" element={<Choose />} />
+        <Route path="/filter" element={<Filter />} />
+        <Route path="/sticker" element={<Sticker />} />
         <Route path="/print" element={<Print />} />
       </Routes>
     </Router>

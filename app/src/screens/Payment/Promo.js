@@ -63,14 +63,14 @@ function Cash() {
                               <div className="form-button" style={{ backgroundImage: `url(${hoveredImage === button6 ? num6_click : button6})` }} onMouseEnter={() => handleMouseEnter(button6)} onMouseLeave={handleMouseLeave}></div>
                          </div>
                          <div className="form-button-container">
-                              <div className="form-button" style={{ backgroundImage: `url(${hoveredImage === button7 ? num7_click : button7})` }} onMouseEnter={() => handleMouseEnter(button1)} onMouseLeave={handleMouseLeave}></div>
-                              <div className="form-button" style={{ backgroundImage: `url(${hoveredImage === button8 ? num8_click : button8})` }} onMouseEnter={() => handleMouseEnter(button1)} onMouseLeave={handleMouseLeave}></div>
-                              <div className="form-button" style={{ backgroundImage: `url(${hoveredImage === button9 ? num9_click : button9})` }} onMouseEnter={() => handleMouseEnter(button1)} onMouseLeave={handleMouseLeave}></div>
+                              <div className="form-button" style={{ backgroundImage: `url(${hoveredImage === button7 ? num7_click : button7})` }} onMouseEnter={() => handleMouseEnter(button7)} onMouseLeave={handleMouseLeave}></div>
+                              <div className="form-button" style={{ backgroundImage: `url(${hoveredImage === button8 ? num8_click : button8})` }} onMouseEnter={() => handleMouseEnter(button8)} onMouseLeave={handleMouseLeave}></div>
+                              <div className="form-button" style={{ backgroundImage: `url(${hoveredImage === button9 ? num9_click : button9})` }} onMouseEnter={() => handleMouseEnter(button9)} onMouseLeave={handleMouseLeave}></div>
                          </div>
                          <div className="form-button-container">
                               <div className="form-button"></div>
-                              <div className="form-button" style={{ backgroundImage: `url(${hoveredImage === button0 ? num0_click : button0})` }}></div>
-                              <div className="form-button" style={{ backgroundImage: `url(${hoveredImage === x ? numx_click : x})` }}></div>
+                              <div className="form-button" style={{ backgroundImage: `url(${hoveredImage === button0 ? num0_click : button0})` }} onMouseEnter={() => handleMouseEnter(button0)} onMouseLeave={handleMouseLeave}></div>
+                              <div className="form-button" style={{ backgroundImage: `url(${hoveredImage === x ? numx_click : x})` }} onMouseEnter={() => handleMouseEnter(x)} onMouseLeave={handleMouseLeave}></div>
                          </div>
                     </div>
                </div>
