@@ -21,7 +21,7 @@ function QR() {
 
      return (
           <div className='payment-result-container'>
-               <div style={{backgroundImage: `url(${hoveredImage === continueBtn ? continueBtn_click : continueBtn})`}} className="done-button" onClick={() => navigate('/photo')} onMouseEnter={() => handleMouseEnter(continueBtn)} onMouseLeave={handleMouseLeave}></div>               
+               <div style={{backgroundImage: `url(${hoveredImage === continueBtn ? continueBtn_click : continueBtn})`}} className="done-result-button" onClick={() => navigate('/photo')} onMouseEnter={() => handleMouseEnter(continueBtn)} onMouseLeave={handleMouseLeave}></div>               
           </div>
      );
 }

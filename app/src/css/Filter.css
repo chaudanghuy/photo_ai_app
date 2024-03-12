@@ -17,6 +17,18 @@
      /* Add additional styles for your payment content if needed */
 }
 
+.left-big-frame {
+     position: absolute;
+     top: 20%;
+     left: 3%;
+     width: 50%;
+     height: 75%;
+     background-image: url('../assets/Common/frame.png');
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+}
+
 .go-back {
      position: absolute;
      top: 4.1%;
@@ -42,10 +54,10 @@
 
 .left-filter {
      position: absolute;
-     top: 20%;
-     left: 0;
-     width: 50%;
-     height: 75%;
+     top: 7%;
+     left: 12%;
+     width: 79%;
+     height: 86%;
      background-size: contain;
      background-repeat: no-repeat;
      background-position: center;
@@ -54,7 +66,7 @@
 .right-filter {
      position: absolute;
      top: 22%;
-     right: 10%;
+     right: 14%;
      display: flex;
      flex-direction: column;
      width: 30%;
@@ -62,13 +74,16 @@
 
 .middle-filter {
      position: absolute;
-     top: 23%;
+     top: 24%;
      left: 48%;
      width: 3%;
      height: 52%;
      background-size: contain;
      background-repeat: no-repeat;
      background-position: center;
+     border: 10px solid gray;
+     border-radius: 20px;
+     background-color: gray;
 }
 
 .filter-line {

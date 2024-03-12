@@ -119,6 +119,18 @@
      background-image: url('../assets/Payment/Cash/done.png');
 }
 
+.done-result-button {
+     position: absolute;
+     bottom: 0px;
+     left: 38%;
+     width: 22%;
+     height: 35%;
+     background-size: contain;
+     background-repeat: no-repeat;
+     background-position: center;
+     background-image: url('../assets/Payment/Cash/done.png');
+}
+
 /** Cash **/
 
 /** QR **/

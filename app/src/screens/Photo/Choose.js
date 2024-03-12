@@ -23,7 +23,9 @@ function Choose() {
      return (
           <div className='photo-choose-container'>
                <div className="go-back" onClick={() => navigate("/photo")}></div>
-               <div className="left-choose-container" style={{ backgroundImage: `url(${photo_frame})` }}></div>
+               <div className="left-big-frame">
+                    <div className="left-choose-container" style={{ backgroundImage: `url(${photo_frame})` }}></div>
+               </div>
                <div className="right-choose-container">
                     <div className="choose-line">
                          <div className="choose-image"></div>
@@ -38,10 +40,10 @@ function Choose() {
                          <div className="choose-image"></div>
                     </div>
                </div>
-               <div 
-                    className="bottom_choose_container" 
-                    style={{ backgroundImage: `url(${hoveredImage === continue_btn ? continue_btn_click : continue_btn})` }} 
-                    onMouseEnter={() => handleMouseEnter(continue_btn)} 
+               <div
+                    className="bottom_choose_container"
+                    style={{ backgroundImage: `url(${hoveredImage === continue_btn ? continue_btn_click : continue_btn})` }}
+                    onMouseEnter={() => handleMouseEnter(continue_btn)}
                     onMouseLeave={handleMouseLeave}
                     onClick={() => navigate("/filter")}
                ></div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../translations/i18n';
@@ -25,6 +25,24 @@ function Filter() {
      const { t } = useTranslation();
      const navigate = useNavigate();
      const [hoveredImage, setHoveredImage] = useState(null);
+     const [stream, setStream] = useState(null);
+     const videoRef = useRef(null);
+
+     useEffect(() => {
+          startCamera();
+     }, []);
+
+     const startCamera = async () => {
+          try {
+               const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+               setStream(stream);
+               if (videoRef.current) {
+                    videoRef.current.srcObject = stream;
+               }
+          } catch (error) {
+               console.error('Error accessing camera:', error);
+          }
+     };
 
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
@@ -37,8 +55,16 @@ function Filter() {
      return (
           <div className='filter-container'>
                <div className="go-back" onClick={() => navigate("/photo")}></div>
-               <div className="left-filter" style={{ backgroundImage: `url(${photo_frame})` }}></div>
-               <div className="middle-filter" style={{ backgroundImage: `url(${filter_hover})` }}>                   
+               <div className="left-big-frame">
+                    <div className="left-filter" style={{ backgroundImage: `url(${photo_frame})` }}>
+                         {stream && (
+                              <>
+                                   <video ref={videoRef} autoPlay muted className="video" />                                   
+                              </>
+                         )}
+                    </div>
+               </div>
+               <div className="middle-filter" style={{ backgroundImage: `url(${filter_hover})` }}>
                </div>
                <div className="right-filter">
                     <div className="filter-line">
