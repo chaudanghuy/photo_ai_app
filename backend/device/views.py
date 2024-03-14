@@ -3,11 +3,13 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
-from .models import Device
+from .models import Store, Device, Frame
 from .serializers import DeviceSerializer
+from django.views import View
 from django.views.generic import ListView, DetailView, CreateView
 from django.http import HttpResponse
 from django.urls import reverse_lazy
+from .forms import StoreForm, DeviceForm, FrameForm
 
 # Create your views here.
 class DeviceAPI(APIView):
@@ -49,6 +51,23 @@ class DeviceDetailAPI(APIView):
         device.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
+class StoreListView(View):
+    def get(self, request):
+        stores = Store.objects.all()
+        return render(request, 'stores/list.html', {'stores': stores})
+
+class AddStoreView(View):
+    def get(self, request):
+        form = StoreForm()
+        return render(request, 'stores/add.html', {'form': form})
+
+    def post(self, request):
+        form = StoreForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('store-list');
+        return render(request, 'stores/add.html', {'form': form})
+
 class DeviceList(ListView):
     model = Device
     template_name='devices_list.html'
