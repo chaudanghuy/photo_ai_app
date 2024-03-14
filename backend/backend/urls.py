@@ -16,8 +16,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from device import urls as device_urls
+from dashboard import urls as dashboard_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include(device_urls))
+    path('devices/', include(device_urls)),
+    path('dashboard/', include(dashboard_urls))
 ]
