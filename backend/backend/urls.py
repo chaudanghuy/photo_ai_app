@@ -15,11 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from store import urls as store_urls
 from device import urls as device_urls
+from frame import urls as frame_urls
 from dashboard import urls as dashboard_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('stores/', include(store_urls)),
     path('devices/', include(device_urls)),
+    path('frames/', include(frame_urls)),
     path('dashboard/', include(dashboard_urls))
 ]

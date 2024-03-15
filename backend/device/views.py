@@ -1,15 +1,24 @@
-from django.shortcuts import render
+import requests
+from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
-from .models import Store, Device, Frame
+from .models import Device
 from .serializers import DeviceSerializer
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView
-from django.http import HttpResponse
+from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
-from .forms import StoreForm, DeviceForm, FrameForm
+from .forms import DeviceForm
+
+STORE_API_URL = 'http://localhost:8000/stores/api/'
+
+def get_store_list():
+    response = requests.get(STORE_API_URL)
+    if response.status_code == 200:
+        return response.json().get('stores', [])
+    return []
 
 # Create your views here.
 class DeviceAPI(APIView):
@@ -18,8 +27,7 @@ class DeviceAPI(APIView):
     def get(self, request, *args, **kwargs):
         devices = Device.objects.all()
         serializer = DeviceSerializer(devices, many=True)
-        return Response(serializer.data, status=status.HTTP_200_OK)  
-    
+        return Response(serializer.data, status=status.HTTP_200_OK)     
     
     def post(self, request, *args, **kwargs):
         serializer = DeviceSerializer(data=request.data)
@@ -50,36 +58,35 @@ class DeviceDetailAPI(APIView):
         device = Device.objects.get(id=pk)
         device.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class DeviceList(ListView):    
+    def get(self, request):
+        stores = get_store_list()
+        devices = Device.objects.all()        
+        return render(request, 'devices/list.html', {'stores': stores, 'devices': devices})
+
+class DeviceCreateView(View):
+    def get(self, request):
+        form = DeviceForm()
+        return render(request, 'devices/add.html', {'form': form})
     
-class StoreListView(View):
-    def get(self, request):
-        stores = Store.objects.all()
-        return render(request, 'stores/list.html', {'stores': stores})
-
-class AddStoreView(View):
-    def get(self, request):
-        form = StoreForm()
-        return render(request, 'stores/add.html', {'form': form})
-
     def post(self, request):
-        form = StoreForm(request.POST)
+        form = DeviceForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('store-list');
-        return render(request, 'stores/add.html', {'form': form})
-
-class DeviceList(ListView):
-    model = Device
-    template_name='devices_list.html'
-    context_object_name = 'devices'
-
-class DeviceDetail(DetailView):
-    model = Device
-    template_name='device_detail.html'
-    context_object_name = 'device'
-
-class DeviceCreateView(CreateView):
-    model = Device
-    template_name='add_device.html'
-    fields = '__all__'
-    success_url = reverse_lazy('devices')        
+            return redirect('devices')
+        return render(request, 'devices/add.html', {'form': form})    
+    
+class DeviceEditView(View):
+    def get(self, request, pk):
+        device = Device.objects.get(id=pk)
+        form = DeviceForm(instance=device)
+        return render(request, 'devices/edit.html', {'form': form, 'device': device})
+    
+    def post(self, request, pk):
+        device = Device.objects.get(id=pk)
+        form = DeviceForm(request.POST, instance=device)
+        if form.is_valid():
+            form.save()
+            return redirect('devices')
+        return render(request, 'devices/edit.html', {'form': form, 'device': device})
