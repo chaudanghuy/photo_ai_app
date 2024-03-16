@@ -12,7 +12,7 @@ urlpatterns = [
     path('api', FrameAPI.as_view()),
     path('api/<int:pk>', FrameDetailAPI.as_view()),
     # WEB
-    path('list', FrameList.as_view(), name='frame'),
+    path('', FrameList.as_view(), name='frames'),
     path('add', FrameCreateView.as_view(), name='frame-add'),
     path('edit/<int:pk>', FrameEditView.as_view(), name='frame-edit')
 ]

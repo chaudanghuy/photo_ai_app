@@ -83,4 +83,5 @@ class RevenueView(View):
 
 class RevenueEditView(View):
     def get(self, request):
-        return render(request, 'revenues/edit.html')
+        revenue = requests.get(f'http://localhost:8000/revenues/{request.GET.get("id")}')
+        return render(request, 'revenues/edit.html', {'revenue': revenue})        

@@ -1,7 +1,7 @@
 from rest_framework import serializers
-from .models import Filter
+from .models import Layout
 
-class FilterSerializer(serializers.ModelSerializer):
+class LayoutSerializer(serializers.ModelSerializer):
     class Meta:
-        model = Filter
+        model = Layout
         fields = '__all__'

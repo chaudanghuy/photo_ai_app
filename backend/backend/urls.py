@@ -18,12 +18,26 @@ from django.urls import path, include
 from store import urls as store_urls
 from device import urls as device_urls
 from frame import urls as frame_urls
+from background import urls as background_urls
+from layout import urls as layout_urls
+from filter import urls as filter_urls
+from sticker import urls as sticker_urls
+from payment import urls as payment_urls
+from revenue import urls as revenue_urls
 from dashboard import urls as dashboard_urls
+from account import urls as account_urls
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('stores/', include(store_urls)),
     path('devices/', include(device_urls)),
     path('frames/', include(frame_urls)),
-    path('dashboard/', include(dashboard_urls))
+    path('backgrounds/', include(background_urls)),
+    path('layouts/', include(layout_urls)),
+    path('filters/', include(filter_urls)),
+    path('stickers/', include(sticker_urls)),
+    path('payments/', include(payment_urls)),
+    path('revenues/', include(revenue_urls)),
+    path('dashboard/', include(dashboard_urls)),
+    path('account/', include(account_urls))
 ]
