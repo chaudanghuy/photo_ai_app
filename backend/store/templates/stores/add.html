@@ -1,23 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<div class="col-12 grid-margin stretch-card">
-  <div class="card">
-    <div class="card-body">
-      <h4 class="card-title">Add Store</h4>      
-      <form class="forms-sample">
-        <div class="form-group">
-          <label for="exampleInputName1">Store</label>
-          <input type="text" class="form-control" id="exampleInputName1" placeholder="Name" />
-        </div>        
-        <div class="form-group">
-          <label for="exampleTextarea1">Address</label>
-          <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
-        </div>
-        <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
-        <button class="btn btn-light">Cancel</button>
-      </form>
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Add Store</h4>
+        <form method="post" novalidate class="forms-sample">
+          {% csrf_token %}
+          <div class="form-group">
+            <label for="storeInput">Store</label>
+            <input name="store" type="text" class="form-control" id="storeInput" placeholder="Name" />
+          </div>
+          <div class="form-group">
+            <label for="addressInput">Address</label>
+            <textarea name="address" class="form-control" id="addressInput" rows="4"></textarea>
+          </div>
+          <input type="hidden" id="createdAtID" name="created_at" value="{{ form.instance.created_at }}" />
+          <input type="hidden" id="updatedAtID" name="updated_at" value="{{ form.instance.updated_at }}" />
+          <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+          <button class="btn btn-light">Cancel</button>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 {% endblock %}

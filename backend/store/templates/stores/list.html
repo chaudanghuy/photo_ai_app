@@ -17,7 +17,7 @@
       <div class="card">
         <div class="card-body">
           <h4 class="card-title">Stores List</h4>
-          {%  %}
+          {% if stores %}
           <table class="table table-hover">
             <thead>
               <tr>
@@ -27,16 +27,20 @@
               </tr>
             </thead>
             <tbody>
+              {% for store in stores %}
               <tr>
-                <td>HTM Photobooth</td>
-                <td>123 Main St</td>                
+                <td>{{ store.name }}</td>
+                <td>{{ store.address }}</td>                
                 <td>
-                  <a href="{% url 'stores-edit' 88 %}" type="button" class="btn btn-outline-info btn-fw">Edit</button>
+                  <a href="{% url 'stores-edit' store.id %}" type="button" class="btn btn-outline-info btn-fw">Edit</button>
                 </td>
-              </tr>              
+              </tr> 
+              {% endfor %}             
             </tbody>
           </table>
-          <p class="card-description">Background</p>
+          {% else %}          
+          <p class="card-description">🎉 Yay, Let setup first store!</p>
+          {% endif %}
         </div>
       </div>
     </div>

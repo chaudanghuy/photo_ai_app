@@ -9,6 +9,7 @@ from .models import Store
 from .serializers import StoreSerializer
 from .forms import StoreForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
 # Create your views here.
 class StoreAPI(APIView):
@@ -43,7 +44,7 @@ class StoreDetailAPI(APIView):
         store.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class StoreListView(LoginRequiredMixin, View):
+class StoreListView(LoginRequiredMixin, View):    
     def get(self, request):
         stores = Store.objects.all()
         return render(request, 'stores/list.html', {'stores': stores})
