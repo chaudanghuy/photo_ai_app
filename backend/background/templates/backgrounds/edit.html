@@ -1,4 +1,32 @@
-{%extends 'base.html'%}
+{% extends 'base.html' %}
 
-{%block content%}
-{%endblock content%}
+{% block content %}
+  <div class="col-12 grid-margin stretch-card">
+    <div class="card">
+      <div class="card-body">
+        <h4 class="card-title">Create Background</h4>
+        <p class="card-description">Background</p>
+        <form class="forms-sample">
+          <div class="form-group">
+            <label for="exampleInputName1">Title</label>
+            <input type="text" class="form-control" id="exampleInputName1" placeholder="Name" />
+          </div>
+          <div class="form-group">
+            <label for="exampleSelectGender">Frame</label>
+            <select class="form-select" aria-label="Default select example">
+              <option value="1">One</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>File upload</label>
+            <input class="form-control" type="file" id="formFile" />
+          </div>
+          <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+          <button class="btn btn-light">Cancel</button>
+        </form>
+      </div>
+    </div>
+  </div>
+{% endblock %}

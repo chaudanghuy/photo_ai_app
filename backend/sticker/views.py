@@ -10,6 +10,7 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView
 from django.http import HttpRequest, HttpResponse
 from .forms import StickerForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 class StickerAPI(APIView):
@@ -49,12 +50,12 @@ class StickerDetailAPI(APIView):
         sticker.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)      
       
-class StickerList(ListView):
+class StickerList(LoginRequiredMixin, ListView):
     model = Sticker
     template_name = 'stickers/list.html'
     context_object_name = 'stickers'      
     
-class StickerCreateView(View):
+class StickerCreateView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         form = StickerForm()
         return render(request, 'stickers/create.html', {'form': form})
@@ -66,7 +67,7 @@ class StickerCreateView(View):
             return redirect('sticker-list')
         return render(request, 'stickers/create.html', {'form': form})
       
-class StickerEditView(View):
+class StickerEditView(LoginRequiredMixin, View):
     def get(self, request, pk, *args, **kwargs):
         sticker = Sticker.objects.get(id=pk)
         form = StickerForm(instance=sticker)

@@ -11,6 +11,7 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from .forms import FilterForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
@@ -52,28 +53,28 @@ class FilterDetailAPI(APIView):
         filter.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-class FilterList(ListView):
+class FilterList(LoginRequiredMixin, ListView):
     def get(self, request):
         filters = Filter.objects.all()
-        return render(request, 'filters/filter_list.html', {'filters': filters})        
+        return render(request, 'filters/list.html', {'filters': filters})        
 
-class FilterCreateView(View):
+class FilterCreateView(LoginRequiredMixin, View):
     def get(self, request):
         form = FilterForm()
-        return render(request, 'filters/filter_form.html', {'form': form})
+        return render(request, 'filters/create.html', {'form': form})
 
     def post(self, request):
         form = FilterForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('filter_list')
-        return render(request, 'filters/filter_form.html', {'form': form})
+        return render(request, 'filters/create.html', {'form': form})
 
-class FilterEditView(View):
+class FilterEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
         filter = Filter.objects.get(id=pk)
         form = FilterForm(instance=filter)
-        return render(request, 'filters/filter_form.html', {'form': form})
+        return render(request, 'filters/edit.html', {'form': form})
 
     def post(self, request, pk):
         filter = Filter.objects.get(id=pk)
@@ -81,4 +82,4 @@ class FilterEditView(View):
         if form.is_valid():
             form.save()
             return redirect('filter_list')
-        return render(request, 'filters/filter_form.html', {'form': form})        
+        return render(request, 'filters/edit.html', {'form': form})        

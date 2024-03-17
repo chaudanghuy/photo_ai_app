@@ -13,6 +13,6 @@ urlpatterns = [
      path('api/<int:pk>', DeviceDetailAPI.as_view()),
      # WEB
      path('', DeviceList.as_view(), name='devices'),
-     path('add', DeviceCreateView.as_view(), name='device-add'),
-     path('edit/<int:pk>', DeviceList.as_view(), name='device-edit')          
+     path('add', DeviceCreateView.as_view(), name='devices-add'),
+     path('edit/<int:pk>', DeviceList.as_view(), name='devices-edit')          
 ]

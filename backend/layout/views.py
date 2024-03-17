@@ -11,6 +11,7 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from .forms import LayoutForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -51,12 +52,12 @@ class LayoutDetailAPI(APIView):
             layout.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         
-class LayoutList(ListView):
+class LayoutList(LoginRequiredMixin, ListView):
     def get(self, request):
         layouts = Layout.objects.all()
         return render(request, 'layouts/list.html', {'layouts': layouts})
 
-class LayoutCreateView(View):
+class LayoutCreateView(LoginRequiredMixin, View):
     def get(self, request):
         form = LayoutForm()
         return render(request, 'layouts/create.html', {'form': form})
@@ -68,7 +69,7 @@ class LayoutCreateView(View):
             return redirect(reverse_lazy('layout:layout-list'))
         return render(request, 'layouts/create.html', {'form': form})
 
-class LayoutEditView(View):
+class LayoutEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
         layout = Layout.objects.get(id=pk)
         form = LayoutForm(instance=layout)

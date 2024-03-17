@@ -5,17 +5,21 @@ from .views import (
     AccountDetailAPI,
     AccountList,
     AccountCreateView,
-    AccountEditView
+    AccountEditView,
+    AccountLoginView
 )
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     # API
     path('api', AccountAPI.as_view()),
     path('api/<int:pk>', AccountDetailAPI.as_view()),
+    # LOGIN
+    path('login', AccountLoginView.as_view(), name='login'),
+    path('logout', LogoutView.as_view(next_page='login'), name='logout'),
     # ACCOUNT
     path('password', views.change_password, name='account-password'),
-    path('info', views.view_account_info, name='account-info'),
-    path('logout', views.logout_view, name='logout'),
+    path('info', views.view_account_info, name='account-info'),    
     # WEB
     path('', AccountList.as_view(), name='accounts'),
     path('add', AccountCreateView.as_view(), name='account-add'),

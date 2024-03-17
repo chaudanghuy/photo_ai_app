@@ -11,6 +11,7 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from .forms import DeviceForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 STORE_API_URL = 'http://localhost:8000/stores/api/'
 
@@ -59,7 +60,7 @@ class DeviceDetailAPI(APIView):
         device.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class DeviceList(ListView):    
+class DeviceList(LoginRequiredMixin, ListView):    
     def get(self, request):
         stores = get_store_list()
         devices = Device.objects.all()        
@@ -77,7 +78,7 @@ class DeviceCreateView(View):
             return redirect('devices')
         return render(request, 'devices/add.html', {'form': form})    
     
-class DeviceEditView(View):
+class DeviceEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
         device = Device.objects.get(id=pk)
         form = DeviceForm(instance=device)

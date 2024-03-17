@@ -8,6 +8,7 @@ from rest_framework import permissions
 from .models import Store
 from .serializers import StoreSerializer
 from .forms import StoreForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 class StoreAPI(APIView):
@@ -42,12 +43,12 @@ class StoreDetailAPI(APIView):
         store.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
-class StoreListView(View):
+class StoreListView(LoginRequiredMixin, View):
     def get(self, request):
         stores = Store.objects.all()
         return render(request, 'stores/list.html', {'stores': stores})
 
-class AddStoreView(View):
+class AddStoreView(LoginRequiredMixin, View):
     def get(self, request):
         form = StoreForm()
         return render(request, 'stores/add.html', {'form': form})
@@ -59,7 +60,7 @@ class AddStoreView(View):
             return redirect('store-list')
         return render(request, 'stores/add.html', {'form': form})
 
-class EditStoreView(View):
+class EditStoreView(LoginRequiredMixin, View):
     def get(self, request, pk):
         store = Store.objects.get(id=pk)
         form = StoreForm(instance=store)

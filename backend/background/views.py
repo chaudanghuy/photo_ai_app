@@ -11,6 +11,7 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from .forms import BackgroundForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -59,35 +60,35 @@ class BackgroundDetailAPI(APIView):
         background.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)        
 
-class BackgroundList(ListView):
+class BackgroundList(LoginRequiredMixin, ListView):
     
     def get(self, request):
         frames = get_frame_list()
         backgrounds = Background.objects.all()
-        return render(request, 'background/list.html', {'frames': frames})
+        return render(request, 'backgrounds/list.html', {'frames': frames})
     
-class BackgroundCreateView(View):
+class BackgroundCreateView(LoginRequiredMixin, View):
     def get(self, request):
         form = BackgroundForm()
-        return render(request, 'background/create.html', {'form': form})
+        return render(request, 'backgrounds/add.html', {'form': form})
     
     def post(self, request):
         form = BackgroundForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return render(request, 'background/create.html', {'form': form})
-        return render(request, 'background/create.html', {'form': form})    
+            return render(request, 'backgrounds/add.html', {'form': form})
+        return render(request, 'backgrounds/add.html', {'form': form})    
     
-class BackgroundEditView(View):
+class BackgroundEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
         background = Background.objects.get(id=pk)
         form = BackgroundForm(instance=background)
-        return render(request, 'background/edit.html', {'form': form})
+        return render(request, 'backgrounds/edit.html', {'form': form})
     
     def post(self, request, pk):
         background = Background.objects.get(id=pk)
         form = BackgroundForm(request.POST, request.FILES, instance=background)
         if form.is_valid():
             form.save()
-            return render(request, 'background/edit.html', {'form': form})
-        return render(request, 'background/edit.html', {'form': form})    
+            return render(request, 'backgrounds/edit.html', {'form': form})
+        return render(request, 'backgrounds/edit.html', {'form': form})    

@@ -11,6 +11,7 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from .forms import PaymentForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
@@ -51,12 +52,12 @@ class PaymentDetailAPI(APIView):
             payment.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
         
-class PaymentList(ListView):
+class PaymentList(LoginRequiredMixin, ListView):
     def get(self, request):
         payments = Payment.objects.all()
         return render(request, 'payments/list.html', {'payments': payments})
     
-class PaymentCreateView(View):
+class PaymentCreateView(LoginRequiredMixin, View):
     def get(self, request):
         form = PaymentForm()
         return render(request, 'payments/create.html', {'form': form})
@@ -68,7 +69,7 @@ class PaymentCreateView(View):
             return HttpResponse('Payment created successfully')
         return render(request, 'payments/create.html', {'form': form})
     
-class PaymentEditView(View):
+class PaymentEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
         payment = Payment.objects.get(id=pk)
         form = PaymentForm(instance=payment)

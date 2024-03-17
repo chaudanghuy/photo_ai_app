@@ -9,6 +9,7 @@ from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.urls import reverse_lazy
 from .models import Order, Transaction
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here. 
 
@@ -76,12 +77,15 @@ def get_device_revenue(request):
         return JsonResponse({'revenue': device_revenue}, status=status.HTTP_200_OK)
     return JsonResponse({'message': 'Invalid request'}, status=status.HTTP_400_BAD_REQUEST)
 
-class RevenueView(View):
+class RevenueView(LoginRequiredMixin, View):
     def get(self, request):
-        revenues = requests.get('http://localhost:8000/revenues')
+        # revenues = requests.get('http://localhost:8000/revenues')
+        revenues = Transaction.objects.all()
         return render(request, 'revenues/list.html', {'revenues': revenues})
 
-class RevenueEditView(View):
+class RevenueEditView(LoginRequiredMixin, View):
     def get(self, request):
-        revenue = requests.get(f'http://localhost:8000/revenues/{request.GET.get("id")}')
+        # revenue = requests.get(f'http://localhost:8000/revenues/{request.GET.get("id")}')
+        # get first transaction
+        revenue = Transaction.objects.first()
         return render(request, 'revenues/edit.html', {'revenue': revenue})        

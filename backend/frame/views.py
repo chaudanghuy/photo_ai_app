@@ -8,6 +8,7 @@ from .models import Frame
 from .serializers import FrameSerializer
 from django.views import View
 from .forms import FrameForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 # Create your views here.
@@ -56,15 +57,15 @@ class FrameDetailAPI(APIView):
         frame.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
     
-class FrameList(View):
-     template_name = 'frame/list.html'
+class FrameList(LoginRequiredMixin, View):
+     template_name = 'frames/list.html'
      def get(self, request, *args, **kwargs):
           devices = get_device_list()
           frames = Frame.objects.all()
           return render(request, self.template_name, {'devices': devices, 'frames': frames})
       
-class FrameCreateView(View):
-     template_name = 'frame/add.html'
+class FrameCreateView(LoginRequiredMixin, View):
+     template_name = 'frames/add.html'
      def get(self, request, *args, **kwargs):
           devices = get_device_list()
           form = FrameForm()
@@ -77,8 +78,8 @@ class FrameCreateView(View):
                return redirect('frames')
           return render(request, 'frame/add.html', {'form': form})
 
-class FrameEditView(View):
-    template_name = 'frame/edit.html'
+class FrameEditView(LoginRequiredMixin, View):
+    template_name = 'frames/edit.html'
     def get(self, request, pk, *args, **kwargs):        
           frame = Frame.objects.get(id=pk)
           devices = get_device_list()
@@ -91,4 +92,4 @@ class FrameEditView(View):
           if form.is_valid():
                form.save()
                return redirect('frames')
-          return render(request, 'frame/edit.html', {'form': form, 'frame': frame})
+          return render(request, 'frames/edit.html', {'form': form, 'frame': frame})
