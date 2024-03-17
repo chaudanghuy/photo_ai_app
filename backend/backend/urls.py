@@ -38,6 +38,6 @@ urlpatterns = [
     path('stickers/', include(sticker_urls)),
     path('payments/', include(payment_urls)),
     path('revenues/', include(revenue_urls)),
-    path('dashboard/', include(dashboard_urls)),
+    path('', include(dashboard_urls)),
     path('account/', include(account_urls))
 ]

@@ -23,6 +23,23 @@
       </a>
     </li>
     <li class="nav-item">
+      <a class="nav-link" data-bs-toggle="collapse" href="#store" aria-expanded="true" aria-controls="ui-basic">
+        <span class="menu-title">Stores</span>
+        <i class="menu-arrow"></i>
+        <i class="mdi mdi-projector-screen"></i>
+      </a>
+      <div class="collapse show" id="stores" style="">
+        <ul class="nav flex-column sub-menu">
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'stores' %}">All Stores</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'stores-add' %}">Add new Store</a>
+          </li>
+        </ul>
+      </div>
+    </li>
+    <li class="nav-item">
       <a class="nav-link" data-bs-toggle="collapse" href="#devices" aria-expanded="true" aria-controls="ui-basic">
         <span class="menu-title">Devices</span>
         <i class="menu-arrow"></i>

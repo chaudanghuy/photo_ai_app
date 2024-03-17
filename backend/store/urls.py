@@ -13,6 +13,6 @@ urlpatterns = [
     path('api/<int:pk>', StoreDetailAPI.as_view()),
     # Store
      path('', StoreListView.as_view(), name='stores'),
-     path('add', AddStoreView.as_view(), name='store-add'),
-     path('edit/<int:pk>', EditStoreView.as_view(), name='store-edit')     
+     path('add', AddStoreView.as_view(), name='stores-add'),
+     path('edit/<int:pk>', EditStoreView.as_view(), name='stores-edit')     
 ]
