@@ -13,6 +13,6 @@ urlpatterns = [
       path('api/<int:pk>', LayoutDetailAPI.as_view()),
       # WEB
       path('', LayoutList.as_view(), name='layouts'),
-      path('create', LayoutCreateView.as_view(), name='layout-create'),
-      path('edit/<int:pk>', LayoutEditView.as_view(), name='layout-edit')
+      path('create', LayoutCreateView.as_view(), name='layouts-add'),
+      path('edit/<int:pk>', LayoutEditView.as_view(), name='layouts-edit')
 ]

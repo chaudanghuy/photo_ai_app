@@ -13,6 +13,6 @@ urlpatterns = [
     path('api/<int:pk>', PaymentDetailAPI.as_view()),    
     # WEB
     path('', PaymentList.as_view(), name='payments'),
-    path('add', PaymentCreateView.as_view(), name='payment-add'),
-    path('edit/<int:pk>', PaymentEditView.as_view(), name='payment-edit')
+    path('add', PaymentCreateView.as_view(), name='payments-add'),
+    path('edit/<int:pk>', PaymentEditView.as_view(), name='payments-edit')
 ]

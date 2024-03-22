@@ -8,7 +8,6 @@ from .views import (
     AccountEditView,
     AccountLoginView
 )
-from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     # API
@@ -16,7 +15,7 @@ urlpatterns = [
     path('api/<int:pk>', AccountDetailAPI.as_view()),
     # LOGIN
     path('login', AccountLoginView.as_view(), name='login'),
-    path('logout', LogoutView.as_view(next_page='login'), name='logout'),
+    path('logout', views.logout_view, name='logout'),
     # ACCOUNT
     path('password', views.change_password, name='account-password'),
     path('info', views.view_account_info, name='account-info'),    

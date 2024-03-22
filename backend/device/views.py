@@ -12,19 +12,19 @@ from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from .forms import DeviceForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from frame.models import Frame
+from django.contrib import messages
 
-STORE_API_URL = 'http://localhost:8000/stores/api/'
+STORE_API_URL = 'http://localhost:8000/stores/api'
 
 def get_store_list():
     response = requests.get(STORE_API_URL)
     if response.status_code == 200:
-        return response.json().get('stores', [])
+        return response.json()
     return []
 
 # Create your views here.
 class DeviceAPI(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-    
     def get(self, request, *args, **kwargs):
         devices = Device.objects.all()
         serializer = DeviceSerializer(devices, many=True)
@@ -69,25 +69,37 @@ class DeviceList(LoginRequiredMixin, ListView):
 class DeviceCreateView(View):
     def get(self, request):
         form = DeviceForm()
-        return render(request, 'devices/add.html', {'form': form})
+        stores = get_store_list()
+        return render(request, 'devices/add.html', {'form': form, 'stores': stores})
     
     def post(self, request):
+        stores = get_store_list()                
         form = DeviceForm(request.POST)
+        form.instance.user = request.user        
         if form.is_valid():
             form.save()
             return redirect('devices')
-        return render(request, 'devices/add.html', {'form': form})    
+        else:
+            messages.error(request, 'Add failed!')
+        return render(request, 'devices/add.html', {'form': form, 'stores': stores})    
     
 class DeviceEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
+        stores = get_store_list()
         device = Device.objects.get(id=pk)
         form = DeviceForm(instance=device)
-        return render(request, 'devices/edit.html', {'form': form, 'device': device})
+        return render(request, 'devices/edit.html', {'form': form, 'device': device, 'stores': stores})
     
     def post(self, request, pk):
-        device = Device.objects.get(id=pk)
-        form = DeviceForm(request.POST, instance=device)
+        stores = get_store_list()
+        device = Device.objects.get(id=pk)              
+        form = DeviceForm(request.POST, instance=device)        
         if form.is_valid():
             form.save()
             return redirect('devices')
-        return render(request, 'devices/edit.html', {'form': form, 'device': device})
+        return render(request, 'devices/edit.html', {'form': form, 'device': device, 'stores': stores})
+    
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs

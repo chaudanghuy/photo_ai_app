@@ -14,5 +14,5 @@ urlpatterns = [
      # WEB
      path('', DeviceList.as_view(), name='devices'),
      path('add', DeviceCreateView.as_view(), name='devices-add'),
-     path('edit/<int:pk>', DeviceList.as_view(), name='devices-edit')          
+     path('edit/<int:pk>', DeviceEditView.as_view(), name='devices-edit')          
 ]

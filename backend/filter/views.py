@@ -16,8 +16,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
-class FilterAPI(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class FilterAPI(APIView):    
 
     def get(self, request, *args, **kwargs):
         filters = Filter.objects.all()
@@ -61,20 +60,20 @@ class FilterList(LoginRequiredMixin, ListView):
 class FilterCreateView(LoginRequiredMixin, View):
     def get(self, request):
         form = FilterForm()
-        return render(request, 'filters/create.html', {'form': form})
+        return render(request, 'filters/add.html', {'form': form})
 
     def post(self, request):
         form = FilterForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('filter_list')
-        return render(request, 'filters/create.html', {'form': form})
+            return redirect('filters')
+        return render(request, 'filters/add.html', {'form': form})
 
 class FilterEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
         filter = Filter.objects.get(id=pk)
         form = FilterForm(instance=filter)
-        return render(request, 'filters/edit.html', {'form': form})
+        return render(request, 'filters/edit.html', {'form': form, 'filter': filter})
 
     def post(self, request, pk):
         filter = Filter.objects.get(id=pk)
@@ -82,4 +81,4 @@ class FilterEditView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             return redirect('filter_list')
-        return render(request, 'filters/edit.html', {'form': form})        
+        return render(request, 'filters/edit.html', {'form': form, 'filter': filter})        

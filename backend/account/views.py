@@ -17,6 +17,7 @@ from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth import update_session_auth_hash, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import logout
 
 
 def change_password(request):
@@ -28,13 +29,17 @@ def change_password(request):
       messages.success(request, 'Your password was successfully updated!')
       return redirect('change_password')
     else:
-      messages.error(request, 'Please correct the error below.')
+      messages.error(request, form.errors)
   else:
     form = PasswordChangeForm(request.user)
   return render(request, 'accounts/change_password.html', {
     'form': form
   })
   
+def logout_view(request):
+    logout(request)
+    return redirect('login')  
+    
 def view_account_info(request):
   return render(request, 'accounts/account_info.html')
 
@@ -46,7 +51,7 @@ class AccountLoginView(LoginView):
      
      def form_invalid(self, form):
          messages.error(self.request, 'Invalid username or password')
-         return self.render_to_response(self.get_context_data(form=form))
+         return self.render_to_response(self.get_context_data(form=form))     
 
 # Create your views here.
 class AccountAPI(APIView):

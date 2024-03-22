@@ -10,6 +10,8 @@ from .serializers import StoreSerializer
 from .forms import StoreForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.urls import reverse_lazy
+from django.utils import timezone
+from django.contrib import messages
 
 # Create your views here.
 class StoreAPI(APIView):
@@ -51,19 +53,23 @@ class StoreListView(LoginRequiredMixin, View):
 
 class AddStoreView(LoginRequiredMixin, View):
     def get(self, request):
-        form = StoreForm()
+        form = StoreForm(initial={'created_at': timezone.now(), 'updated_at': timezone.now()})                
         return render(request, 'stores/add.html', {'form': form})
 
     def post(self, request):
         form = StoreForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('store-list')
+            messages.success(request, 'Store added successfully!')
+            return redirect('stores')
+        else:
+            messages.error(request, 'Add failed!')
         return render(request, 'stores/add.html', {'form': form})
 
 class EditStoreView(LoginRequiredMixin, View):
     def get(self, request, pk):
         store = Store.objects.get(id=pk)
+        store.updated_at = timezone.now()
         form = StoreForm(instance=store)
         return render(request, 'stores/edit.html', {'form': form, 'store': store})
 
@@ -72,5 +78,7 @@ class EditStoreView(LoginRequiredMixin, View):
         form = StoreForm(request.POST, instance=store)
         if form.is_valid():
             form.save()
-            return redirect('store-list')
+            return redirect('stores')
+        else:
+            messages.error(request, 'Edit Failed!')
         return render(request, 'stores/edit.html', {'form': form, 'store': store})

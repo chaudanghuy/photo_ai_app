@@ -1,51 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="col-12 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Basic form elements</h4>
-        <p class="card-description">Basic form elements</p>
-        <form class="forms-sample">
-          <div class="form-group">
-            <label for="exampleInputName1">Name</label>
-            <input type="text" class="form-control" id="exampleInputName1" placeholder="Name" />
-          </div>
-          <div class="form-group">
-            <label for="exampleInputEmail3">Email address</label>
-            <input type="email" class="form-control" id="exampleInputEmail3" placeholder="Email" />
-          </div>
-          <div class="form-group">
-            <label for="exampleInputPassword4">Password</label>
-            <input type="password" class="form-control" id="exampleInputPassword4" placeholder="Password" />
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender">Gender</label>
-            <select class="form-control" id="exampleSelectGender">
-              <option>Male</option>
-              <option>Female</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>File upload</label>
-            <input type="file" name="img[]" class="file-upload-default" />
-            <div class="input-group col-xs-12">
-              <input type="text" class="form-control file-upload-info" disabled="" placeholder="Upload Image" />
-              <span class="input-group-append"><button class="file-upload-browse btn btn-gradient-primary" type="button">Upload</button></span>
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="exampleInputCity1">City</label>
-            <input type="text" class="form-control" id="exampleInputCity1" placeholder="Location" />
-          </div>
-          <div class="form-group">
-            <label for="exampleTextarea1">Textarea</label>
-            <textarea class="form-control" id="exampleTextarea1" rows="4"></textarea>
-          </div>
-          <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
-          <button class="btn btn-light">Cancel</button>
-        </form>
-      </div>
+<div class="col-12 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Layout</h4>
+      <p class="card-description">Create Layout</p>
+      <form method="post" enctype="multipart/form-data" class="forms-sample">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="{{ layout.title }}"/>
+        </div>
+        <div class="form-group">
+          <label for="frame">Background</label>
+          <select name="background_id" id="background_id" class="form-select" aria-label="Default select example">
+            {% for background in backgrounds %}
+            <option value="{{ background.id }}" {% if background.id == layout.background_id.id %} selected {% endif %}>{{ background.title }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>File upload</label>
+          <input class="form-control" type="file" id="photo" name="photo" onchange="previewPhoto(event)" />
+          <img id="photo_preview" src="{{ layout.photo.url }}" alt="Photo Preview"><br>
+        </div>
+        <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+        <a href="{% url 'layouts' %}" class="btn btn-light">Cancel</button>
+      </form>
     </div>
   </div>
+</div>
+
+<script>
+  function previewPhoto(event) {
+    var input = event.target;
+    var reader = new FileReader();
+    reader.onload = function () {
+      var img = document.getElementById('photo_preview');
+      img.src = reader.result;
+      img.style.display = 'block';
+    }
+    reader.readAsDataURL(input.files[0]);
+  }
+</script>
 {% endblock %}

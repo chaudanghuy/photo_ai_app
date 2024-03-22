@@ -26,6 +26,8 @@ from payment import urls as payment_urls
 from revenue import urls as revenue_urls
 from dashboard import urls as dashboard_urls
 from account import urls as account_urls
+from django.conf import settings
+from django.conf.urls.static import static
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -41,3 +43,6 @@ urlpatterns = [
     path('', include(dashboard_urls)),
     path('account/', include(account_urls))
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

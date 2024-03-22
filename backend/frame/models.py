@@ -5,10 +5,10 @@ from device.models import Device
 class Frame(models.Model):     
      title = models.TextField()
      device_id = models.ForeignKey(Device, on_delete=models.CASCADE)
-     photo = models.ImageField(upload_to='frames/photos/')
+     photo = models.ImageField(upload_to='frames')
      price = models.DecimalField(max_digits=10, decimal_places=2)
      created_at = models.DateTimeField(auto_now_add=True)
      deleted_at = models.DateTimeField(auto_now_add=True)
 
      def __str__(self):
-          return f"Frame for {self.device.name}"
+          return f"Frame for {self.device.name}"          

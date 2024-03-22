@@ -13,6 +13,6 @@ urlpatterns = [
   path('api/<int:pk>', BackgroundDetailAPI.as_view()),
   # WEB
   path('', BackgroundList.as_view(), name='backgrounds'),
-  path('add', BackgroundCreateView.as_view(), name='background-add'),
-  path('edit/<int:pk>', BackgroundEditView.as_view(), name='background-edit')
+  path('add', BackgroundCreateView.as_view(), name='backgrounds-add'),
+  path('edit/<int:pk>', BackgroundEditView.as_view(), name='backgrounds-edit')
 ]

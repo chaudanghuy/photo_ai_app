@@ -1,5 +1,5 @@
 import requests
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,6 +12,7 @@ from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from .forms import PaymentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 # Create your views here.
 
@@ -60,25 +61,29 @@ class PaymentList(LoginRequiredMixin, ListView):
 class PaymentCreateView(LoginRequiredMixin, View):
     def get(self, request):
         form = PaymentForm()
-        return render(request, 'payments/create.html', {'form': form})
+        return render(request, 'payments/add.html', {'form': form})
     
     def post(self, request):
         form = PaymentForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse('Payment created successfully')
-        return render(request, 'payments/create.html', {'form': form})
+            return redirect('payments')
+        else:
+            messages.error(request, form.errors)
+        return render(request, 'payments/add.html', {'form': form})
     
 class PaymentEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
         payment = Payment.objects.get(id=pk)
         form = PaymentForm(instance=payment)
-        return render(request, 'payments/edit.html', {'form': form})
+        return render(request, 'payments/edit.html', {'form': form, 'payment': payment})
     
     def post(self, request, pk):
         payment = Payment.objects.get(id=pk)
         form = PaymentForm(request.POST, instance=payment)
         if form.is_valid():
             form.save()
-            return HttpResponse('Payment updated successfully')
-        return render(request, 'payments/edit.html', {'form': form})
+            return redirect('payments')
+        else:
+            messages.error(request, form.errors)
+        return render(request, 'payments/edit.html', {'form': form, 'payment': payment})

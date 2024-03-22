@@ -11,11 +11,10 @@ from django.views.generic import ListView, DetailView, CreateView
 from django.http import HttpRequest, HttpResponse
 from .forms import StickerForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 # Create your views here.
 class StickerAPI(APIView):
-    permission_classes = [permissions.IsAuthenticated]
-    
     def get(self, request, *args, **kwargs):
         stickers = Sticker.objects.all()
         serializer = StickerSerializer(stickers, many=True)
@@ -29,8 +28,6 @@ class StickerAPI(APIView):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
       
 class StickerDetailAPI(APIView):
-    
-    permission_classes = [permissions.IsAuthenticated]
     
     def get(self, request, pk, *args, **kwargs):
         sticker = Sticker.objects.get(id=pk)
@@ -58,25 +55,27 @@ class StickerList(LoginRequiredMixin, ListView):
 class StickerCreateView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         form = StickerForm()
-        return render(request, 'stickers/create.html', {'form': form})
+        return render(request, 'stickers/add.html', {'form': form})
     
     def post(self, request, *args, **kwargs):
         form = StickerForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('sticker-list')
-        return render(request, 'stickers/create.html', {'form': form})
+            return redirect('stickers')
+        else:
+            messages.error(request, form.errors)
+        return render(request, 'stickers/add.html', {'form': form})
       
 class StickerEditView(LoginRequiredMixin, View):
     def get(self, request, pk, *args, **kwargs):
         sticker = Sticker.objects.get(id=pk)
         form = StickerForm(instance=sticker)
-        return render(request, 'stickers/edit.html', {'form': form})
+        return render(request, 'stickers/edit.html', {'form': form, 'sticker': sticker})
     
     def post(self, request, pk, *args, **kwargs):
         sticker = Sticker.objects.get(id=pk)
         form = StickerForm(request.POST, request.FILES, instance=sticker)
         if form.is_valid():
             form.save()
-            return redirect('sticker-list')
-        return render(request, 'stickers/edit.html', {'form': form})
+            return redirect('stickers')
+        return render(request, 'stickers/edit.html', {'form': form, 'sticker': sticker})

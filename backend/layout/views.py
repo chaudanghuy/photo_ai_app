@@ -15,9 +15,17 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 
 # Create your views here.
 
-class LayoutAPI(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+BACKGROUND_API_URL = "http://localhost:8000/backgrounds/api"
 
+
+def get_background_list():
+    response = requests.get(BACKGROUND_API_URL)
+    if response.status_code == 200:
+        return response.json()
+    return []
+
+class LayoutAPI(APIView):
+    
     def get(self, request, *args, **kwargs):
         layouts = Layout.objects.all()
         serializer = LayoutSerializer(layouts, many=True)
@@ -55,30 +63,36 @@ class LayoutDetailAPI(APIView):
 class LayoutList(LoginRequiredMixin, ListView):
     def get(self, request):
         layouts = Layout.objects.all()
-        return render(request, 'layouts/list.html', {'layouts': layouts})
+        backgrounds = get_background_list()
+        return render(request, 'layouts/list.html', {'layouts': layouts, 'backgrounds': backgrounds})
 
 class LayoutCreateView(LoginRequiredMixin, View):
+    template_name = 'layouts/add.html'
     def get(self, request):
         form = LayoutForm()
-        return render(request, 'layouts/create.html', {'form': form})
+        backgrounds = get_background_list()
+        return render(request, self.template_name, {'form': form, 'backgrounds': backgrounds})
 
     def post(self, request):
         form = LayoutForm(request.POST, request.FILES)
+        backgrounds = get_background_list()
         if form.is_valid():
             form.save()
-            return redirect(reverse_lazy('layout:layout-list'))
-        return render(request, 'layouts/create.html', {'form': form})
+            return redirect(reverse_lazy('layouts'))
+        return render(request, self.template_name, {'form': form, 'backgrounds': backgrounds})
 
 class LayoutEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
         layout = Layout.objects.get(id=pk)
+        backgrounds = get_background_list()
         form = LayoutForm(instance=layout)
-        return render(request, 'layouts/edit.html', {'form': form})
+        return render(request, 'layouts/edit.html', {'form': form, 'backgrounds': backgrounds, 'layout': layout})
 
     def post(self, request, pk):
         layout = Layout.objects.get(id=pk)
         form = LayoutForm(request.POST, request.FILES, instance=layout)
+        backgrounds = get_background_list()
         if form.is_valid():
             form.save()
-            return redirect(reverse_lazy('layout:layout-list'))
-        return render(request, 'layouts/edit.html', {'form': form})
+            return redirect(reverse_lazy('layouts'))
+        return render(request, 'layouts/edit.html', {'form': form, 'backgrounds': backgrounds, 'layout': layout})

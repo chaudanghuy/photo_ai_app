@@ -13,6 +13,6 @@ urlpatterns = [
     path('api/<int:pk>', FilterDetailAPI.as_view()),
     # WEB
     path('', FilterList.as_view(), name='filters'),
-    path('add', FilterCreateView.as_view(), name='filter-add'),
-    path('edit/<int:pk>', FilterEditView.as_view(), name='filter-edit')
+    path('add', FilterCreateView.as_view(), name='filters-add'),
+    path('edit/<int:pk>', FilterEditView.as_view(), name='filters-edit')
 ]

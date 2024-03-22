@@ -7,7 +7,7 @@
       <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
           <li class="breadcrumb-item active" aria-current="page">
-            <button type="button" class="btn btn-gradient-primary btn-rounded btn-fw">Add Layout</button>
+            <a href="{% url 'layouts-add' %}" type="button" class="btn btn-gradient-primary btn-rounded btn-fw">Add Layout</a>
           </li>
         </ol>
       </nav>
@@ -16,73 +16,55 @@
       <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Layouts List</h4>
-            <p></p>
-            <table class="table table-hover">
+            <h4 class="card-title">Layouts List</h4>            
+            {% if layouts %}
+            <p>
+              <select class="form-control" id="backgrounds_select">
+                <option value="0">All Backgrounds</option>
+                {% for background in backgrounds %}
+                <option value="{{ background.id }}">{{ background.title }}</option>
+                {% endfor %}
+              </select>
+            </p>
+            <table id="layouts-table" class="table table-hover">
               <thead>
                 <tr>
-                  <th>Device</th>
-                  <th>Store</th>
-                  <th>Sale</th>
-                  <th>Status</th>
+                  <th>Title</th>
+                  <th>Background</th>
+                  <th></th>                  
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>Jacob</td>
-                  <td>Photoshop</td>
-                  <td class="text-danger">
-                    28.76% <i class="mdi mdi-arrow-down"></i>
-                  </td>
-                  <td>
-                    <label class="badge badge-danger">Pending</label>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Messsy</td>
-                  <td>Flash</td>
-                  <td class="text-danger">
-                    21.06% <i class="mdi mdi-arrow-down"></i>
-                  </td>
-                  <td>
-                    <label class="badge badge-warning">In progress</label>
-                  </td>
-                </tr>
-                <tr>
-                  <td>John</td>
-                  <td>Premier</td>
-                  <td class="text-danger">
-                    35.00% <i class="mdi mdi-arrow-down"></i>
-                  </td>
-                  <td>
-                    <label class="badge badge-info">Fixed</label>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Peter</td>
-                  <td>After effects</td>
-                  <td class="text-success">
-                    82.00% <i class="mdi mdi-arrow-up"></i>
-                  </td>
-                  <td>
-                    <label class="badge badge-success">Completed</label>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Dave</td>
-                  <td>53275535</td>
-                  <td class="text-success">
-                    98.05% <i class="mdi mdi-arrow-up"></i>
-                  </td>
-                  <td>
-                    <label class="badge badge-warning">In progress</label>
-                  </td>
-                </tr>
+                {% for layout in layouts %}
+                <tr data-background-id="{{ layout.background_id.id }}">                                    
+                    <td>{{layout.title}}</td>
+                    <td>{{layout.background_id}}</td>
+                    <td><a type="button" href="{% url 'layouts-edit' layout.id %}" class="btn btn-gradient-primary btn-rounded btn-fw">Edit</button></td>                         
+                </tr>                
+                {% endfor %}             
               </tbody>
             </table>
+            {% else %}
+              <p class="card-description">🎉 Yay, Let setup first layout!</p>
+            {% endif %}                          
           </div>
         </div>
       </div>
     </div>
   </div>
+
+  <script>
+    document.getElementById('backgrounds_select').addEventListener('change', function() {
+      var selectedDeviceId = this.value
+      var rows = document.querySelectorAll('#layouts-table tbody tr');
+      rows.forEach(function(row) {
+        var deviceId = row.getAttribute('data-background-id')
+        if (!selectedDeviceId || selectedDeviceId === deviceId || selectedDeviceId === '0') {
+          row.style.display = '';
+        } else {
+          row.style.display = 'none';
+        }
+      })
+    })
+</script>
 {% endblock %}

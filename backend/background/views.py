@@ -1,5 +1,5 @@
 import requests
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
@@ -12,19 +12,19 @@ from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from .forms import BackgroundForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib import messages
 
 # Create your views here.
 
-FRAME_API_URL = 'http://localhost:8000/frames/api/'
+FRAME_API_URL = 'http://localhost:8000/frames/api'
 
 def get_frame_list():
     response = requests.get(FRAME_API_URL)
     if response.status_code == 200:
-        return response.json().get('frames', [])
+        return response.json()
     return []
 
-class BackgroundAPI(APIView):
-    permission_classes = [permissions.IsAuthenticated]
+class BackgroundAPI(APIView):    
     
     def get(self, request, *args, **kwargs):
         backgrounds = Background.objects.all()
@@ -65,30 +65,38 @@ class BackgroundList(LoginRequiredMixin, ListView):
     def get(self, request):
         frames = get_frame_list()
         backgrounds = Background.objects.all()
-        return render(request, 'backgrounds/list.html', {'frames': frames})
+        return render(request, 'backgrounds/list.html', {'backgrounds': backgrounds, 'frames': frames})
     
 class BackgroundCreateView(LoginRequiredMixin, View):
     def get(self, request):
+        frames = get_frame_list()
         form = BackgroundForm()
-        return render(request, 'backgrounds/add.html', {'form': form})
+        return render(request, 'backgrounds/add.html', {'form': form, 'frames': frames})
     
     def post(self, request):
+        frames = get_frame_list()
         form = BackgroundForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return render(request, 'backgrounds/add.html', {'form': form})
-        return render(request, 'backgrounds/add.html', {'form': form})    
+            return redirect('backgrounds')
+        else:
+            messages.error(request, form.errors)
+        return render(request, 'backgrounds/add.html', {'form': form, 'frames': frames})    
     
 class BackgroundEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
+        frames = get_frame_list()
         background = Background.objects.get(id=pk)
         form = BackgroundForm(instance=background)
-        return render(request, 'backgrounds/edit.html', {'form': form})
+        return render(request, 'backgrounds/edit.html', {'form': form, 'background': background, 'frames': frames})
     
     def post(self, request, pk):
+        frames = get_frame_list()
         background = Background.objects.get(id=pk)
         form = BackgroundForm(request.POST, request.FILES, instance=background)
         if form.is_valid():
             form.save()
-            return render(request, 'backgrounds/edit.html', {'form': form})
-        return render(request, 'backgrounds/edit.html', {'form': form})    
+            return redirect('backgrounds')
+        else:
+            messages.error(request, form.errors)
+        return render(request, 'backgrounds/edit.html', {'form': form, 'background': background, 'frames': frames})    

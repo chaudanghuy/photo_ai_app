@@ -1,32 +1,47 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <div class="col-12 grid-margin stretch-card">
-    <div class="card">
-      <div class="card-body">
-        <h4 class="card-title">Create Background</h4>
-        <p class="card-description">Background</p>
-        <form class="forms-sample">
-          <div class="form-group">
-            <label for="exampleInputName1">Title</label>
-            <input type="text" class="form-control" id="exampleInputName1" placeholder="Name" />
-          </div>
-          <div class="form-group">
-            <label for="exampleSelectGender">Frame</label>
-            <select class="form-select" aria-label="Default select example">
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>File upload</label>
-            <input class="form-control" type="file" id="formFile" />
-          </div>
-          <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
-          <button class="btn btn-light">Cancel</button>
-        </form>
-      </div>
+<div class="col-12 grid-margin stretch-card">
+  <div class="card">
+    <div class="card-body">
+      <h4 class="card-title">Background</h4>
+      <p class="card-description">Edit Background</p>
+      <form method="post" enctype="multipart/form-data" class="forms-sample">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="{{ background.title }}"/>
+        </div>
+        <div class="form-group">
+          <label for="frame">Frame</label>
+          <select name="frame_id" id="frame" class="form-select" aria-label="Default select example">
+            {% for frame in frames %}
+            <option value="{{ frame.id }}" {% if frame.id == background.frame_id.id %} selected {% endif %}}>{{ frame.title }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label>File upload</label>
+          <input class="form-control" type="file" id="photo" name="photo" onchange="previewPhoto(event)"/>
+          <img id="photo_preview" src="{{ background.photo.url }}" alt="Photo Preview"><br>
+        </div>
+        <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
+        <a href="{% url 'backgrounds' %}" class="btn btn-light">Cancel</button>
+      </form>
     </div>
   </div>
+</div>
+
+<script>
+  function previewPhoto(event) {
+      var input = event.target;
+      var reader = new FileReader();
+      reader.onload = function() {
+          var img = document.getElementById('photo_preview');
+          img.src = reader.result;
+          img.style.display = 'block';
+      }
+      reader.readAsDataURL(input.files[0]);
+  }
+</script>
 {% endblock %}

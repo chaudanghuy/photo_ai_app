@@ -5,7 +5,7 @@ from background.models import Background
 class Layout(models.Model):
     title = models.TextField()
     background_id = models.ForeignKey(Background, on_delete=models.CASCADE)
-    photo = models.ImageField(upload_to='layouts/photos/')
+    photo = models.ImageField(upload_to='layouts')
     created_at = models.DateTimeField(auto_now_add=True)
     deleted_at = models.DateTimeField(auto_now_add=True)
 
