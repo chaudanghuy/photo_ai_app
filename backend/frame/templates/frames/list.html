@@ -27,21 +27,24 @@
           </p>
           <table id="frames-table" class="table table-hover">
             <thead>
-              <tr>                
-                <th>Device</th>
+              <tr>                                
                 <th>Title</th>
+                <th>Position</th>
+                <th>Photo</th>
+                <th>Device</th>
                 <th>Price</th>
                 <th>Date Created</th>
                 <th></th>
               </tr>
             </thead>
             <tbody>
-
               {% if frames %}
               {% for frame in frames %}
-              <tr data-device-id="{{frame.device_id.id}}">                
-                <td>{{frame.device_id.name}}</td>
+              <tr data-device-id="{{frame.device_id.id}}">                                
                 <td>{{frame.title}}</td>
+                <td>{{frame.position}}</td>
+                <td><img src="{{frame.photo.url}}" alt="Photo"></td>
+                <td>{{frame.device_id.name}}</td>
                 <td class="text-danger">
                   {{frame.price}} <i class="mdi mdi-cash"></i>
                 </td>

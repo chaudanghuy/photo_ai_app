@@ -15,6 +15,7 @@ from django.contrib import messages
 # Create your views here.
 DEVICE_API_URL = "http://localhost:8000/devices/api"
 
+POSITION_FRAMES = ["row-1-1", "row-1-2", "row-1-3", "row-2-1", "row-2-2", "row-2-3"]
 
 def get_device_list():
     response = requests.get(DEVICE_API_URL)
@@ -78,7 +79,7 @@ class FrameCreateView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         devices = get_device_list()
         form = FrameForm()
-        return render(request, self.template_name, {"form": form, "devices": devices})
+        return render(request, self.template_name, {"form": form, "devices": devices, "positions": POSITION_FRAMES})
 
     def post(self, request, *args, **kwargs):
         devices = get_device_list()
@@ -88,7 +89,7 @@ class FrameCreateView(LoginRequiredMixin, View):
             return redirect("frames")
         else:
             messages.error(request, form.errors)
-        return render(request, self.template_name, {"form": form, "devices": devices})
+        return render(request, self.template_name, {"form": form, "devices": devices, "positions": POSITION_FRAMES})
 
 
 class FrameEditView(LoginRequiredMixin, View):
@@ -101,7 +102,7 @@ class FrameEditView(LoginRequiredMixin, View):
         return render(
             request,
             self.template_name,
-            {"form": form, "frame": frame, "devices": devices},
+            {"form": form, "frame": frame, "devices": devices, "positions": POSITION_FRAMES},
         )
 
     def post(self, request, pk):
@@ -111,4 +112,4 @@ class FrameEditView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             return redirect("frames")
-        return render(request, "frames/edit.html", {"form": form, "frame": frame, "devices": devices})
+        return render(request, "frames/edit.html", {"form": form, "frame": frame, "devices": devices, "positions": POSITION_FRAMES})

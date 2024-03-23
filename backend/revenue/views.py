@@ -8,6 +8,7 @@ from django.views import View
 from django.http import HttpRequest, HttpResponse, JsonResponse
 from django.urls import reverse_lazy
 from .models import Order, Transaction
+from device.models import Device
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -79,9 +80,13 @@ def get_device_revenue(request):
 
 class RevenueView(LoginRequiredMixin, View):
     def get(self, request):
-        # revenues = requests.get('http://localhost:8000/revenues')
-        revenues = Transaction.objects.all()
-        return render(request, 'revenues/list.html', {'revenues': revenues})
+        device_id = request.GET.get('device_id')
+        if device_id:
+            revenues = Transaction.objects.filter(device_id=device_id, status='paid')
+        else:
+            revenues = Transaction.objects.all()
+        devices = Device.objects.all()
+        return render(request, 'revenues/list.html', {'revenues': revenues, 'devices': devices})
 
 class RevenueEditView(LoginRequiredMixin, View):
     def get(self, request):

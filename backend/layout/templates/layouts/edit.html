@@ -13,6 +13,14 @@
           <input type="text" class="form-control" id="title" name="title" placeholder="Title" value="{{ layout.title }}"/>
         </div>
         <div class="form-group">
+          <label for="position">Position</label>
+          <select name="position" id="position" class="form-select" aria-label="Default select example">
+            {% for p in position_list %}
+              <option value="{{ p }}" {% if p == layout.position %} selected {% endif %}>{{ p }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
           <label for="frame">Background</label>
           <select name="background_id" id="background_id" class="form-select" aria-label="Default select example">
             {% for background in backgrounds %}
@@ -21,9 +29,14 @@
           </select>
         </div>
         <div class="form-group">
-          <label>File upload</label>
-          <input class="form-control" type="file" id="photo" name="photo" onchange="previewPhoto(event)" />
-          <img id="photo_preview" src="{{ layout.photo.url }}" alt="Photo Preview"><br>
+          <label>Photo</label>
+          <input class="form-control" type="file" id="photo" name="photo" onchange="previewPhoto(event, 'photo_preview')" />
+          <img class="photo_preview" id="photo_preview" src="{{ layout.photo.url }}" alt="Photo Preview"><br>
+        </div>
+        <div class="form-group">
+          <label>Photo Cover</label>
+          <input class="form-control" type="file" id="photo_cover" name="photo_cover" onchange="previewPhoto(event, 'photo_cover_preview')" />
+          <img class="photo_preview" id="photo_cover_preview" src="{{ layout.photo_cover.url }}" alt="Photo Preview"><br>
         </div>
         <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
         <a href="{% url 'layouts' %}" class="btn btn-light">Cancel</button>
@@ -33,11 +46,11 @@
 </div>
 
 <script>
-  function previewPhoto(event) {
+  function previewPhoto(event, preview) {
     var input = event.target;
     var reader = new FileReader();
     reader.onload = function () {
-      var img = document.getElementById('photo_preview');
+      var img = document.getElementById(preview);
       img.src = reader.result;
       img.style.display = 'block';
     }

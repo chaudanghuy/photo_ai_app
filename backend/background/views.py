@@ -18,6 +18,8 @@ from django.contrib import messages
 
 FRAME_API_URL = 'http://localhost:8000/frames/api'
 
+BACKGROUND_POSITIONS = ['row-1-1', 'row-1-2', 'row-1-3', 'row-1-4', 'row-1-5']
+
 def get_frame_list():
     response = requests.get(FRAME_API_URL)
     if response.status_code == 200:
@@ -71,7 +73,7 @@ class BackgroundCreateView(LoginRequiredMixin, View):
     def get(self, request):
         frames = get_frame_list()
         form = BackgroundForm()
-        return render(request, 'backgrounds/add.html', {'form': form, 'frames': frames})
+        return render(request, 'backgrounds/add.html', {'form': form, 'frames': frames, 'positions': BACKGROUND_POSITIONS})
     
     def post(self, request):
         frames = get_frame_list()
@@ -81,14 +83,14 @@ class BackgroundCreateView(LoginRequiredMixin, View):
             return redirect('backgrounds')
         else:
             messages.error(request, form.errors)
-        return render(request, 'backgrounds/add.html', {'form': form, 'frames': frames})    
+        return render(request, 'backgrounds/add.html', {'form': form, 'frames': frames, 'positions': BACKGROUND_POSITIONS})    
     
 class BackgroundEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
         frames = get_frame_list()
         background = Background.objects.get(id=pk)
         form = BackgroundForm(instance=background)
-        return render(request, 'backgrounds/edit.html', {'form': form, 'background': background, 'frames': frames})
+        return render(request, 'backgrounds/edit.html', {'form': form, 'background': background, 'frames': frames, 'positions': BACKGROUND_POSITIONS})
     
     def post(self, request, pk):
         frames = get_frame_list()
@@ -99,4 +101,4 @@ class BackgroundEditView(LoginRequiredMixin, View):
             return redirect('backgrounds')
         else:
             messages.error(request, form.errors)
-        return render(request, 'backgrounds/edit.html', {'form': form, 'background': background, 'frames': frames})    
+        return render(request, 'backgrounds/edit.html', {'form': form, 'background': background, 'frames': frames, 'positions': BACKGROUND_POSITIONS})    

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import i18n from '../../translations/i18n';
 import '../../css/Frame.css';
 import Background from './Background';
+import axios from 'axios';
 // Import images
 import confirm from '../../assets/Frame/Layout/confirm.png';
 import confirm_click from '../../assets/Frame/Layout/confirm_click.png';
@@ -13,6 +14,8 @@ function Layout() {
      const [hoveredImage, setHoveredImage] = useState(null);
      const [hoverImageButton, setHoverImageButton] = useState(null);
      const [layoutBackground, setLayoutBackground] = useState(null);
+     const [layouts, setLayouts] = useState([]);
+     const [clickedIndex, setClickedIndex] = useState(null);
      const { t } = useTranslation();
      const navigate = useNavigate();
 
@@ -25,20 +28,39 @@ function Layout() {
           const sessionStyleBg = sessionStorage.getItem('styleBg');
           if (sessionStyleBg) {
                let layoutBg = require(`../../assets/Frame/Layout/Seasons/BG.png`);
-               if (sessionStyleBg == 'seasons') {
+               if (sessionStyleBg == 'Seasons') {
                     layoutBg = require(`../../assets/Frame/Layout/Seasons/BG.png`);
-               } else if (sessionStyleBg == 'party') {
+               } else if (sessionStyleBg == 'Party') {
                     layoutBg = require(`../../assets/Frame/Layout/Party/BG.png`);
-               } else if (sessionStyleBg == 'cartoon') {
+               } else if (sessionStyleBg == 'Cartoon') {
                     layoutBg = require(`../../assets/Frame/Layout/Cartoon/BG.png`);
-               } else if (sessionStyleBg == 'minimalism') {
+               } else if (sessionStyleBg == 'Minimalism') {
                     layoutBg = require(`../../assets/Frame/Layout/Minimalism/BG.png`);
-               } else if (sessionStyleBg == 'collab') {
+               } else if (sessionStyleBg == 'Collab') {
                     layoutBg = require(`../../assets/Frame/Layout/Collab/BG.png`);
                }
                setLayoutBackground(layoutBg);
           }
      }, []);
+
+     useEffect(() => {
+          const fetchLayoutsByBackground = async () => {
+               try {
+                    const response = await axios.get('http://127.0.0.1:8000/layouts/api/by-background/' + sessionStorage.getItem('styleBg'));
+                    const layoutDatas = response.data
+                    const newBackgrounds = layoutDatas.map(item => ({
+                         title: item.title,
+                         photo: 'http://127.0.0.1:8000' + item.photo,
+                         photo_cover: 'http://127.0.0.1:8000' + item.photo_cover
+                    }));
+                    setLayouts(newBackgrounds);
+               } catch (error) {
+                    console.error(error)
+               }
+          }
+
+          fetchLayoutsByBackground()
+     }, [])
 
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
@@ -48,6 +70,10 @@ function Layout() {
           setHoveredImage(null);
      }
 
+     const handleClick = (index) => {
+          setClickedIndex(index === clickedIndex ? null : index);
+     }
+
      const goToPayment = () => {
           navigate('/payment');
      }
@@ -55,6 +81,15 @@ function Layout() {
      return (
           <div className='layout-container' style={{ backgroundImage: `url(${layoutBackground})` }}>
                <div className="go-back" onClick={() => navigate("/frame-step-2")}></div>
+               <div className="style-section">               
+               {layouts.map((item, index) => (                    
+                    <div key={item.id} className="style-column">
+                         <div className="image-style-div">
+                              <div className={`layout-overlay ${index === clickedIndex ? 'clicked' : ''}`} style={{ backgroundImage: `url(${item.photo_cover})` }} onClick={() => handleClick(index)}></div>
+                         </div>
+                    </div>               
+               ))}
+               </div>
                <div
                     className="confirm-layout-button"
                     style={{ backgroundImage: `url(${hoverImageButton === confirm ? confirm_click : confirm})` }}

@@ -16,7 +16,7 @@
       <div class="col-lg-12 grid-margin stretch-card">
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Layouts List</h4>            
+            <h4 class="card-title">Layouts</h4>            
             {% if layouts %}
             <p>
               <select class="form-control" id="backgrounds_select">
@@ -30,7 +30,10 @@
               <thead>
                 <tr>
                   <th>Title</th>
-                  <th>Background</th>
+                  <th>Position</th>  
+                  <th>Photo</th>
+                  <th>Photo Cover</th>
+                  <th>Background</th>                                  
                   <th></th>                  
                 </tr>
               </thead>
@@ -38,7 +41,10 @@
                 {% for layout in layouts %}
                 <tr data-background-id="{{ layout.background_id.id }}">                                    
                     <td>{{layout.title}}</td>
-                    <td>{{layout.background_id}}</td>
+                    <td>{{layout.position}}</td>
+                    <td><img src="{{layout.photo.url}}" alt="Photo Preview"></td>
+                    <td><img src="{{layout.photo_cover.url}}" alt="Photo Preview"></td>
+                    <td>{{layout.background_id.title}}</td>
                     <td><a type="button" href="{% url 'layouts-edit' layout.id %}" class="btn btn-gradient-primary btn-rounded btn-fw">Edit</button></td>                         
                 </tr>                
                 {% endfor %}             

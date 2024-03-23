@@ -12,10 +12,13 @@ from django.http import HttpRequest, HttpResponse
 from django.urls import reverse_lazy
 from .forms import LayoutForm
 from django.contrib.auth.mixins import LoginRequiredMixin
+from background.models import Background
 
 # Create your views here.
 
 BACKGROUND_API_URL = "http://localhost:8000/backgrounds/api"
+
+POSITION_LIST = ['row-1-1', 'row-1-2', 'row-1-3', 'row-1-4', 'row-1-5']
 
 
 def get_background_list():
@@ -59,19 +62,27 @@ class LayoutDetailAPI(APIView):
             layout = Layout.objects.get(id=pk)
             layout.delete()
             return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+class LayoutByBackgroundAPI(APIView):
+    def get(self, request, background, *args, **kwargs):
+        background = Background.objects.get(title=background)
+        layouts = Layout.objects.filter(background_id=background.id)
+        serializer = LayoutSerializer(layouts, many=True)
+        return Response(serializer.data, status=status.HTTP_200_OK)
         
 class LayoutList(LoginRequiredMixin, ListView):
     def get(self, request):
         layouts = Layout.objects.all()
         backgrounds = get_background_list()
-        return render(request, 'layouts/list.html', {'layouts': layouts, 'backgrounds': backgrounds})
+        return render(request, 'layouts/list.html', {'layouts': layouts, 'backgrounds': backgrounds, 'position_list': POSITION_LIST})
 
 class LayoutCreateView(LoginRequiredMixin, View):
     template_name = 'layouts/add.html'
     def get(self, request):
         form = LayoutForm()
         backgrounds = get_background_list()
-        return render(request, self.template_name, {'form': form, 'backgrounds': backgrounds})
+        return render(request, self.template_name, {'form': form, 'backgrounds': backgrounds, 'position_list': POSITION_LIST})
 
     def post(self, request):
         form = LayoutForm(request.POST, request.FILES)
@@ -79,14 +90,14 @@ class LayoutCreateView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             return redirect(reverse_lazy('layouts'))
-        return render(request, self.template_name, {'form': form, 'backgrounds': backgrounds})
+        return render(request, self.template_name, {'form': form, 'backgrounds': backgrounds, 'position_list': POSITION_LIST})
 
 class LayoutEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
         layout = Layout.objects.get(id=pk)
         backgrounds = get_background_list()
         form = LayoutForm(instance=layout)
-        return render(request, 'layouts/edit.html', {'form': form, 'backgrounds': backgrounds, 'layout': layout})
+        return render(request, 'layouts/edit.html', {'form': form, 'backgrounds': backgrounds, 'layout': layout, 'position_list': POSITION_LIST})
 
     def post(self, request, pk):
         layout = Layout.objects.get(id=pk)
@@ -95,4 +106,4 @@ class LayoutEditView(LoginRequiredMixin, View):
         if form.is_valid():
             form.save()
             return redirect(reverse_lazy('layouts'))
-        return render(request, 'layouts/edit.html', {'form': form, 'backgrounds': backgrounds, 'layout': layout})
+        return render(request, 'layouts/edit.html', {'form': form, 'backgrounds': backgrounds, 'layout': layout, 'position_list': POSITION_LIST})

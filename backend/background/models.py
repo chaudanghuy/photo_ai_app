@@ -6,6 +6,8 @@ class Background(models.Model):
     frame_id = models.ForeignKey(Frame, on_delete=models.CASCADE)
     title = models.TextField()
     photo = models.ImageField(upload_to='backgrounds')
+    photo_hover = models.ImageField(upload_to='backgrounds', default='backgrounds/default.png')
+    position = models.TextField(default='center')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

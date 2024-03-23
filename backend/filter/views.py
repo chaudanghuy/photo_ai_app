@@ -80,5 +80,5 @@ class FilterEditView(LoginRequiredMixin, View):
         form = FilterForm(request.POST, request.FILES, instance=filter)
         if form.is_valid():
             form.save()
-            return redirect('filter_list')
+            return redirect('filters')
         return render(request, 'filters/edit.html', {'form': form, 'filter': filter})        

@@ -29,9 +29,11 @@
             
             <table id="backgrounds-table" class="table table-hover">
               <thead>
-                <tr>
-                  <th>Frame</th>
+                <tr>                  
                   <th>Title</th>
+                  <th>Position</th>
+                  <th>Photo</th>
+                  <th>Frame</th>
                   <th>Date Created</th>
                   <th></th>
                 </tr>
@@ -40,8 +42,10 @@
                 
                 {% for background in backgrounds %}
                 <tr data-frame-id="{{background.frame_id.id}}">
+                  <td>{{background.title}}</td> 
+                  <td>{{background.position}}</td>                 
+                  <td><img src="{{background.photo.url}}" alt="Photo Preview"></td>                  
                   <td>{{background.frame_id.title}}</td>
-                  <td>{{background.title}}</td>
                   <td>{{background.created_at}}</td>
                   <td>
                     <a href="{% url 'backgrounds-edit' background.id %}" type="button" class="btn btn-outline-info btn-fw">Edit</button>
@@ -67,7 +71,7 @@
       var rows = document.querySelectorAll('#backgrounds-table tbody tr');
       rows.forEach(function(row) {
         var deviceId = row.getAttribute('data-frame-id')
-        if (!selectedDeviceId || selectedDeviceId === deviceId) {
+        if (!selectedDeviceId || selectedDeviceId === deviceId || selectedDeviceId === '0') {
           row.style.display = '';
         } else {
           row.style.display = 'none';

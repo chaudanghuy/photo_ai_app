@@ -20,6 +20,14 @@
             <input type="text" name="title" class="form-control" id="title" placeholder="Name" />
           </div>
           <div class="form-group">
+            <label for="position">Position </label>
+            <select id="position" name="position" class="form-select" aria-label="Default select example">
+              {% for p in positions %}
+                <option value="{{ p }}">{{ p }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group">
             <label for="device_id">Device</label>
             <select id="device_id" name="device_id" class="form-select" aria-label="Default select example">
               {% for device in devices %}
@@ -28,13 +36,18 @@
             </select>
           </div>
           <div class="form-group">
-            <label for="photo_shooting_time">Photo</label>
+            <label for="photo">Photo</label>
             <input class="form-control" type="file" id="photo" name="photo" onchange="previewPhoto(event)">
             <img id="photo_preview" src="#" alt="Photo Preview" style="display: none;"><br>
           </div>
           <div class="form-group">
+            <label for="photo_hover">Photo (hover)</label>
+            <input class="form-control" type="file" id="photo_hover" name="photo_hover" onchange="previewPhotoHover(event)">
+            <img id="photo_hover_preview" src="#" alt="Photo Preview" style="display: none;"><br>
+          </div>
+          <div class="form-group">
             <label for="price">Price</label>
-            <input type="text" name="price" class="form-control" id="price"
+            <input type="number" min="1" name="price" class="form-control" id="price"
               placeholder="Price" />
           </div>                      
           <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
@@ -50,6 +63,17 @@
         var reader = new FileReader();
         reader.onload = function() {
             var img = document.getElementById('photo_preview');
+            img.src = reader.result;
+            img.style.display = 'block';
+        }
+        reader.readAsDataURL(input.files[0]);
+    }
+
+    function previewPhotoHover(event) {
+        var input = event.target;
+        var reader = new FileReader();
+        reader.onload = function() {
+            var img = document.getElementById('photo_hover_preview');
             img.src = reader.result;
             img.style.display = 'block';
         }
