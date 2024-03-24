@@ -71,6 +71,7 @@ function Layout() {
      }
 
      const handleClick = (index) => {
+          sessionStorage.setItem('selectedLayout', JSON.stringify(layouts[index]));
           setClickedIndex(index === clickedIndex ? null : index);
      }
 

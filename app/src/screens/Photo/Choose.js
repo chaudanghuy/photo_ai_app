@@ -11,6 +11,24 @@ function Choose() {
      const { t } = useTranslation();
      const navigate = useNavigate();
      const [hoveredImage, setHoveredImage] = useState(null);
+     const [selectedLayout, setSelectedLayout] = useState(null);
+
+
+     const userImage = 'https://placehold.co/800x800';
+
+     useEffect(() => {
+          const storedLanguage = sessionStorage.getItem('language');
+          if (storedLanguage) {
+               i18n.changeLanguage(storedLanguage);
+          }
+
+          // get session storage selectedLayout
+          const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
+          if (sessionSelectedLayout) {
+               const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
+               setSelectedLayout(parsedSelectedLayout.photo_cover);
+          }
+     }, []);
 
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
@@ -24,7 +42,24 @@ function Choose() {
           <div className='photo-choose-container'>
                <div className="go-back" onClick={() => navigate("/photo")}></div>
                <div className="left-big-frame">
-                    <div className="left-choose-container" style={{ backgroundImage: `url(${photo_frame})` }}></div>
+                    <div className="left-choose-container" style={{ backgroundImage: `url(${selectedLayout})` }}>
+                         <div className="choose-photo-row">
+                              <div className="choose-photo-item" style={{ backgroundImage: `url(${userImage})` }}></div>
+                              <div className="choose-photo-item" style={{ backgroundImage: `url(${userImage})` }}></div>
+                         </div>
+                         <div className="choose-photo-row">
+                              <div className="choose-photo-item" style={{ backgroundImage: `url(${userImage})` }}></div>
+                              <div className="choose-photo-item" style={{ backgroundImage: `url(${userImage})` }}></div>
+                         </div>
+                         <div className="choose-photo-row">
+                              <div className="choose-photo-item" style={{ backgroundImage: `url(${userImage})` }}></div>
+                              <div className="choose-photo-item" style={{ backgroundImage: `url(${userImage})` }}></div>
+                         </div>
+                         <div className="choose-photo-row">
+                              <div className="choose-photo-item" style={{ backgroundImage: `url(${userImage})` }}></div>
+                              <div className="choose-photo-item" style={{ backgroundImage: `url(${userImage})` }}></div>
+                         </div>
+                    </div>
                </div>
                <div className="right-choose-container">
                     <div className="choose-line">

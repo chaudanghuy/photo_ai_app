@@ -153,6 +153,14 @@
      /* Add additional styles for your payment content if needed */
 }
 
+.qr-code {
+     bottom: 8%;
+     position: relative;
+     margin-left: 15%;
+     width: 30%;
+     text-align: right;
+}
+
 /** QR **/
 
 

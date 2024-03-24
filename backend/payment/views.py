@@ -16,6 +16,7 @@ from django.contrib import messages
 
 # Create your views here.
 
+
 class PaymentAPI(APIView):
     permission_classes = [permissions.IsAuthenticated]
 
@@ -30,60 +31,63 @@ class PaymentAPI(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
+
+
 class PaymentDetailAPI(APIView):
-    
-        permission_classes = [permissions.IsAuthenticated]
-    
-        def get(self, request, pk, *args, **kwargs):
-            payment = Payment.objects.get(id=pk)
-            serializer = PaymentSerializer(payment)
+
+    permission_classes = [permissions.IsAuthenticated]
+
+    def get(self, request, pk, *args, **kwargs):
+        payment = Payment.objects.get(id=pk)
+        serializer = PaymentSerializer(payment)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    def put(self, request, pk, *args, **kwargs):
+        payment = Payment.objects.get(id=pk)
+        serializer = PaymentSerializer(instance=payment, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
             return Response(serializer.data, status=status.HTTP_200_OK)
-    
-        def put(self, request, pk, *args, **kwargs):
-            payment = Payment.objects.get(id=pk)
-            serializer = PaymentSerializer(instance=payment, data=request.data)
-            if serializer.is_valid():
-                serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-    
-        def delete(self, request, pk, *args, **kwargs):
-            payment = Payment.objects.get(id=pk)
-            payment.delete()
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    def delete(self, request, pk, *args, **kwargs):
+        payment = Payment.objects.get(id=pk)
+        payment.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
 class PaymentList(LoginRequiredMixin, ListView):
     def get(self, request):
         payments = Payment.objects.all()
-        return render(request, 'payments/list.html', {'payments': payments})
-    
+        return render(request, "payments/list.html", {"payments": payments})
+
+
 class PaymentCreateView(LoginRequiredMixin, View):
     def get(self, request):
         form = PaymentForm()
-        return render(request, 'payments/add.html', {'form': form})
-    
+        return render(request, "payments/add.html", {"form": form})
+
     def post(self, request):
         form = PaymentForm(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('payments')
+            return redirect("payments")
         else:
             messages.error(request, form.errors)
-        return render(request, 'payments/add.html', {'form': form})
-    
+        return render(request, "payments/add.html", {"form": form})
+
+
 class PaymentEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
         payment = Payment.objects.get(id=pk)
         form = PaymentForm(instance=payment)
-        return render(request, 'payments/edit.html', {'form': form, 'payment': payment})
-    
+        return render(request, "payments/edit.html", {"form": form, "payment": payment})
+
     def post(self, request, pk):
         payment = Payment.objects.get(id=pk)
         form = PaymentForm(request.POST, instance=payment)
         if form.is_valid():
             form.save()
-            return redirect('payments')
+            return redirect("payments")
         else:
             messages.error(request, form.errors)
-        return render(request, 'payments/edit.html', {'form': form, 'payment': payment})
+        return render(request, "payments/edit.html", {"form": form, "payment": payment})

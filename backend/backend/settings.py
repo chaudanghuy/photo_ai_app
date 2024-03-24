@@ -50,7 +50,8 @@ INSTALLED_APPS = [
     'payment',
     'revenue',
     'sticker',
-    'account'
+    'account',
+    'zalopay'
 ]
 
 MIDDLEWARE = [

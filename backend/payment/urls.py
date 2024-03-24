@@ -4,13 +4,14 @@ from .views import (
     PaymentDetailAPI,
     PaymentList,
     PaymentCreateView,
-    PaymentEditView
+    PaymentEditView    
 )
 
 urlpatterns = [
     # API
     path('api', PaymentAPI.as_view()),
-    path('api/<int:pk>', PaymentDetailAPI.as_view()),    
+    path('api/<int:pk>', PaymentDetailAPI.as_view()),       
+     
     # WEB
     path('', PaymentList.as_view(), name='payments'),
     path('add', PaymentCreateView.as_view(), name='payments-add'),

@@ -15,7 +15,7 @@ class Order(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Order ${self.order_code} with ${self.base_price}"
+        return f"Order #{self.order_code} with {self.total_price}"
     
 class Transaction(models.Model):
     order_id = models.ForeignKey(Order, on_delete=models.CASCADE)
@@ -26,4 +26,4 @@ class Transaction(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Transaction ${self.amount} for order ${self.order_id.order_code}"
+        return f"Transaction total {self.amount} for order ${self.order_id.order_code}"
