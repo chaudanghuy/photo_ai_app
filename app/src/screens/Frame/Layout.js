@@ -46,12 +46,12 @@ function Layout() {
      useEffect(() => {
           const fetchLayoutsByBackground = async () => {
                try {
-                    const response = await axios.get('http://127.0.0.1:8000/layouts/api/by-background/' + sessionStorage.getItem('styleBg'));
+                    const response = await axios.get(`${process.env.REACT_APP_BACKEND}/layouts/api/by-background/` + sessionStorage.getItem('styleBg'));
                     const layoutDatas = response.data
                     const newBackgrounds = layoutDatas.map(item => ({
                          title: item.title,
-                         photo: 'http://127.0.0.1:8000' + item.photo,
-                         photo_cover: 'http://127.0.0.1:8000' + item.photo_cover
+                         photo: process.env.REACT_APP_BACKEND + item.photo,
+                         photo_cover: process.env.REACT_APP_BACKEND + item.photo_cover
                     }));
                     setLayouts(newBackgrounds);
                } catch (error) {

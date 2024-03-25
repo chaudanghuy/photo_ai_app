@@ -165,15 +165,15 @@
 .choose-photo-row {
      display: flex;
      justify-content: center;
-     align-items: center;
+     align-items: center;     
 }
 
 .choose-photo-item {
-     width: 200px;
+     width: 190px;
      height: 122px;
      background-size: cover;
      background-repeat: no-repeat;
-     margin: 2%;
+     margin: 1% 2% 3% 2%;
 }
 
 .left-choose-images-container {

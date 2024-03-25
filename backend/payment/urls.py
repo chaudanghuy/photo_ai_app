@@ -10,7 +10,7 @@ from .views import (
 urlpatterns = [
     # API
     path('api', PaymentAPI.as_view()),
-    path('api/<int:pk>', PaymentDetailAPI.as_view()),       
+    path('api/<str:code>', PaymentDetailAPI.as_view()),       
      
     # WEB
     path('', PaymentList.as_view(), name='payments'),

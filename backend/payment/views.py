@@ -35,25 +35,28 @@ class PaymentAPI(APIView):
 
 class PaymentDetailAPI(APIView):
 
-    permission_classes = [permissions.IsAuthenticated]
-
-    def get(self, request, pk, *args, **kwargs):
-        payment = Payment.objects.get(id=pk)
+    def get(self, request, code, *args, **kwargs):
+        if code is None:
+            return Response({'error': 'Code is required'}, status=status.HTTP_400_BAD_REQUEST)
+        try:
+            payment = Payment.objects.get(code=code)
+        except Payment.DoesNotExist:
+            return Response({'error': 'Payment not found'}, status=status.HTTP_404_NOT_FOUND)    
         serializer = PaymentSerializer(payment)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
-    def put(self, request, pk, *args, **kwargs):
-        payment = Payment.objects.get(id=pk)
-        serializer = PaymentSerializer(instance=payment, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    # def put(self, request, pk, *args, **kwargs):
+    #     payment = Payment.objects.get(id=pk)
+    #     serializer = PaymentSerializer(instance=payment, data=request.data)
+    #     if serializer.is_valid():
+    #         serializer.save()
+    #         return Response(serializer.data, status=status.HTTP_200_OK)
+    #     return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    def delete(self, request, pk, *args, **kwargs):
-        payment = Payment.objects.get(id=pk)
-        payment.delete()
-        return Response(status=status.HTTP_204_NO_CONTENT)
+    # def delete(self, request, pk, *args, **kwargs):
+    #     payment = Payment.objects.get(id=pk)
+    #     payment.delete()
+    #     return Response(status=status.HTTP_204_NO_CONTENT)
 
 class PaymentList(LoginRequiredMixin, ListView):
     def get(self, request):

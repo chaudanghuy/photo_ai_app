@@ -38,33 +38,33 @@ function Frame() {
 
   const fetchFrames = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/frames/api')
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND}/frames/api`)
       const frames = response.data
 
       frames.forEach(frame => {
         if (frame.position === 'row-1-1') {
-          setFrameRow11('http://127.0.0.1:8000' + frame.photo);
-          setFrameRow11Hover('http://127.0.0.1:8000'  + frame.photo_hover)
+          setFrameRow11(process.env.REACT_APP_BACKEND + frame.photo);
+          setFrameRow11Hover(process.env.REACT_APP_BACKEND  + frame.photo_hover)
         }
         if (frame.position === 'row-1-2') {
-          setFrameRow12('http://127.0.0.1:8000' + frame.photo);
-          setFrameRow12Hover('http://127.0.0.1:8000' + frame.photo_hover);
+          setFrameRow12(process.env.REACT_APP_BACKEND + frame.photo);
+          setFrameRow12Hover(process.env.REACT_APP_BACKEND + frame.photo_hover);
         }
         if (frame.position === 'row-1-3') {
-          setFrameRow13('http://127.0.0.1:8000' + frame.photo);
-          setFrameRow13Hover('http://127.0.0.1:8000' + frame.photo_hover)
+          setFrameRow13(process.env.REACT_APP_BACKEND + frame.photo);
+          setFrameRow13Hover(process.env.REACT_APP_BACKEND + frame.photo_hover)
         }
         if (frame.position === 'row-2-1') {
-          setFrameRow21('http://127.0.0.1:8000' + frame.photo);
-          setFrameRow21Hover('http://127.0.0.1:8000' + frame.photo_hover);
+          setFrameRow21(process.env.REACT_APP_BACKEND + frame.photo);
+          setFrameRow21Hover(process.env.REACT_APP_BACKEND + frame.photo_hover);
         }
         if (frame.position === 'row-2-2') {
-          setFrameRow22('http://127.0.0.1:8000' + frame.photo);
-          setFrameRow22Hover('http://127.0.0.1:8000' + frame.photo_hover);
+          setFrameRow22(process.env.REACT_APP_BACKEND + frame.photo);
+          setFrameRow22Hover(process.env.REACT_APP_BACKEND + frame.photo_hover);
         }
         if (frame.position === 'row-2-3') {
-          setFrameRow23('http://127.0.0.1:8000' + frame.photo);
-          setFrameRow23Hover('http://127.0.0.1:8000' + frame.photo_hover);
+          setFrameRow23(process.env.REACT_APP_BACKEND + frame.photo);
+          setFrameRow23Hover(process.env.REACT_APP_BACKEND + frame.photo_hover);
         }
       });
     } catch (error) {

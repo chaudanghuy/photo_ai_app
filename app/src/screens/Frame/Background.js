@@ -32,13 +32,13 @@ function Background() {
 
      const fetchBackgrounds = async () => {
           try {
-               const response = await axios.get('http://127.0.0.1:8000/backgrounds/api')
+               const response = await axios.get(`${process.env.REACT_APP_BACKEND}/backgrounds/api`)
                const backgroundDatas = response.data
                
                const newBackgrounds = backgroundDatas.map(item => ({
                     title: item.title,
-                    photo: 'http://127.0.0.1:8000' + item.photo,
-                    photo_hover: 'http://127.0.0.1:8000' + item.photo_hover                         
+                    photo: process.env.REACT_APP_BACKEND + item.photo,
+                    photo_hover: process.env.REACT_APP_BACKEND + item.photo_hover                         
                }));
                setBackgrounds(backgrounds.concat(newBackgrounds));
           } catch (error) {
