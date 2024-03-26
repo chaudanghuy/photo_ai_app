@@ -38,6 +38,12 @@ function Choose() {
                const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
                setSelectedLayout(parsedSelectedLayout.photo_cover);
           }
+
+          // Retrieve selected photos from session storage
+          const storedSelectedPhotos = JSON.parse(sessionStorage.getItem('choosePhotos'));
+          if (storedSelectedPhotos) {
+               setSelectedPhotos(storedSelectedPhotos);
+          }
      }, []);
 
      const toggleSelection = (index) => {
@@ -59,6 +65,11 @@ function Choose() {
           setHoveredImage(null);
      }
 
+     const goToFilter = () => {
+          sessionStorage.setItem('choosePhotos', JSON.stringify(selectedPhotos));
+          navigate("/filter")
+     }
+
      const selectedPhotoRows = chunkArray(selectedPhotos, 2);
 
      return (
@@ -72,7 +83,7 @@ function Choose() {
                                    {row.map((selectedIndex, photoIndex) => (
                                         <div
                                              key={photoIndex}
-                                             className="choose-photo-item"
+                                             className={row.length == 1 ? 'choose-photo-item-alone' : 'choose-photo-item'}
                                              style={{ backgroundImage: `url(${photos[selectedIndex].url})` }}
                                         />
                                    ))}
@@ -99,7 +110,7 @@ function Choose() {
                     style={{ backgroundImage: `url(${hoveredImage === continue_btn ? continue_btn_click : continue_btn})` }}
                     onMouseEnter={() => handleMouseEnter(continue_btn)}
                     onMouseLeave={handleMouseLeave}
-                    onClick={() => navigate("/filter")}
+                    onClick={goToFilter}
                ></div>
           </div>
      );

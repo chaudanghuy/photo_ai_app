@@ -93,10 +93,12 @@
 
 .photo-webcam {
      text-align: center;
-     top: 24%;
+     top: 15%;
      position: relative;
      font-size: 51px;
      font-family: fantasy;
+     width: 80%;
+     left: 10%;
 }
 
 .photo-count {
@@ -198,6 +200,15 @@
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
+}
+
+.choose-photo-item-alone {
+     width: 190px;
+     height: 122px;
+     background-size: cover;
+     background-repeat: no-repeat;
+     margin: 1%;
+     margin-right: 25%;
 }
 
 .left-choose-images-container {
