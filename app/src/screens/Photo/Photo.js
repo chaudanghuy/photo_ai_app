@@ -23,12 +23,16 @@ function Photo() {
 
      const takeSnapshot = () => {
           const imageSrc = webcamRef.current.getScreenshot();
-          setPhotos(prevPhotos => [...prevPhotos, imageSrc]);
+          const newPhotoArray = [...photos, imageSrc];
+          setPhotos(newPhotoArray);
           setPhotoCount(photoCount + 1);
 
           if (photoCount === 7) {
-               // Redirect to Effect page after capturing 8 photos
-               sessionStorage.setItem('photos', JSON.stringify(newPhotoArray));
+               const photosWithIds = newPhotoArray.map((photo, index) => ({
+                    id: index,
+                    url: photo
+               }));
+               sessionStorage.setItem('photos', JSON.stringify(photosWithIds));
                navigate('/photo-choose')
           } else {
                setCountdown(3);
