@@ -24,7 +24,7 @@ function Choose() {
      const chunkArray = (arr, size) => {
           return arr.reduce((acc, _, i) => (i % size ? acc : [...acc, arr.slice(i, i + size)]), []);
      };
-     
+
 
      useEffect(() => {
           const storedLanguage = sessionStorage.getItem('language');
@@ -65,7 +65,8 @@ function Choose() {
           <div className='photo-choose-container'>
                <div className="go-back" onClick={() => navigate("/photo")}></div>
                <div className="left-big-frame">
-                    <div className="left-choose-container" style={{ backgroundImage: `url(${selectedLayout})` }}>
+                    <div className="left-choose-container" style={{ backgroundImage: `url(${selectedLayout})` }}></div>
+                    <div className="left-choose-photos">
                          {selectedPhotoRows.map((row, rowIndex) => (
                               <div key={rowIndex} className="choose-photo-row">
                                    {row.map((selectedIndex, photoIndex) => (

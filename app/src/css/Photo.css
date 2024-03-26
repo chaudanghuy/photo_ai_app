@@ -197,7 +197,7 @@
      height: 122px;
      background-size: cover;
      background-repeat: no-repeat;
-     margin: 1% 2% 3% 2%;
+     margin: 1%;
 }
 
 .left-choose-images-container {
@@ -205,6 +205,14 @@
      flex-direction: column;
      justify-content: center;
      align-items: center;
+}
+
+.left-choose-photos {
+     margin-top: 8%;
+     margin-left: 12%;
+     width: 79%;
+     height: 100%;
+     position: initial;
 }
 
 /** Choose **/

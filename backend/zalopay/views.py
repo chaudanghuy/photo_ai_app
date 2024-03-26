@@ -10,17 +10,20 @@ from datetime import datetime
 import json, hmac, hashlib, urllib.request, urllib, urllib.parse, random
 from revenue.models import Transaction, Order
 from device.models import Device
+from payment.models import Payment
+from django.conf import settings
 
 
 # Create your views here.
 class ZaloPayAPI(APIView):
 
     def get(self, request, *args, **kwargs):
+        zaloPay = Payment.objects.filter(code='zalopay').first()
         config = {
-            "app_id": 2553,
-            "key1": "PcY4iZIKFCIdgZvA6ueMcMHHUbRLYjPL",
-            "key2": "kLtgPl8HHhfvMuDHPwKfgfsY4Ydm9eIz",
-            "endpoint": "https://sb-openapi.zalopay.vn/v2/create",
+            "app_id": zaloPay.appID,
+            "key1": zaloPay.key1,
+            "key2": zaloPay.key2,
+            "endpoint": zaloPay.endpoint_sandbox if settings.BACKEND_ENV == 'local' else zaloPay.endpoint_prod,
         }
 
         transID = random.randrange(1000000)
