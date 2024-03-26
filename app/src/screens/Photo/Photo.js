@@ -19,27 +19,34 @@ function Photo() {
      const [intervalId, setIntervalId] = useState(null);
      const [photos, setPhotos] = useState([]);
 
-     const rightCornerDivValue = (photoCount + 1) * (1 / 8);     
+     const rightCornerDivValue = (photoCount + 1) * (1 / 8);
 
      const takeSnapshot = () => {
           const imageSrc = webcamRef.current.getScreenshot();
           setPhotos(prevPhotos => [...prevPhotos, imageSrc]);
           setPhotoCount(photoCount + 1);
-          setCountdown(3);
-      };
 
-      useEffect(() => {
+          if (photoCount === 7) {
+               // Redirect to Effect page after capturing 8 photos
+               sessionStorage.setItem('photos', JSON.stringify(newPhotoArray));
+               navigate('/photo-choose')
+          } else {
+               setCountdown(3);
+          }
+     };
+
+     useEffect(() => {
           const timer = setInterval(() => {
-              if (countdown > 0) {
-                  setCountdown(countdown - 1);
-              } else {
-               takeSnapshot();
-              }
+               if (countdown > 0) {
+                    setCountdown(countdown - 1);
+               } else {
+                    takeSnapshot();
+               }
           }, 1000);
-  
+
           return () => clearInterval(timer); // Cleanup timer on unmount
-      }, [countdown]);
-     
+     }, [countdown]);
+
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
      }
@@ -57,7 +64,7 @@ function Photo() {
                     <div className="photo-count">{photoCount}/8</div>
                </div>
                <div className="middle-photo-div" style={{ backgroundImage: `url(${frame})` }} onClick={() => navigate('/photo-choose')}>
-                    <Webcam 
+                    <Webcam
                          audio={false}
                          ref={webcamRef}
                          screenshotFormat='image/jpeg'

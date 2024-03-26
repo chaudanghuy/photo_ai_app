@@ -91,6 +91,30 @@
      height: auto;
 }
 
+.photo-webcam {
+     text-align: center;
+     top: 24%;
+     position: relative;
+     font-size: 51px;
+     font-family: fantasy;
+}
+
+.photo-count {
+     text-align: center;
+     top: 24%;
+     position: relative;
+     font-size: 51px;
+     font-family: fantasy;
+}
+
+.photo-countdown {
+     text-align: center;
+     top: 24%;
+     position: relative;
+     font-size: 51px;
+     font-family: fantasy;
+}
+
 /** Choose **/
 .photo-choose-container {
      position: relative;
@@ -165,7 +189,7 @@
 .choose-photo-row {
      display: flex;
      justify-content: center;
-     align-items: center;     
+     align-items: center;
 }
 
 .choose-photo-item {

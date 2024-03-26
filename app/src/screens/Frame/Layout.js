@@ -73,29 +73,30 @@ function Layout() {
      const handleClick = (index) => {
           sessionStorage.setItem('selectedLayout', JSON.stringify(layouts[index]));
           setClickedIndex(index === clickedIndex ? null : index);
+          setHoverImageButton(confirm)
      }
 
      const goToPayment = () => {
-          navigate('/payment');
+          if (hoverImageButton === confirm) {
+               navigate('/payment');
+          }
      }
 
      return (
           <div className='layout-container' style={{ backgroundImage: `url(${layoutBackground})` }}>
                <div className="go-back" onClick={() => navigate("/frame-step-2")}></div>
-               <div className="style-section">               
-               {layouts.map((item, index) => (                    
-                    <div key={item.id} className="style-column">
-                         <div className="image-style-div">
-                              <div className={`layout-overlay ${index === clickedIndex ? 'clicked' : ''}`} style={{ backgroundImage: `url(${item.photo_cover})` }} onClick={() => handleClick(index)}></div>
+               <div className="style-section">
+                    {layouts.map((item, index) => (
+                         <div key={item.id} className="style-column">
+                              <div className="image-style-div">
+                                   <div className={`layout-overlay ${index === clickedIndex ? 'clicked' : ''}`} style={{ backgroundImage: `url(${item.photo_cover})` }} onClick={() => handleClick(index)}></div>
+                              </div>
                          </div>
-                    </div>               
-               ))}
+                    ))}
                </div>
                <div
                     className="confirm-layout-button"
                     style={{ backgroundImage: `url(${hoverImageButton === confirm ? confirm_click : confirm})` }}
-                    onMouseEnter={() => setHoverImageButton(confirm)}
-                    onMouseLeave={() => setHoverImageButton(null)}
                     onClick={goToPayment}
                ></div>
           </div>
