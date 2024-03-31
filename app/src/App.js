@@ -22,8 +22,8 @@ function App() {
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/frame" element={<Frame />} />
-        <Route path="/frame-step-2" element={<Background />} />
-        <Route path="/frame-step-3" element={<Layout />} />
+        <Route path="/background" element={<Background />} />
+        <Route path="/layout" element={<Layout />} />
         <Route path="/payment" element={<Payment />} />
         <Route path="/payment-result" element={<Result />} />
         <Route path="/payment-cash" element={<Cash />} />

@@ -16,6 +16,8 @@ function Layout() {
      const [layoutBackground, setLayoutBackground] = useState(null);
      const [layouts, setLayouts] = useState([]);
      const [clickedIndex, setClickedIndex] = useState(null);
+     const [selectedFrame, setSelectedFrame] = useState(null);
+
      const { t } = useTranslation();
      const navigate = useNavigate();
 
@@ -23,6 +25,11 @@ function Layout() {
           const storedLanguage = sessionStorage.getItem('language');
           if (storedLanguage) {
                i18n.changeLanguage(storedLanguage);
+          }
+
+          const frame = sessionStorage.getItem('selectedFrame');
+          if (frame) {
+               setSelectedFrame(JSON.parse(frame).frame);
           }
 
           const sessionStyleBg = sessionStorage.getItem('styleBg');
@@ -46,12 +53,14 @@ function Layout() {
      useEffect(() => {
           const fetchLayoutsByBackground = async () => {
                try {
-                    const response = await axios.get(`${process.env.REACT_APP_BACKEND}/layouts/api/by-background/` + sessionStorage.getItem('styleBg'));
+                    const frame = sessionStorage.getItem('selectedFrame');
+                    const response = await axios.get(`${process.env.REACT_APP_BACKEND}/layouts/api/by-background/` + sessionStorage.getItem('styleBg') + '/frame/' + JSON.parse(frame).frame);
                     const layoutDatas = response.data
                     const newBackgrounds = layoutDatas.map(item => ({
                          title: item.title,
                          photo: process.env.REACT_APP_BACKEND + item.photo,
-                         photo_cover: process.env.REACT_APP_BACKEND + item.photo_cover
+                         photo_cover: process.env.REACT_APP_BACKEND + item.photo_cover,
+                         photo_full: process.env.REACT_APP_BACKEND + item.photo_full
                     }));
                     setLayouts(newBackgrounds);
                } catch (error) {
@@ -84,12 +93,12 @@ function Layout() {
 
      return (
           <div className='layout-container' style={{ backgroundImage: `url(${layoutBackground})` }}>
-               <div className="go-back" onClick={() => navigate("/frame-step-2")}></div>
+               <div className="go-back" onClick={() => navigate("/background")}></div>
                <div className="style-section">
                     {layouts.map((item, index) => (
                          <div key={item.id} className="style-column">
                               <div className="image-style-div">
-                                   <div className={`layout-overlay ${index === clickedIndex ? 'clicked' : ''}`} style={{ backgroundImage: `url(${item.photo_cover})` }} onClick={() => handleClick(index)}></div>
+                                   <div className={`${selectedFrame === '2cut-x2' || selectedFrame === '4-cutx2' ? 'layout-overlay-cut' : 'layout-overlay'} ${index === clickedIndex ? 'clicked' : ''}`} style={{ backgroundImage: `url(${item.photo_full})` }} onClick={() => handleClick(index)}></div>
                               </div>
                          </div>
                     ))}

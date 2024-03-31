@@ -12,7 +12,7 @@ urlpatterns = [
       # API
       path('api', LayoutAPI.as_view()),
       path('api/<int:pk>', LayoutDetailAPI.as_view()),
-      path('api/by-background/<str:background>', LayoutByBackgroundAPI.as_view(), name='layouts-by-background'),
+      path('api/by-background/<str:background>/frame/<str:frame>', LayoutByBackgroundAPI.as_view(), name='layouts-by-background'),
 
       # WEB
       path('', LayoutList.as_view(), name='layouts'),

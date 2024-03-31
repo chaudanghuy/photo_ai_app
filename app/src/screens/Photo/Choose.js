@@ -12,7 +12,10 @@ function Choose() {
      const navigate = useNavigate();
      const [hoveredImage, setHoveredImage] = useState(null);
      const [selectedLayout, setSelectedLayout] = useState(null);
+     const [myBackground, setMyBackground] = useState(null);
      const [selectedPhotos, setSelectedPhotos] = useState([]);
+     const [selectedFrame, setSelectedFrame] = useState(null);
+     const [confirmButton, setConfirmButton] = useState(false);
 
      const photos = JSON.parse(sessionStorage.getItem('photos'));
      // Split photos into arrays of 4 photos each
@@ -37,23 +40,47 @@ function Choose() {
           if (sessionSelectedLayout) {
                const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
                setSelectedLayout(parsedSelectedLayout.photo_cover);
+               setMyBackground(parsedSelectedLayout.photo);
           }
 
-          // Retrieve selected photos from session storage
-          const storedSelectedPhotos = JSON.parse(sessionStorage.getItem('choosePhotos'));
-          if (storedSelectedPhotos) {
-               setSelectedPhotos(storedSelectedPhotos);
+          // Retrieve selected frame from session storage
+          const storedSelectedFrame = JSON.parse(sessionStorage.getItem('selectedFrame'));
+          if (storedSelectedFrame) {
+               setSelectedFrame(storedSelectedFrame.frame);
           }
      }, []);
 
      const toggleSelection = (index) => {
+          // Determine total photos
+          let totalMeetsPhotos = 0;
+          if (selectedFrame == 'Stripx2') {
+               totalMeetsPhotos = 8;
+          } else if (selectedFrame == '2cut-x2') {
+               totalMeetsPhotos = 2;
+          } else if (selectedFrame == '3-cutx2') {
+               totalMeetsPhotos = 3;
+          } else if (selectedFrame == '4-cutx2') {
+               totalMeetsPhotos = 4;
+          } else if (selectedFrame == '5-cutx2') {
+               totalMeetsPhotos = 5;
+          } else if (selectedFrame == '6-cutx2') {
+               totalMeetsPhotos = 6;
+          }
+
           const selectedIndex = selectedPhotos.indexOf(index);
-          if (selectedIndex === -1) {
+          if (selectedIndex === -1 && selectedPhotos.length < totalMeetsPhotos) {
                // Add the photo to selectedPhotos if it's not already selected
                setSelectedPhotos([...selectedPhotos, index]);
           } else {
                // Remove the photo from selectedPhotos if it's already selected
                setSelectedPhotos(selectedPhotos.filter((item) => item !== index));
+          }
+
+          // Check if all photos have been selected
+          if (selectedPhotos.length === totalMeetsPhotos - 1) {
+               setConfirmButton(true);
+          } else {
+               setConfirmButton(false);
           }
      };
 
@@ -67,29 +94,184 @@ function Choose() {
 
      const goToFilter = () => {
           sessionStorage.setItem('choosePhotos', JSON.stringify(selectedPhotos));
-          navigate("/filter")
+
+          // Determine total photos
+          let totalMeetsPhotos = 0;
+          if (selectedFrame == 'Stripx2') {
+               totalMeetsPhotos = 8;
+          } else if (selectedFrame == '2cut-x2') {
+               totalMeetsPhotos = 2;
+          } else if (selectedFrame == '3-cutx2') {
+               totalMeetsPhotos = 3;
+          } else if (selectedFrame == '4-cutx2') {
+               totalMeetsPhotos = 4;
+          } else if (selectedFrame == '5-cutx2') {
+               totalMeetsPhotos = 5;
+          } else if (selectedFrame == '6-cutx2') {
+               totalMeetsPhotos = 6;
+          }
+
+          if (selectedPhotos.length === totalMeetsPhotos) {
+               navigate("/filter")
+          }
      }
 
-     const selectedPhotoRows = chunkArray(selectedPhotos, 2);
+     const displayClassNameForBackground = () => {
+          if (selectedFrame == '2cut-x2') {
+               return 'left-choose-photos-2cut';
+          } else if (selectedFrame == '4-cutx2') {
+               return 'left-choose-photos-4cut';
+          } else if (selectedFrame == '5-cutx2') {
+               return 'left-choose-photos-5cut';
+          } else {
+               return 'left-choose-photos';
+          }
+     }
+
+     const displayClassNameForLayout = () => {
+          if (selectedFrame == '2cut-x2') {
+               return 'left-choose-container-2cut';
+          } else if (selectedFrame == '4-cutx2') {
+               return 'left-choose-container-4cut';
+          } else if (selectedFrame == '5-cutx2') {
+               return 'left-choose-container-5cut';
+          } else {
+               return 'left-choose-container';
+          }
+     }
+
+     const displayClassNameForPhoto = (rowIndex, photoIndex) => {
+          if (selectedFrame === 'Stripx2' || selectedFrame === '6-cutx2') {
+               if (rowIndex === 0 && photoIndex === 0) {
+                    return 'choose-photo-item-0-0';
+               } else if (rowIndex === 0 && photoIndex === 1) {
+                    return 'choose-photo-item-0-1';
+               } else if (rowIndex === 1 && photoIndex === 0) {
+                    return 'choose-photo-item-1-0';
+               } else if (rowIndex === 1 && photoIndex === 1) {
+                    return 'choose-photo-item-1-1';
+               } else if (rowIndex === 2 && photoIndex === 0) {
+                    return 'choose-photo-item-2-0';
+               } else if (rowIndex === 2 && photoIndex === 1) {
+                    return 'choose-photo-item-2-1';
+               } else if (rowIndex === 3 && photoIndex === 0) {
+                    return 'choose-photo-item-3-0';
+               } else if (rowIndex === 3 && photoIndex === 1) {
+                    return 'choose-photo-item-3-1';
+               }
+          } else if (selectedFrame === '2cut-x2') {
+               if (rowIndex === 0 && photoIndex === 0) {
+                    return 'choose-photo-item-2cut-0-0';
+               } else if (rowIndex === 0 && photoIndex === 1) {
+                    return 'choose-photo-item-2cut-0-1';
+               }
+          } else if (selectedFrame === '3-cutx2') {
+               if (rowIndex === 0 && photoIndex === 0) {
+                    return 'choose-photo-item-3cut-0-0';
+               } else if (rowIndex === 0 && photoIndex === 1) {
+                    return 'choose-photo-item-3cut-0-1';
+               } else if (rowIndex === 1 && photoIndex === 0) {
+                    return 'choose-photo-item-3cut-0-1';
+               }
+          } else if (selectedFrame === '4-cutx2') {
+               if (rowIndex === 0 && photoIndex === 0) {
+                    return 'choose-photo-item-4cut-0-0';
+               } else if (rowIndex === 0 && photoIndex === 1) {
+                    return 'choose-photo-item-4cut-0-1';
+               } else if (rowIndex === 1 && photoIndex === 0) {
+                    return 'choose-photo-item-4cut-1-0';
+               } else if (rowIndex === 1 && photoIndex === 1) {
+                    return 'choose-photo-item-4cut-1-1';
+               }
+          } else if (selectedFrame === '5-cutx2') {
+               if (rowIndex === 0 && photoIndex === 0) {
+                    return 'choose-photo-item-5cut-0-0';
+               } else if (rowIndex === 0 && photoIndex === 1) {
+                    return 'choose-photo-item-5cut-0-1';
+               } else if (rowIndex === 1 && photoIndex === 0) {
+                    return 'choose-photo-item-5cut-1-0';
+               } else if (rowIndex === 1 && photoIndex === 1) {
+                    return 'choose-photo-item-5cut-1-1';
+               }
+          }
+          return 'choose-photo-item';
+     }
+
+     const showSelectedPhotos = () => {
+          if (selectedFrame == '3-cutx2' && selectedPhotos.length > 1) {
+               const firstPhotoTpl = (
+                    <div className="choose-photo-row">
+                         <div
+                              className="choose-photo-item-3cut-top-line"
+                              style={{ backgroundImage: `url(${photos[selectedPhotos[0]].url})` }}
+                         />
+                    </div>
+               )
+               const selectedPhotoRows = chunkArray(selectedPhotos.slice(1), 2);
+               return (
+                    [firstPhotoTpl, ...selectedPhotoRows.map((row, rowIndex) => (
+                         <div key={rowIndex} className="choose-photo-row">
+                              {row.map((selectedIndex, photoIndex) => (
+                                   <div
+                                        key={photoIndex}
+                                        className={displayClassNameForPhoto(rowIndex, photoIndex)}
+                                        style={{ backgroundImage: `url(${photos[selectedIndex].url})` }}
+                                   />
+                              ))}
+                         </div>
+                    ))]
+               );
+          } else if (selectedFrame == '5-cutx2' && selectedPhotos.length > 1) {
+               const lastPhotoTpl = (
+                    <div className="choose-photo-row">
+                         <div
+                              className="choose-photo-item-5cut-last-line"
+                              style={{ backgroundImage: `url(${photos[selectedPhotos[selectedPhotos.length - 1]].url})` }}
+                         />
+                    </div>
+               )
+               const selectedPhotoRows = chunkArray(selectedPhotos.slice(0, selectedPhotos.length - 1), 2);
+               return (
+                    [selectedPhotoRows.map((row, rowIndex) => (
+                         <div key={rowIndex} className="choose-photo-row">
+                              {row.map((selectedIndex, photoIndex) => (
+                                   <div
+                                        key={photoIndex}
+                                        className={displayClassNameForPhoto(rowIndex, photoIndex)}
+                                        style={{ backgroundImage: `url(${photos[selectedIndex].url})` }}
+                                   />
+                              ))}
+                         </div>
+                    )), lastPhotoTpl]
+               );
+          } else {
+               const selectedPhotoRows = chunkArray(selectedPhotos, 2);
+               return (
+                    selectedPhotoRows.map((row, rowIndex) => (
+                         <div key={rowIndex} className="choose-photo-row">
+                              {row.map((selectedIndex, photoIndex) => (
+                                   <div
+                                        key={photoIndex}
+                                        className={displayClassNameForPhoto(rowIndex, photoIndex)}
+                                        style={{ backgroundImage: `url(${photos[selectedIndex].url})` }}
+                                   />
+                              ))}
+                         </div>
+                    ))
+               );
+          }
+     }
+
+
 
      return (
           <div className='photo-choose-container'>
                <div className="go-back" onClick={() => navigate("/photo")}></div>
                <div className="left-big-frame">
-                    <div className="left-choose-container" style={{ backgroundImage: `url(${selectedLayout})` }}></div>
-                    <div className="left-choose-photos">
-                         {selectedPhotoRows.map((row, rowIndex) => (
-                              <div key={rowIndex} className="choose-photo-row">
-                                   {row.map((selectedIndex, photoIndex) => (
-                                        <div
-                                             key={photoIndex}
-                                             className={row.length == 1 ? 'choose-photo-item-alone' : 'choose-photo-item'}
-                                             style={{ backgroundImage: `url(${photos[selectedIndex].url})` }}
-                                        />
-                                   ))}
-                              </div>
-                         ))}
+                    <div className={displayClassNameForBackground()} style={{ backgroundImage: `url(${myBackground})` }}>
+                         {showSelectedPhotos()}
                     </div>
+                    <div className={displayClassNameForLayout()} style={{ backgroundImage: `url(${selectedLayout})` }}></div>
                </div>
                <div className="right-choose-container">
                     {photoGroups.map((group, index) => (

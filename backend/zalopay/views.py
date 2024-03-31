@@ -27,7 +27,7 @@ class ZaloPayAPI(APIView):
         }
 
         transID = random.randrange(1000000)
-
+        
         order = {
             "app_id": config["app_id"],
             "app_trans_id": "{:%y%m%d}_{}".format(
@@ -37,7 +37,7 @@ class ZaloPayAPI(APIView):
             "app_time": int(round(time() * 1000)),  # miliseconds
             "embed_data": json.dumps({}),
             "item": json.dumps([{}]),
-            "amount": request.GET.get("amount") or 100000,
+            "amount": request.GET.get("amount"),
             "description": "PhotoMong - Payment for the order #" + str(transID),
             "bank_code": "zalopayapp",
         }
@@ -106,15 +106,9 @@ class ZaloPayWebhookAPI(APIView):
 
     def get(self, request, *args, **kwargs):        
         # Get order code
-        device_code = request.GET.get("device")
-        if device_code:
-            device = Device.objects.filter(code=device_code).first()
-            if device:
-                order = Order.objects.filter(device_id=device).first()
-                result = {
-                    "status": "Success",
-                }
-                return Response(result, status=status.HTTP_200_OK)        
+        order_code = request.GET.get("order")
+        if order_code:
+            order = Order.objects.filter(order_code=order_code).first()                     
         
         config = {
             "app_id": 2553,
@@ -151,12 +145,23 @@ class ZaloPayWebhookAPI(APIView):
         
         # Debug
         order.status = "Success"
+        order.save()
+        
+        # Create Transaction if Success
+        if (order.status == 'Success'):
+            Transaction.objects.create(
+                order_id=order,
+                payment_id=Payment.objects.filter(code='zalopay').first(),
+                amount=order.total_price,
+                transaction_status="Success",
+            )
         
         result_response = {
             "order_code": order.order_code,
             "return_message": result.get("return_message"),            
             "return_code": result.get("return_code"),
-            "status": order.status
+            "status_real": order.status,
+            "status": "Success",    #DEBUG
         }
 
 

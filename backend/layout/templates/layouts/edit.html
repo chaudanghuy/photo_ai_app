@@ -22,9 +22,17 @@
         </div>
         <div class="form-group">
           <label for="frame">Background</label>
-          <select name="background_id" id="background_id" class="form-select" aria-label="Default select example">
+          <select name="background" id="background" class="form-select" aria-label="Default select example">
             {% for background in backgrounds %}
-            <option value="{{ background.id }}" {% if background.id == layout.background_id.id %} selected {% endif %}>{{ background.title }}</option>
+            <option value="{{ background.id }}" {% if background.id == layout.background.id %} selected {% endif %}>{{ background.title }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="frame">Frames</label>
+          <select name="frame" id="frame" class="form-select" aria-label="Default select example">
+            {% for frame in frames %}
+              <option value="{{ frame.id }}" {% if frame.id == layout.frame.id %} selected {% endif %}>{{ frame.title }}</option>
             {% endfor %}
           </select>
         </div>
@@ -37,6 +45,11 @@
           <label>Photo Cover</label>
           <input class="form-control" type="file" id="photo_cover" name="photo_cover" onchange="previewPhoto(event, 'photo_cover_preview')" />
           <img class="photo_preview" id="photo_cover_preview" src="{{ layout.photo_cover.url }}" alt="Photo Preview"><br>
+        </div>
+        <div class="form-group">
+          <label>Photo Full</label>
+          <input class="form-control" type="file" id="photo_full" name="photo_full" onchange="previewPhoto(event, 'photo_full_preview')" />
+          <img class="photo_preview" id="photo_full_preview" src="{{ layout.photo_full.url }}" alt="Photo Preview"><br>
         </div>
         <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
         <a href="{% url 'layouts' %}" class="btn btn-light">Cancel</button>

@@ -46,7 +46,7 @@
                 <td><img src="{{frame.photo.url}}" alt="Photo"></td>
                 <td>{{frame.device_id.name}}</td>
                 <td class="text-danger">
-                  {{frame.price}} <i class="mdi mdi-cash"></i>
+                  {{frame.price|floatformat}} <i class="mdi mdi-cash"></i>
                 </td>
                 <td>
                   {{frame.created_at}}
@@ -73,7 +73,7 @@
       var rows = document.querySelectorAll('#frames-table tbody tr');
       rows.forEach(function(row) {
         var deviceId = row.getAttribute('data-device-id')
-        if (!selectedDeviceId || selectedDeviceId === deviceId) {
+        if (!selectedDeviceId || selectedDeviceId === deviceId || selectedDeviceId == 0) {
           row.style.display = '';
         } else {
           row.style.display = 'none';

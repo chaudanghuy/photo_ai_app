@@ -3,7 +3,6 @@ from frame.models import Frame
 
 # Create your models here.
 class Background(models.Model):
-    frame_id = models.ForeignKey(Frame, on_delete=models.CASCADE)
     title = models.TextField()
     photo = models.ImageField(upload_to='backgrounds')
     photo_hover = models.ImageField(upload_to='backgrounds', default='backgrounds/default.png')

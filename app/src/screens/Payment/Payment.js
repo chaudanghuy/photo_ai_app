@@ -36,8 +36,6 @@ function Payment() {
       navigate('/payment-qr');
     } else if (method === 'promo') {
       navigate('/payment-promo');
-    } else if (method === 'vnpay') {
-      navigate('/payment-qr');
     }
   }
 
@@ -46,7 +44,8 @@ function Payment() {
       <div className="go-back" onClick={() => navigate("/frame-step-3")}></div>
       <div className="payment-line">
         <div className="payment-method" style={{ backgroundImage: `url(${hoveredImage === cash ? cash_click : cash})` }} onMouseEnter={() => handleMouseEnter(cash)} onMouseLeave={handleMouseLeave} onClick={() => goToPay('cash')}></div>
-        <div className="payment-method" style={{ backgroundImage: `url(${hoveredImage === vnpay ? vnpay_click : vnpay})` }} onMouseEnter={() => handleMouseEnter(vnpay)} onMouseLeave={handleMouseLeave} onClick={() => goToPay('vnpay')}></div>
+        <div className="payment-method" style={{ backgroundImage: `url(${hoveredImage === momo ? momo_click : momo})` }} onMouseEnter={() => handleMouseEnter(momo)} onMouseLeave={handleMouseLeave} onClick={() => goToPay('momo')}></div>
+        <div className="payment-method" style={{ backgroundImage: `url(${hoveredImage === zalopay ? zalopay_click : zalopay})` }} onMouseEnter={() => handleMouseEnter(zalopay)} onMouseLeave={handleMouseLeave} onClick={() => goToPay('zalopay')}></div>
         <div className="payment-method" style={{ backgroundImage: `url(${hoveredImage === promo ? promo_click : promo})` }} onMouseEnter={() => handleMouseEnter(promo)} onMouseLeave={handleMouseLeave} onClick={() => goToPay('promo')}></div>
       </div>
     </div>

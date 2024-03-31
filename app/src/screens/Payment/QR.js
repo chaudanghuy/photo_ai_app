@@ -16,10 +16,16 @@ function QR() {
      useEffect(() => {
           const fetchQRPayment = async () => {
                try {
-                    const response = await fetch('http://127.0.0.1:8000/zalopay/api?device=PB1&amount=10000');
+                    const deviceNumber = process.env.REACT_APP_DEVICE_NUMBER;
+                    const framePrice = sessionStorage.getItem('framePrice');
+                    const response = await fetch(`${process.env.REACT_APP_BACKEND}/zalopay/api?device=${deviceNumber}&amount=${framePrice}`);
                     const qrCodeData = await response.json();
                     setQrCode(qrCodeData.qr_code);
                     setOrderCode(qrCodeData.order_code);
+
+                    if (qrCodeData.return_code == 1) {
+                         setPaymentStatus(qrCodeData.status);
+                    }
                } catch (error) {
                     console.error(error);
                }
@@ -29,9 +35,9 @@ function QR() {
      }, [])
 
      useEffect(() => {
-          const checkPaymentStatus = async () => {
+          const checkPaymentStatus = async (orderCodeNum) => {
                try {
-                    const response = await fetch(`http://127.0.0.1:8000/zalopay/api/webhook?device=PB1`);
+                    const response = await fetch(`${process.env.REACT_APP_BACKEND}/zalopay/api/webhook?order=${orderCodeNum}`);
                     const paymentData = await response.json();
                     if (paymentData.status === "Success") {
                          clearInterval(intervalId);
@@ -43,19 +49,21 @@ function QR() {
           };
 
           const intervalId = setInterval(() => {
-               checkPaymentStatus()
+               if (orderCode) {
+                    checkPaymentStatus(orderCode);
+               }
           }, 8000);
-          
+
           return () => {
                clearInterval(intervalId);
           }
-     }, []);
+     })
 
      useEffect(() => {
-          if (paymentStatus === 'Success') {              
-              navigate("/payment-result"); // Redirect to the next page
+          if (paymentStatus === 'Success') {
+               navigate("/payment-result"); // Redirect to the next page
           }
-      }, [paymentStatus]);
+     }, [paymentStatus]);
 
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
@@ -73,7 +81,7 @@ function QR() {
           <div className='qr-container'>
                <div className='qr-code'>
                     {qrCode && <QRCode value={qrCode} />}
-               </div>               
+               </div>
                <div className="go-back" onClick={goBack}></div>
           </div>
      );

@@ -13,14 +13,6 @@
             <input type="text" class="form-control" id="title" name="title" placeholder="Title" />
           </div>          
           <div class="form-group">
-            <label for="frame">Frame</label>
-            <select name="frame_id" id="frame" class="form-select" aria-label="Default select example">
-              {% for frame in frames %}
-              <option value="{{ frame.id }}">{{ frame.title }}</option>
-              {% endfor %}
-            </select>
-          </div>
-          <div class="form-group">
             <label for="position">Position</label>
             <select name="position" id="position" class="form-select" aria-label="Default select example">
               {% for p in positions %}

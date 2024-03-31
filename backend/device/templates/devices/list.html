@@ -24,6 +24,7 @@
             <thead>
               <tr>
                 <th>Device</th>
+                <th>Device Code</th>
                 <th>Store</th>
                 <th>Status</th>
                 <th></th>
@@ -33,6 +34,7 @@
               {% for device in devices %}
               <tr>
                 <td>{{device.name}}</td>
+                <td>{{device.code}}</td>
                 <td>{{device.store_id.name}}</td>
                 <td>
 

@@ -9,19 +9,17 @@ from device.models import Device
 class Dashboard(LoginRequiredMixin, View):    
     def get(self, request):
         # Transaction
-        transactions = Transaction.objects.all()
+        transactions = Transaction.objects.order_by('-id')
         total_amount = sum(t.amount for t in transactions)
         
         # Order
-        orders = Order.objects.all()
-        total_orders = orders.count()
+        total_orders = transactions.count()
         
         # Device
         devices = Device.objects.all()
         total_devices_online = sum(1 for device in devices if device.status == 'Online')
         
-        # Get list of transactions sorted by id
-        transactions = Order.objects.order_by('id')
+        # Get list of transactions sorted by id        
         
         return render(request, 'dashboard.html', {
             'total_amount': total_amount,

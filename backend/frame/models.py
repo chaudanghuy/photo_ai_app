@@ -8,7 +8,7 @@ class Frame(models.Model):
      photo = models.ImageField(upload_to='frames')     
      photo_hover = models.ImageField(upload_to='frames', default='frames/default.png')
      position = models.TextField(default='center')
-     price = models.DecimalField(max_digits=10, decimal_places=2)
+     price = models.DecimalField(max_digits=10, decimal_places=0)
      created_at = models.DateTimeField(auto_now_add=True)
      deleted_at = models.DateTimeField(auto_now_add=True)
 
