@@ -208,6 +208,16 @@
      background-position: center;
 }
 
+.code-input-code {
+     position: absolute;
+     top: 22%;
+     left: 32%;
+     width: 55%;
+     height: calc(100% - 20px);
+     font-size: 80px;
+     font-family: Arial, Helvetica, sans-serif;
+}
+
 .redeem-button {
      position: absolute;
      top: 25%;

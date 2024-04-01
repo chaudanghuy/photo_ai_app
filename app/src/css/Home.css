@@ -28,13 +28,13 @@
 }
 
 .start-button {
-    width: 200px;
-    height: 200px;
+    width: 30%;
+    height: 20%;
     background-image: url('../assets/Home/start.png');
     background-size: contain;
     background-repeat: no-repeat;
     position: absolute;
-    bottom: 20px;
+    bottom: 5%;
     display: flex;
     justify-content: center;
     align-items: center;

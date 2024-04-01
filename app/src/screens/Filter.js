@@ -76,6 +76,12 @@ function Filter() {
           if (storedSelectedPhotos) {
                setSelectedPhotos(storedSelectedPhotos);
           }
+
+          // Retrieve selected frame from session storage
+          const storedSelectedFrame = JSON.parse(sessionStorage.getItem('selectedFrame'));
+          if (storedSelectedFrame) {
+               setSelectedFrame(storedSelectedFrame.frame);
+          }
      }, []);
 
      const handleMouseEnter = (image) => {
