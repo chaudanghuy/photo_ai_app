@@ -20,6 +20,9 @@ import smooth from '../assets/Filter/smooth.png';
 import smooth_click from '../assets/Filter/smooth_click.png';
 import continue_btn from '../assets/Filter/continue_btn.png';
 import continue_btn_click from '../assets/Filter/continue_btn_click.png';
+import plus_icon from '../assets/Filter/plus.png';
+import minus_icon from '../assets/Filter/minus.png';
+import intensity from '../assets/Filter/intensity.png';
 
 function Filter() {
      const { t } = useTranslation();
@@ -250,8 +253,12 @@ function Filter() {
                     </div>
                     <div className={displayClassNameForLayout()} style={{ backgroundImage: `url(${selectedLayout})` }}></div>
                </div>
-               <div className="middle-filter" style={{ backgroundImage: `url(${filter_hover})` }}>
+               <div className="middle-filter" style={{ backgroundImage: `url(${filter_hover})` }}></div>
+               <div className='plus-minus'>
+                    <div className='plus-icon' style={{ backgroundImage: `url(${plus_icon})` }}></div>
+                    <div className='minus-icon' style={{ backgroundImage: `url(${minus_icon})` }}></div>
                </div>
+               <div className='intensity-icon' style={{ backgroundImage: `url(${intensity})` }}></div>
                <div className="right-filter">
                     <div className="filter-line">
                          <div className="filter-image" style={{ backgroundImage: `url(${personal})` }} onClick={() => handleFilter(0)}></div>
