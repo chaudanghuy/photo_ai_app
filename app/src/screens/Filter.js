@@ -24,6 +24,75 @@ import plus_icon from '../assets/Filter/plus.png';
 import minus_icon from '../assets/Filter/minus.png';
 import intensity from '../assets/Filter/intensity.png';
 
+const DEFAULT_OPTIONS = [
+     //personality
+     {
+          name: 'Brightness',
+          property: 'brightness',
+          value: 100,
+          range: {
+               min: 0,
+               max: 200
+          },
+          unit: '%'
+     },
+     // natural look
+     {
+          name: 'Contrast',
+          property: 'contrast',
+          value: 100,
+          range: {
+               min: 0,
+               max: 200
+          },
+          unit: '%'
+     },
+     // perfect pink
+     {
+          name: 'Saturation',
+          property: 'saturate',
+          value: 100,
+          range: {
+               min: 0,
+               max: 200
+          },
+          unit: '%'
+     },
+     // classic
+     {
+          name: 'Sepia',
+          property: 'sepia',
+          value: 0,
+          range: {
+               min: 0,
+               max: 100
+          },
+          unit: '%'
+     },
+     // black and white
+     {
+          name: 'Grayscale',
+          property: 'grayscale',
+          value: 0,
+          range: {
+               min: 0,
+               max: 100
+          },
+          unit: '%'
+     },
+     // skin smooth
+     {
+          name: 'Hue Rotate',
+          property: 'hue-rotate',
+          value: 0,
+          range: {
+               min: 0,
+               max: 360
+          },
+          unit: 'deg'
+     },
+]
+
 function Filter() {
      const { t } = useTranslation();
      const navigate = useNavigate();
@@ -34,6 +103,9 @@ function Filter() {
      const [myBackground, setMyBackground] = useState(null);
      const [selectedFrame, setSelectedFrame] = useState(null);
      const [confirmButton, setConfirmButton] = useState(false);
+     const [percentage, setPercentage] = useState(10);
+     const [options, setOptions] = useState(DEFAULT_OPTIONS);
+     const [sliderChange, setSliderChange] = useState(false);
 
      const selectedFilterEffects = [
           { id: 1, name: 'personality', effect: 'brightness(1.2) saturate(1.1) contrast(1.1)' },
@@ -96,6 +168,18 @@ function Filter() {
           setFilterEffect(selectedFilterEffects[index].effect);
      };
 
+     const increasePercentage = () => {
+          setSliderChange(true);
+          if (percentage < 570) {
+               setPercentage(percentage + 10);
+          }
+     }
+
+     const decreasePercentage = () => {
+          setSliderChange(true);
+          setPercentage(percentage - 10);
+     }     
+
      const displayClassNameForBackground = () => {
           if (selectedFrame == '2cut-x2') {
                return 'left-choose-photos-2cut';
@@ -105,6 +189,20 @@ function Filter() {
                return 'left-choose-photos-5cut';
           } else {
                return 'left-choose-photos';
+          }
+     }
+
+     const getImageStyle = () => {
+          if (sliderChange == false) {
+               return {filter: filterEffect};
+          }
+
+          const filters = options.map(option => {
+               return `${option.property}(${option.value}${option.unit})`;
+          })
+
+          return {
+               filter: filters.join(' '),               
           }
      }
 
@@ -233,7 +331,7 @@ function Filter() {
                                    <div
                                         key={photoIndex}
                                         className={displayClassNameForPhoto(rowIndex, photoIndex)}
-                                        style={{ backgroundImage: `url(${photos[selectedIndex].url})`, filter: filterEffect }}
+                                        style={{ backgroundImage: `url(${photos[selectedIndex].url})`, getImageStyle }}
                                    />
                               ))}
                          </div>
@@ -259,11 +357,11 @@ function Filter() {
                     </div>
                     <div className={displayClassNameForLayout()} style={{ backgroundImage: `url(${selectedLayout})` }}></div>
                </div>
-               <div className="middle-filter" style={{ backgroundImage: `url(${filter_hover})` }}></div>
-               <div className='plus-minus'>
-                    <div className='plus-icon' style={{ backgroundImage: `url(${plus_icon})` }}></div>
-                    <div className='minus-icon' style={{ backgroundImage: `url(${minus_icon})` }}></div>
+               <div className="middle-filter">
+                    <div className="pink-section" style={{ height: `${percentage}px`, maxHeight: 1000 }}></div>
                </div>
+               <div className='plus-icon' style={{ backgroundImage: `url(${plus_icon})` }} onClick={() => increasePercentage()}></div>
+               <div className='minus-icon' style={{ backgroundImage: `url(${minus_icon})` }} onClick={() => decreasePercentage()}></div>
                <div className='intensity-icon' style={{ backgroundImage: `url(${intensity})` }}></div>
                <div className="right-filter">
                     <div className="filter-line">
