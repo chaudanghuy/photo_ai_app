@@ -24,75 +24,6 @@ import plus_icon from '../assets/Filter/plus.png';
 import minus_icon from '../assets/Filter/minus.png';
 import intensity from '../assets/Filter/intensity.png';
 
-const DEFAULT_OPTIONS = [
-     //personality
-     {
-          name: 'Brightness',
-          property: 'brightness',
-          value: 100,
-          range: {
-               min: 0,
-               max: 200
-          },
-          unit: '%'
-     },
-     // natural look
-     {
-          name: 'Contrast',
-          property: 'contrast',
-          value: 100,
-          range: {
-               min: 0,
-               max: 200
-          },
-          unit: '%'
-     },
-     // perfect pink
-     {
-          name: 'Saturation',
-          property: 'saturate',
-          value: 100,
-          range: {
-               min: 0,
-               max: 200
-          },
-          unit: '%'
-     },
-     // classic
-     {
-          name: 'Sepia',
-          property: 'sepia',
-          value: 0,
-          range: {
-               min: 0,
-               max: 100
-          },
-          unit: '%'
-     },
-     // black and white
-     {
-          name: 'Grayscale',
-          property: 'grayscale',
-          value: 0,
-          range: {
-               min: 0,
-               max: 100
-          },
-          unit: '%'
-     },
-     // skin smooth
-     {
-          name: 'Hue Rotate',
-          property: 'hue-rotate',
-          value: 0,
-          range: {
-               min: 0,
-               max: 360
-          },
-          unit: 'deg'
-     },
-]
-
 function Filter() {
      const { t } = useTranslation();
      const navigate = useNavigate();
@@ -104,8 +35,9 @@ function Filter() {
      const [selectedFrame, setSelectedFrame] = useState(null);
      const [confirmButton, setConfirmButton] = useState(false);
      const [percentage, setPercentage] = useState(10);
-     const [options, setOptions] = useState(DEFAULT_OPTIONS);
+     const [options, setOptions] = useState([]);
      const [sliderChange, setSliderChange] = useState(false);
+     const [filterIndex, setFilterIndex] = useState(1);
 
      const selectedFilterEffects = [
           { id: 1, name: 'personality', effect: 'brightness(1.2) saturate(1.1) contrast(1.1)' },
@@ -113,9 +45,63 @@ function Filter() {
           { id: 3, name: 'perfect', effect: 'saturate(1.2) contrast(1.1) brightness(1.1)' },
           { id: 4, name: 'classic', effect: 'sepia(0.3) saturate(1.2) contrast(0.8)' },
           { id: 5, name: 'bnw', effect: 'grayscale(1)' },
-          { id: 6, name: 'skin', effect: 'blur(0.5px) brightness(1.1) contrast(1.1) saturate(0.8)' },
+          { id: 6, name: 'skin', effect: 'blur(0.5) brightness(1.1) contrast(1.1) saturate(0.8)' },
           { id: 99, name: 'default', effect: 'none' },
      ];
+
+     const sliderEffects = [
+          { 
+               id: 1, 
+               name: 'personality', 
+               effect: [
+                    {name: 'Brightness', property: 'brightness', value: 1.2},
+                    {name: 'Saturate', property: 'saturate', value: 1.1},
+                    {name: 'Contrast', effect: 'contrast', value: 1.1},                    
+               ]
+          },
+          {
+               id: 2, 
+               name: 'natural', 
+               effect: [
+                    {name: 'Contrast', effect: 'contrast', value: 180},
+               ]               
+          },
+          {
+               id: 3, 
+               name: 'perfect', 
+               effect: [
+                    {name: 'Saturate', effect: 'saturate', value: 1.2},
+                    {name: 'Contrast', effect: 'contrast', value: 1.1},
+                    {name: 'Brightness', effect: 'brightness', value: 1.1},
+               ]
+          },
+          {
+               id: 4, 
+               name: 'classic', 
+               effect: [
+                    {name: 'Sepia', effect: 'sepia', value: 0.3},
+                    {name: 'Saturate', effect: 'saturate', value: 1.2},
+                    {name: 'Contrast', effect: 'contrast', value: 0.8},
+               ]
+          },
+          {
+               id: 5, 
+               name: 'bnw', 
+               effect: [
+                    {name: 'Grayscale', effect: 'grayscale', value: 1},
+               ]
+          },
+          {
+               id: 6, 
+               name: 'skin', 
+               effect: [
+                    {name: 'Blur', effect: 'blur', value: 0.5},
+                    {name: 'Brightness', effect: 'brightness', value: 1.1},
+                    {name: 'Contrast', effect: 'contrast', value: 1.1},
+                    {name: 'Saturate', effect: 'saturate', value: 0.8},
+               ]
+          }
+     ]
 
      const chunkArray = (arr, size) => {
           return arr.reduce((acc, _, i) => (i % size ? acc : [...acc, arr.slice(i, i + size)]), []);
@@ -165,6 +151,7 @@ function Filter() {
      }
 
      const handleFilter = (index) => {
+          setFilterIndex(index);
           setFilterEffect(selectedFilterEffects[index].effect);
      };
 
@@ -173,11 +160,37 @@ function Filter() {
           if (percentage < 570) {
                setPercentage(percentage + 10);
           }
+
+          let newOptions = options.length > 0 ? options : [];
+          for (let effect of sliderEffects[filterIndex].effect) {
+               let option = newOptions.find(option => option.name === effect.name);
+               if (option) {
+                    option.value += 0.1;
+               } else {
+                    effect.value += 0.1;
+                    newOptions.push({ name: effect.name, property: effect.property, value: effect.value });
+               }
+          }
+          setOptions(newOptions);
      }
 
      const decreasePercentage = () => {
           setSliderChange(true);
-          setPercentage(percentage - 10);
+          if (percentage > 10) {
+               setPercentage(percentage - 10);
+          }
+
+          let newOptions = options.length > 0 ? options : [];
+          for (let effect of sliderEffects[filterIndex].effect) {
+               let option = newOptions.find(option => option.name === effect.name);
+               if (option) {
+                    option.value -= 0.1;
+               } else {
+                    effect.value -= 0.1;
+                    newOptions.push({ name: effect.name, property: effect.property, value: effect.value });
+               }
+          }
+          setOptions(newOptions);
      }     
 
      const displayClassNameForBackground = () => {
@@ -194,16 +207,14 @@ function Filter() {
 
      const getImageStyle = () => {
           if (sliderChange == false) {
-               return {filter: filterEffect};
+               return filterEffect;
           }
 
           const filters = options.map(option => {
                return `${option.property}(${option.value}${option.unit})`;
           })
 
-          return {
-               filter: filters.join(' '),               
-          }
+          return filters.join(' ')
      }
 
      const displayClassNameForLayout = () => {
@@ -331,7 +342,7 @@ function Filter() {
                                    <div
                                         key={photoIndex}
                                         className={displayClassNameForPhoto(rowIndex, photoIndex)}
-                                        style={{ backgroundImage: `url(${photos[selectedIndex].url})`, getImageStyle }}
+                                        style={{ backgroundImage: `url(${photos[selectedIndex].url})`, filter: getImageStyle() }}
                                    />
                               ))}
                          </div>
