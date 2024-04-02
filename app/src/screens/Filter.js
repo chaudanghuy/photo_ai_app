@@ -63,42 +63,42 @@ function Filter() {
                id: 2, 
                name: 'natural', 
                effect: [
-                    {name: 'Contrast', effect: 'contrast', value: 180},
+                    {name: 'Contrast', property: 'contrast', value: 180},
                ]               
           },
           {
                id: 3, 
                name: 'perfect', 
                effect: [
-                    {name: 'Saturate', effect: 'saturate', value: 1.2},
-                    {name: 'Contrast', effect: 'contrast', value: 1.1},
-                    {name: 'Brightness', effect: 'brightness', value: 1.1},
+                    {name: 'Saturate', property: 'saturate', value: 1.2},
+                    {name: 'Contrast', property: 'contrast', value: 1.1},
+                    {name: 'Brightness', property: 'brightness', value: 1.1},
                ]
           },
           {
                id: 4, 
                name: 'classic', 
                effect: [
-                    {name: 'Sepia', effect: 'sepia', value: 0.3},
-                    {name: 'Saturate', effect: 'saturate', value: 1.2},
-                    {name: 'Contrast', effect: 'contrast', value: 0.8},
+                    {name: 'Sepia', property: 'sepia', value: 0.3},
+                    {name: 'Saturate', property: 'saturate', value: 1.2},
+                    {name: 'Contrast', property: 'contrast', value: 0.8},
                ]
           },
           {
                id: 5, 
                name: 'bnw', 
                effect: [
-                    {name: 'Grayscale', effect: 'grayscale', value: 1},
+                    {name: 'Grayscale', property: 'grayscale', value: 1},
                ]
           },
           {
                id: 6, 
                name: 'skin', 
                effect: [
-                    {name: 'Blur', effect: 'blur', value: 0.5},
-                    {name: 'Brightness', effect: 'brightness', value: 1.1},
-                    {name: 'Contrast', effect: 'contrast', value: 1.1},
-                    {name: 'Saturate', effect: 'saturate', value: 0.8},
+                    {name: 'Blur', property: 'blur', value: 0.5},
+                    {name: 'Brightness', property: 'brightness', value: 1.1},
+                    {name: 'Contrast', property: 'contrast', value: 1.1},
+                    {name: 'Saturate', property: 'saturate', value: 0.8},
                ]
           }
      ]
@@ -153,6 +153,13 @@ function Filter() {
      const handleFilter = (index) => {
           setFilterIndex(index);
           setFilterEffect(selectedFilterEffects[index].effect);
+          
+          let newOptions = [];
+          for (let effect of sliderEffects[filterIndex].effect) {
+               effect.value *= 0.01;
+               newOptions.push({ name: effect.name, property: effect.property, value: effect.value});
+          }
+          setOptions(newOptions);
      };
 
      const increasePercentage = () => {
@@ -210,9 +217,9 @@ function Filter() {
                return filterEffect;
           }
 
-          const filters = options.map(option => {
-               return `${option.property}(${option.value}${option.unit})`;
-          })
+          const filters = options.map(option => {               
+               return `${option.property}(${option.value})`;
+          })          
 
           return filters.join(' ')
      }
