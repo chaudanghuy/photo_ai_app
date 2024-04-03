@@ -158,6 +158,11 @@ function Filter() {
           }
 
           
+          if (filterEffect == null) {
+               return;
+          }
+
+          
           if (options.length === 0) {
                let newOptions = [];
                filterEffect.forEach(effect => {
@@ -185,6 +190,10 @@ function Filter() {
           setSliderChange(true);
           if (percentage > 10) {
                setPercentage(percentage - 10);
+          }
+
+          if (filterEffect == null) {
+               return;
           }
 
           if (options.length === 0) {
