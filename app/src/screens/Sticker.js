@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, createRef, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../translations/i18n';
@@ -11,6 +11,13 @@ import lovely from '../assets/Sticker/lovely.png';
 import cartoon from '../assets/Sticker/cartoon.png';
 import y2k from '../assets/Sticker/y2k.png';
 import print from '../assets/Sticker/print.png';
+import { Image as KonvaImage, Layer, Stage } from 'react-konva';
+import Konva from 'konva';
+import useImage from 'use-image';
+import StickerItem from '../screens/StickerItem';
+import { stickersData } from './stickers.data';
+
+
 
 function Filter() {
      const { t } = useTranslation();
@@ -21,6 +28,7 @@ function Filter() {
      const [filterEffect, setFilterEffect] = useState(null);
      const [myBackground, setMyBackground] = useState(null);
      const [selectedFrame, setSelectedFrame] = useState(null);
+     const [images, setImages] = useState([]);
 
      const chunkArray = (arr, size) => {
           return arr.reduce((acc, _, i) => (i % size ? acc : [...acc, arr.slice(i, i + size)]), []);
@@ -49,7 +57,7 @@ function Filter() {
           }
 
           // Filter
-          const filterSession = sessionStorage.getItem('filter');          
+          const filterSession = sessionStorage.getItem('filter');
           if (filterSession) {
                setFilterEffect(filterSession);
           }
@@ -59,6 +67,8 @@ function Filter() {
           if (storedSelectedFrame) {
                setSelectedFrame(storedSelectedFrame.frame);
           }
+
+          console.log(stickersData)
      }, []);
 
      const handleMouseEnter = (image) => {
@@ -219,6 +229,36 @@ function Filter() {
           }
      }
 
+     const addStickerToPanel = ({ src, width, x, y }) => {
+          setImages((currentImages) => [
+               ...currentImages,
+               {
+                    width,
+                    x,
+                    y,
+                    src,
+                    resetButtonRef: createRef()
+               }
+          ]);
+     };
+
+     const resetAllButtons = useCallback(() => {
+          images.forEach((image) => {
+               if (image.resetButtonRef.current) {
+                    image.resetButtonRef.current();
+               }
+          });
+     }, [images]);
+
+     const handleCanvasClick = useCallback(
+          (event) => {
+               if (event.target.attrs.id === "backgroundImage") {
+                    resetAllButtons();
+               }
+          },
+          [resetAllButtons]
+     );
+
      // Chunk the selected photos array into arrays of 2 photos each
      const selectedPhotoRows = chunkArray(selectedPhotos, 2);
 
@@ -226,11 +266,43 @@ function Filter() {
           <div className='sticker-container'>
                <div className="go-back" onClick={() => navigate("/filter")}></div>
                <div className="left-sticker" style={{ backgroundImage: `url(${frame})` }}>
+                    <Stage
+                         width={600}
+                         height={400}
+                         onClick={handleCanvasClick}
+                         onTap={handleCanvasClick}
+                    >
+                         <Layer>
+                              <KonvaImage
+                                   image={background}
+                                   height={400}
+                                   width={600}
+                                   id="backgroundImage"
+                              />
+                              {images.map((image, i) => {
+                                   return (
+                                        <StickerItem
+                                             onDelete={() => {
+                                                  const newImages = [...images];
+                                                  newImages.splice(i, 1);
+                                                  setImages(newImages);
+                                             }}
+                                             onDragEnd={(event) => {
+                                                  image.x = event.target.x();
+                                                  image.y = event.target.y();
+                                             }}
+                                             key={i}
+                                             image={image}
+                                        />
+                                   );
+                              })}
+                         </Layer>
+                    </Stage>
                     <div className={displayClassNameForBackground()} style={{ backgroundImage: `url(${myBackground})` }}>
                          {showSelectedPhotos()}
                     </div>
                     <div className={displayClassNameForLayout()} style={{ backgroundImage: `url(${selectedLayout})` }}></div>
-                    </div>
+               </div>
                <div className="middle-sticker" style={{ backgroundImage: `url(${sticker_frame})` }}>
                     <div className="sticker-line" style={{ marginTop: '23%' }}>
                          <div className="sticker"></div>
@@ -261,6 +333,25 @@ function Filter() {
                          <div className="sticker"></div>
                          <div className="sticker"></div>
                          <div className="sticker"></div>
+                    </div>
+                    <div className="sticker-line">
+                         {stickersData.map((sticker) => {
+                              return (
+                                   <button
+                                        className="button"
+                                        onMouseDown={() => {
+                                             addStickerToPanel({
+                                                  src: sticker.url,
+                                                  width: sticker.width,
+                                                  x: 100,
+                                                  y: 100
+                                             });
+                                        }}
+                                   >
+                                        <img alt={sticker.alt} src={sticker.url} width={sticker.width} />
+                                   </button>
+                              );
+                         })}
                     </div>
                </div>
                <div className="right-sticker" style={{ backgroundImage: `url(${sticker_taskbar})` }}>

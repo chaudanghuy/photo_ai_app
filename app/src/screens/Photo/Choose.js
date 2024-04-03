@@ -262,8 +262,6 @@ function Choose() {
           }
      }
 
-
-
      return (
           <div className='photo-choose-container'>
                <div className="go-back" onClick={() => navigate("/photo")}></div>
