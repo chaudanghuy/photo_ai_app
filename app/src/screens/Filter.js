@@ -157,8 +157,28 @@ function Filter() {
                setPercentage(percentage + 10);
           }
 
-
-
+          
+          if (options.length === 0) {
+               let newOptions = [];
+               filterEffect.forEach(effect => {
+                    if (effect.name === 'brightness') {
+                         effect.value = parseFloat(effect.value) + 0.01;
+                         newOptions.push(effect);
+                    } else {
+                         newOptions.push(effect);
+                    }
+               });
+               setOptions(newOptions);
+          } else {
+               let newOptions = [...options];
+               newOptions = newOptions.map(option => {
+                    if (option.name === 'brightness') {
+                         return {...option, value: parseFloat(option.value) + 0.01};
+                    }
+                    return option;
+               });
+               setOptions(newOptions);
+          }
      }
 
      const decreasePercentage = () => {
@@ -167,29 +187,27 @@ function Filter() {
                setPercentage(percentage - 10);
           }
 
-          let newOptions = [];
-          filterEffect.forEach(effect => {
-               const brightness = effect.property == 'brightness';
-               if (brightness) {
-                    const existingOption = newOptions.find(option => option.property === 'brightness');
-                    if (existingOption) {
-                         existingOption.value = existingOption.value - 0.01;
+          if (options.length === 0) {
+               let newOptions = [];
+               filterEffect.forEach(effect => {
+                    if (effect.name === 'brightness') {
+                         effect.value = parseFloat(effect.value) - 0.01;
+                         newOptions.push(effect);
                     } else {
-                         const value = effect.value - 0.01;
-                         newOptions.push({ name: 'Brightness', property: 'brightness', value: value - + 0.01, unit: '' });
+                         newOptions.push(effect);
                     }
-               } else {
-                    const existingOption = newOptions.find(option => option.property === effect.property);
-                    if (existingOption) {
-                         existingOption.value = effect.value;
-                    } else {
-                         const value = effect.value;
-                         newOptions.push({ property: effect.property, value: value, unit: effect.unit });
+               });
+               setOptions(newOptions);
+          } else {
+               let newOptions = [...options];
+               newOptions = newOptions.map(option => {
+                    if (option.name === 'brightness') {
+                         return {...option, value: parseFloat(option.value) - 0.01};
                     }
-               }
-          });
-
-          setOptions(newOptions);
+                    return option;
+               });
+               setOptions(newOptions);
+          }
      }
 
      const displayClassNameForBackground = () => {
