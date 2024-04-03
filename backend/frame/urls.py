@@ -4,13 +4,15 @@ from .views import (
     FrameDetailAPI,
     FrameList,
     FrameCreateView,
-    FrameEditView    
+    FrameEditView,
+    FrameImageCopyAPI    
 )
 
 urlpatterns = [
     # API
     path('api', FrameAPI.as_view()),
     path('api/<int:pk>', FrameDetailAPI.as_view()),
+    path('api/copy-image', FrameImageCopyAPI.as_view()),
     # WEB
     path('', FrameList.as_view(), name='frames'),
     path('add', FrameCreateView.as_view(), name='frames-add'),

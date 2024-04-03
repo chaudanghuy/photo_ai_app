@@ -14,8 +14,9 @@ import print from '../assets/Sticker/print.png';
 import { Image as KonvaImage, Layer, Stage } from 'react-konva';
 import Konva from 'konva';
 import useImage from 'use-image';
-import StickerItem from '../screens/StickerItem';
+import { StickerItem } from '../screens/StickerItem';
 import { stickersData } from './stickers.data';
+import backgroundImg from '../assets/Sticker/items/testSample.jpg';
 
 
 
@@ -29,6 +30,7 @@ function Filter() {
      const [myBackground, setMyBackground] = useState(null);
      const [selectedFrame, setSelectedFrame] = useState(null);
      const [images, setImages] = useState([]);
+     const [background] = useImage(backgroundImg);
 
      const chunkArray = (arr, size) => {
           return arr.reduce((acc, _, i) => (i % size ? acc : [...acc, arr.slice(i, i + size)]), []);
@@ -266,38 +268,6 @@ function Filter() {
           <div className='sticker-container'>
                <div className="go-back" onClick={() => navigate("/filter")}></div>
                <div className="left-sticker" style={{ backgroundImage: `url(${frame})` }}>
-                    <Stage
-                         width={600}
-                         height={400}
-                         onClick={handleCanvasClick}
-                         onTap={handleCanvasClick}
-                    >
-                         <Layer>
-                              <KonvaImage
-                                   image={background}
-                                   height={400}
-                                   width={600}
-                                   id="backgroundImage"
-                              />
-                              {images.map((image, i) => {
-                                   return (
-                                        <StickerItem
-                                             onDelete={() => {
-                                                  const newImages = [...images];
-                                                  newImages.splice(i, 1);
-                                                  setImages(newImages);
-                                             }}
-                                             onDragEnd={(event) => {
-                                                  image.x = event.target.x();
-                                                  image.y = event.target.y();
-                                             }}
-                                             key={i}
-                                             image={image}
-                                        />
-                                   );
-                              })}
-                         </Layer>
-                    </Stage>
                     <div className={displayClassNameForBackground()} style={{ backgroundImage: `url(${myBackground})` }}>
                          {showSelectedPhotos()}
                     </div>

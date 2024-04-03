@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../../translations/i18n';
@@ -6,6 +6,7 @@ import "../../css/Photo.css";
 import continue_btn from '../../assets/Photo/Choose/continue_btn.png';
 import continue_btn_click from '../../assets/Photo/Choose/continue_btn_click.png';
 import photo_frame from '../../assets/Photo/Choose/photo_frame.png';
+import html2canvas from 'html2canvas';
 
 function Choose() {
      const { t } = useTranslation();
@@ -16,6 +17,7 @@ function Choose() {
      const [selectedPhotos, setSelectedPhotos] = useState([]);
      const [selectedFrame, setSelectedFrame] = useState(null);
      const [confirmButton, setConfirmButton] = useState(false);
+     const parentRef = useRef(null);
 
      const photos = JSON.parse(sessionStorage.getItem('photos'));
      // Split photos into arrays of 4 photos each
@@ -35,18 +37,43 @@ function Choose() {
                i18n.changeLanguage(storedLanguage);
           }
 
-          // get session storage selectedLayout
-          const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
-          if (sessionSelectedLayout) {
-               const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
-               setSelectedLayout(parsedSelectedLayout.photo_cover);
-               setMyBackground(parsedSelectedLayout.photo);
-          }
-
           // Retrieve selected frame from session storage
           const storedSelectedFrame = JSON.parse(sessionStorage.getItem('selectedFrame'));
           if (storedSelectedFrame) {
                setSelectedFrame(storedSelectedFrame.frame);
+          }
+     }, []);
+
+     useEffect(() => {
+          const copyImageApi = async () => {
+               const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
+               if (!sessionSelectedLayout) return;
+
+               const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
+               const copyImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/copy-image`;
+               const copyImageData = {
+                    photo_url: parsedSelectedLayout.photo,
+                    photo_cover: parsedSelectedLayout.photo_cover
+               };
+
+               try {
+                    const response = await fetch(copyImageUrl, {
+                         method: 'POST',
+                         headers: {
+                              'Content-Type': 'application/json'
+                         },
+                         body: JSON.stringify(copyImageData)
+                    });
+                    const data = await response.json();
+                    setMyBackground(data.photo_path);
+                    setSelectedLayout(data.photo_cover_path);
+               } catch (error) {
+                    console.error(`Failed to copy image: ${error}`);
+               }
+          };
+
+          if (myBackground === null) {
+               copyImageApi();
           }
      }, []);
 
@@ -197,6 +224,22 @@ function Choose() {
           return 'choose-photo-item';
      }
 
+     const handleImageDownload = async () => {
+          const element = document.getElementsByClassName('left-big-frame')[0];
+          const oldBackgroundImage = element.style.backgroundImage;
+          element.style.backgroundImage = 'none';
+          html2canvas(element).then(canvas => {
+               element.style.backgroundImage = oldBackgroundImage;
+               const dataUrl = canvas.toDataURL('image/png');
+               const link = document.createElement('a');
+               link.href = dataUrl;
+               link.download = 'download-photo.png';
+               link.click();
+               URL.revokeObjectURL(link.href);
+          });
+
+     }
+
      const showSelectedPhotos = () => {
           if (selectedFrame == '3-cutx2' && selectedPhotos.length > 1) {
                const firstPhotoTpl = (
@@ -266,7 +309,7 @@ function Choose() {
           <div className='photo-choose-container'>
                <div className="go-back" onClick={() => navigate("/photo")}></div>
                <div className="left-big-frame">
-                    <div className={displayClassNameForBackground()} style={{ backgroundImage: `url(${myBackground})` }}>
+                    <div ref={parentRef} className={displayClassNameForBackground()} style={{ backgroundImage: `url(${myBackground})` }}>
                          {showSelectedPhotos()}
                     </div>
                     <div className={displayClassNameForLayout()} style={{ backgroundImage: `url(${selectedLayout})` }}></div>
@@ -284,6 +327,9 @@ function Choose() {
                               ))}
                          </div>
                     ))}
+               </div>
+               <div style={{ display: 'flex', justifyContent: 'center', top: '80%', position: 'fixed' }}>
+                    <button type='button' onClick={handleImageDownload}>Download</button>
                </div>
                <div
                     className="bottom_choose_container"

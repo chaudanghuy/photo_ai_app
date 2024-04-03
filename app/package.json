@@ -13,6 +13,7 @@
     "axios": "^1.6.8",
     "dotenv": "^16.4.5",
     "dotenv-webpack": "^8.1.0",
+    "html2canvas": "^1.4.1",
     "i18next": "^23.10.0",
     "i18next-http-backend": "^2.5.0",
     "konva": "^9.3.6",

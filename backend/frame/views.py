@@ -10,6 +10,8 @@ from django.views import View
 from .forms import FrameForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
+import os
+from django.conf import settings
 
 
 # Create your views here.
@@ -60,6 +62,33 @@ class FrameDetailAPI(APIView):
         frame = Frame.objects.get(id=pk)
         frame.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+class FrameImageCopyAPI(APIView):
+    
+    def post(self, request, *args, **kwargs):
+        photo_url = request.data.get('photo_url')
+        photo_cover = request.data.get('photo_cover')
+        if photo_url:
+            response = requests.get(photo_url)
+            if response.status_code == 200:
+                filename = os.path.basename(photo_url)
+                file_path = os.path.join(settings.BASE_DIR, '../app/public/photos', filename)
+                with open(file_path, 'wb') as f:
+                    f.write(response.content)
+
+                if photo_cover:
+                    response_cover = requests.get(photo_cover)
+                    if response_cover.status_code == 200:
+                        cover_filename = os.path.basename(photo_cover)
+                        cover_path = os.path.join(settings.BASE_DIR, '../app/public/photo_covers', cover_filename)
+                        with open(cover_path, 'wb') as f_cover:
+                            f_cover.write(response_cover.content)
+
+                return Response({
+                    'photo_path': f'/photos/{filename}',
+                    'photo_cover_path': f'/photo_covers/{cover_filename}' if photo_cover else None
+                }, status=status.HTTP_201_CREATED)                
+        return Response({'error': 'Photo URL is required'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class FrameList(LoginRequiredMixin, View):
