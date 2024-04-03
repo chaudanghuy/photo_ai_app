@@ -114,13 +114,7 @@ function Filter() {
                const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
                setSelectedLayout(parsedSelectedLayout.photo_cover);
                setMyBackground(parsedSelectedLayout.photo);
-          }
-
-          // Filter
-          const filterSession = sessionStorage.getItem('filter');
-          if (filterSession) {
-               setFilterEffect(filterSession);
-          }
+          }          
 
           // Retrieve selected photos from session storage
           const storedSelectedPhotos = JSON.parse(sessionStorage.getItem('choosePhotos'));
@@ -166,7 +160,7 @@ function Filter() {
           if (options.length === 0) {
                let newOptions = [];
                filterEffect.forEach(effect => {
-                    if (effect.name === 'brightness') {
+                    if (effect.property === 'brightness') {
                          effect.value = parseFloat(effect.value) + 0.01;
                          newOptions.push(effect);
                     } else {
@@ -177,7 +171,7 @@ function Filter() {
           } else {
                let newOptions = [...options];
                newOptions = newOptions.map(option => {
-                    if (option.name === 'brightness') {
+                    if (option.property === 'brightness') {
                          return {...option, value: parseFloat(option.value) + 0.01};
                     }
                     return option;
@@ -199,7 +193,7 @@ function Filter() {
           if (options.length === 0) {
                let newOptions = [];
                filterEffect.forEach(effect => {
-                    if (effect.name === 'brightness') {
+                    if (effect.property === 'brightness') {
                          effect.value = parseFloat(effect.value) - 0.01;
                          newOptions.push(effect);
                     } else {
@@ -210,7 +204,7 @@ function Filter() {
           } else {
                let newOptions = [...options];
                newOptions = newOptions.map(option => {
-                    if (option.name === 'brightness') {
+                    if (option.property === 'brightness') {
                          return {...option, value: parseFloat(option.value) - 0.01};
                     }
                     return option;
@@ -385,7 +379,7 @@ function Filter() {
      }
 
      const goToSticker = () => {
-          sessionStorage.setItem('filter', filterEffect);
+          sessionStorage.setItem('filter', getImageStyle());
           navigate('/sticker')
      }
 
