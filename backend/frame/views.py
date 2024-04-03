@@ -73,6 +73,8 @@ class FrameImageCopyAPI(APIView):
             if response.status_code == 200:
                 filename = os.path.basename(photo_url)
                 file_path = os.path.join(settings.BASE_DIR, '../app/public/photos', filename)
+                if os.path.exists(file_path) and os.path.isfile(file_path):
+                    os.remove(file_path)
                 with open(file_path, 'wb') as f:
                     f.write(response.content)
 
@@ -81,6 +83,8 @@ class FrameImageCopyAPI(APIView):
                     if response_cover.status_code == 200:
                         cover_filename = os.path.basename(photo_cover)
                         cover_path = os.path.join(settings.BASE_DIR, '../app/public/photo_covers', cover_filename)
+                        if os.path.exists(cover_path) and os.path.isfile(cover_path):
+                            os.remove(cover_path)
                         with open(cover_path, 'wb') as f_cover:
                             f_cover.write(response_cover.content)
 
