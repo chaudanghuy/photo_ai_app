@@ -30,7 +30,7 @@ function Filter() {
      const [myBackground, setMyBackground] = useState(null);
      const [selectedFrame, setSelectedFrame] = useState(null);
      const [images, setImages] = useState([]);
-     const [background] = useImage(backgroundImg);
+     const [background] = useImage(sessionStorage.getItem('downloaded-image'));
 
      const chunkArray = (arr, size) => {
           return arr.reduce((acc, _, i) => (i % size ? acc : [...acc, arr.slice(i, i + size)]), []);
@@ -69,8 +69,6 @@ function Filter() {
           if (storedSelectedFrame) {
                setSelectedFrame(storedSelectedFrame.frame);
           }
-
-          console.log(stickersData)
      }, []);
 
      const handleMouseEnter = (image) => {
@@ -267,11 +265,40 @@ function Filter() {
      return (
           <div className='sticker-container'>
                <div className="go-back" onClick={() => navigate("/filter")}></div>
-               <div className="left-sticker" style={{ backgroundImage: `url(${frame})` }}>
-                    <div className={displayClassNameForBackground()} style={{ backgroundImage: `url(${myBackground})` }}>
-                         {showSelectedPhotos()}
-                    </div>
-                    <div className={displayClassNameForLayout()} style={{ backgroundImage: `url(${selectedLayout})` }}></div>
+               <div className="left-sticker">
+                    <Stage
+                         width={1000}
+                         height={800}
+                         onClick={handleCanvasClick}
+                         onTap={handleCanvasClick}
+                         className="konva-image"
+                    >
+                         <Layer>
+                              <KonvaImage
+                                   image={background}
+                                   height={800}
+                                   width={1000}
+                                   id="backgroundImage"
+                              />
+                              {images.map((image, i) => {
+                                   return (
+                                        <StickerItem
+                                             onDelete={() => {
+                                                  const newImages = [...images];
+                                                  newImages.splice(i, 1);
+                                                  setImages(newImages);
+                                             }}
+                                             onDragEnd={(event) => {
+                                                  image.x = event.target.x();
+                                                  image.y = event.target.y();
+                                             }}
+                                             key={i}
+                                             image={image}
+                                        />
+                                   );
+                              })}
+                         </Layer>
+                    </Stage>
                </div>
                <div className="middle-sticker" style={{ backgroundImage: `url(${sticker_frame})` }}>
                     <div className="sticker-line" style={{ marginTop: '23%' }}>
@@ -313,8 +340,8 @@ function Filter() {
                                              addStickerToPanel({
                                                   src: sticker.url,
                                                   width: sticker.width,
-                                                  x: 100,
-                                                  y: 100
+                                                  x: 500,
+                                                  y: 500
                                              });
                                         }}
                                    >

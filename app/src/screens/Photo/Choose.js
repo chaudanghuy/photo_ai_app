@@ -6,7 +6,6 @@ import "../../css/Photo.css";
 import continue_btn from '../../assets/Photo/Choose/continue_btn.png';
 import continue_btn_click from '../../assets/Photo/Choose/continue_btn_click.png';
 import photo_frame from '../../assets/Photo/Choose/photo_frame.png';
-import html2canvas from 'html2canvas';
 
 function Choose() {
      const { t } = useTranslation();
@@ -224,22 +223,6 @@ function Choose() {
           return 'choose-photo-item';
      }
 
-     const handleImageDownload = async () => {
-          const element = document.getElementsByClassName('left-big-frame')[0];
-          const oldBackgroundImage = element.style.backgroundImage;
-          element.style.backgroundImage = 'none';
-          html2canvas(element).then(canvas => {
-               element.style.backgroundImage = oldBackgroundImage;
-               const dataUrl = canvas.toDataURL('image/png');
-               const link = document.createElement('a');
-               link.href = dataUrl;
-               link.download = 'download-photo.png';
-               link.click();
-               URL.revokeObjectURL(link.href);
-          });
-
-     }
-
      const showSelectedPhotos = () => {
           if (selectedFrame == '3-cutx2' && selectedPhotos.length > 1) {
                const firstPhotoTpl = (
@@ -327,9 +310,6 @@ function Choose() {
                               ))}
                          </div>
                     ))}
-               </div>
-               <div style={{ display: 'flex', justifyContent: 'center', top: '80%', position: 'fixed' }}>
-                    <button type='button' onClick={handleImageDownload}>Download</button>
                </div>
                <div
                     className="bottom_choose_container"

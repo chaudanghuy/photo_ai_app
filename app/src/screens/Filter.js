@@ -23,6 +23,7 @@ import continue_btn_click from '../assets/Filter/continue_btn_click.png';
 import plus_icon from '../assets/Filter/plus.png';
 import minus_icon from '../assets/Filter/minus.png';
 import intensity from '../assets/Filter/intensity.png';
+import html2canvas from 'html2canvas';
 
 function Filter() {
      const { t } = useTranslation();
@@ -108,14 +109,6 @@ function Filter() {
                i18n.changeLanguage(storedLanguage);
           }
 
-          // get session storage selectedLayout
-          const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
-          if (sessionSelectedLayout) {
-               const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
-               setSelectedLayout(parsedSelectedLayout.photo_cover);
-               setMyBackground(parsedSelectedLayout.photo);
-          }          
-
           // Retrieve selected photos from session storage
           const storedSelectedPhotos = JSON.parse(sessionStorage.getItem('choosePhotos'));
           if (storedSelectedPhotos) {
@@ -126,6 +119,39 @@ function Filter() {
           const storedSelectedFrame = JSON.parse(sessionStorage.getItem('selectedFrame'));
           if (storedSelectedFrame) {
                setSelectedFrame(storedSelectedFrame.frame);
+          }
+     }, []);
+
+     useEffect(() => {
+          const copyImageApi = async () => {
+               const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
+               if (!sessionSelectedLayout) return;
+
+               const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
+               const copyImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/copy-image`;
+               const copyImageData = {
+                    photo_url: parsedSelectedLayout.photo,
+                    photo_cover: parsedSelectedLayout.photo_cover
+               };
+
+               try {
+                    const response = await fetch(copyImageUrl, {
+                         method: 'POST',
+                         headers: {
+                              'Content-Type': 'application/json'
+                         },
+                         body: JSON.stringify(copyImageData)
+                    });
+                    const data = await response.json();
+                    setMyBackground(data.photo_path);
+                    setSelectedLayout(data.photo_cover_path);
+               } catch (error) {
+                    console.error(`Failed to copy image: ${error}`);
+               }
+          };
+
+          if (myBackground === null) {
+               copyImageApi();
           }
      }, []);
 
@@ -151,12 +177,12 @@ function Filter() {
                setPercentage(percentage + 10);
           }
 
-          
+
           if (filterEffect == null) {
                return;
           }
 
-          
+
           if (options.length === 0) {
                let newOptions = [];
                filterEffect.forEach(effect => {
@@ -172,7 +198,7 @@ function Filter() {
                let newOptions = [...options];
                newOptions = newOptions.map(option => {
                     if (option.property === 'brightness') {
-                         return {...option, value: parseFloat(option.value) + 0.01};
+                         return { ...option, value: parseFloat(option.value) + 0.01 };
                     }
                     return option;
                });
@@ -205,7 +231,7 @@ function Filter() {
                let newOptions = [...options];
                newOptions = newOptions.map(option => {
                     if (option.property === 'brightness') {
-                         return {...option, value: parseFloat(option.value) - 0.01};
+                         return { ...option, value: parseFloat(option.value) - 0.01 };
                     }
                     return option;
                });
@@ -242,6 +268,19 @@ function Filter() {
           })
 
           return filters.join(' ')
+     }
+
+     const storeImageCanvas = async () => {
+          const element = document.getElementsByClassName('left-big-frame')[0];
+          const oldBackgroundImage = element.style.backgroundImage;
+          element.style.backgroundImage = 'none';
+          element.style.backgroundColor = 'transparent';
+          html2canvas(element).then(canvas => {
+               element.style.backgroundImage = oldBackgroundImage;
+               element.style.backgroundColor = '';
+               sessionStorage.setItem('downloaded-image', canvas.toDataURL('image/png'));
+          });
+
      }
 
      const displayClassNameForLayout = () => {
@@ -380,6 +419,7 @@ function Filter() {
 
      const goToSticker = () => {
           sessionStorage.setItem('filter', getImageStyle());
+          storeImageCanvas();
           navigate('/sticker')
      }
 

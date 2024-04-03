@@ -138,3 +138,9 @@
      background-repeat: no-repeat;
      background-position: center;
 }
+
+.konva-image {
+     position: absolute;
+     left: -10%;
+     top: -10%;
+}
