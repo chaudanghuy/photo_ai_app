@@ -15,7 +15,7 @@ urlpatterns = [
     path('api/<int:pk>', FrameDetailAPI.as_view()),
     # API Image
     path('api/copy-image', FrameImageCopyAPI.as_view()),
-    path('api/photo-before-print', FrameImagePrintAPI.as_view()),
+    path('api/upload-full', FrameImagePrintAPI.as_view()),
     # WEB
     path('', FrameList.as_view(), name='frames'),
     path('add', FrameCreateView.as_view(), name='frames-add'),

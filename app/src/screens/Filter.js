@@ -275,12 +275,25 @@ function Filter() {
           const oldBackgroundImage = element.style.backgroundImage;
           element.style.backgroundImage = 'none';
           element.style.backgroundColor = 'transparent';
-          html2canvas(element).then(canvas => {
-               element.style.backgroundImage = oldBackgroundImage;
-               element.style.backgroundColor = '';
-               sessionStorage.setItem('downloaded-image', canvas.toDataURL('image/png'));
-          });
-
+          const canvas = await html2canvas(element);
+          const photo_data = canvas.toDataURL('image/png');
+          try {
+               const response = await fetch('/frames/api/upload-full', {
+                    method: 'POST',
+                    headers: {
+                         'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ photo: photo_data })
+               });
+               const data = await response.json();
+               if (data.photo_url) {
+                    element.style.backgroundImage = oldBackgroundImage;
+                    element.style.backgroundColor = '';
+                    sessionStorage.setItem('downloaded-image', data.photo_url);
+               }
+          } catch (error) {
+               console.error(error);
+          }
      }
 
      const displayClassNameForLayout = () => {
