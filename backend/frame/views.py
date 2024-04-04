@@ -12,6 +12,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 import os
 from django.conf import settings
+from django.http import JsonResponse
 
 
 # Create your views here.
@@ -24,6 +25,24 @@ def get_device_list():
     if response.status_code == 200:
         return response.json()
     return []
+
+@api_view(['POST'])
+def upload_full(request):
+    if request.method == 'POST':
+          photo_data = request.FILES['photo']
+          if photo_data:            
+                filename = photo_data.name
+                file_path = os.path.join(settings.BASE_DIR, '../app/public/photo_saved/', filename)
+                if os.path.exists(file_path) and os.path.isfile(file_path):
+                    os.remove(file_path)
+                with open(file_path, 'wb') as f:
+                    for chunk in photo_data.chunks():
+                        f.write(chunk)
+                return JsonResponse({
+                    'photo_url': f'/photo_saved/{filename}' if photo_data else None
+                }, status=status.HTTP_201_CREATED)                  
+    else:
+        return JsonResponse({'error': 'Image not provided'}, status=status.HTTP_400_BAD_REQUEST)
 
 
 class FrameAPI(APIView):
@@ -93,26 +112,6 @@ class FrameImageCopyAPI(APIView):
                     'photo_cover_path': f'/photo_covers/{cover_filename}' if photo_cover else None
                 }, status=status.HTTP_201_CREATED)                
         return Response({'error': 'Photo URL is required'}, status=status.HTTP_400_BAD_REQUEST)
-    
-class FrameImagePrintAPI(APIView):
-
-    def post(self, request, *args, **kwargs):
-        if request.method == 'POST':
-            photo_data = request.FILES['photo']
-            if photo_data:            
-                filename = photo_data.name
-                file_path = os.path.join(settings.BASE_DIR, '../app/public/photo_saved/', filename)
-                if os.path.exists(file_path) and os.path.isfile(file_path):
-                    os.remove(file_path)
-                with open(file_path, 'wb') as f:
-                    for chunk in photo_data.chunks():
-                        f.write(chunk)
-                return Response({
-                    'photo_url': f'/photo_saved/{filename}' if photo_data else None
-                }, status=status.HTTP_201_CREATED)
-        return Response({
-            'error': 'Photo data is required'
-        }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class FrameList(LoginRequiredMixin, View):

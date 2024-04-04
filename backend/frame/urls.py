@@ -5,9 +5,9 @@ from .views import (
     FrameList,
     FrameCreateView,
     FrameEditView,
-    FrameImageCopyAPI,
-    FrameImagePrintAPI
+    FrameImageCopyAPI,    
 )
+from .views import upload_full
 
 urlpatterns = [
     # API
@@ -15,7 +15,7 @@ urlpatterns = [
     path('api/<int:pk>', FrameDetailAPI.as_view()),
     # API Image
     path('api/copy-image', FrameImageCopyAPI.as_view()),
-    path('api/upload-full', FrameImagePrintAPI.as_view()),
+    path('api/upload-full', upload_full, name='upload-full'),
     # WEB
     path('', FrameList.as_view(), name='frames'),
     path('add', FrameCreateView.as_view(), name='frames-add'),
