@@ -275,29 +275,29 @@ function Filter() {
           const oldBackgroundImage = element.style.backgroundImage;
           element.style.backgroundImage = 'none';
           element.style.backgroundColor = 'transparent';
-          const canvas = await html2canvas(element);
-          const photo_data = canvas.toDataURL('image/png');
-          const uploadImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/upload-full`
-          try {
-               const response = await fetch(uploadImageUrl, {
+          html2canvas(element).then(canvas => {
+               const photo_data = canvas.toDataURL('image/png');
+               const uploadImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/upload-full`
+               
+               const formData = new FormData();
+               formData.append('photo', photo_data);
+
+               fetch(uploadImageUrl, {
                     method: 'POST',
-                    headers: {
-                         'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ 
-                         photo: photo_data,
-                         filename: 'photo.png'
-                    })
-               });
-               const data = await response.json();
-               if (data.photo_url) {
-                    element.style.backgroundImage = oldBackgroundImage;
-                    element.style.backgroundColor = '';
-                    sessionStorage.setItem('downloaded-image', data.photo_url);
-               }
-          } catch (error) {
-               console.error(error);
-          }
+                    body: formData
+               })
+               .then(response => response.json())
+               .then(data => {
+                    if (data.photo_url) {
+                         element.style.backgroundImage = oldBackgroundImage;
+                         element.style.backgroundColor = '';
+                         sessionStorage.setItem('downloaded-image', data.photo_url);
+                    }
+               })
+               .catch(error => {
+                    console.error(`Failed to copy image: ${error}`);
+               })
+          })
      }
 
      const displayClassNameForLayout = () => {
