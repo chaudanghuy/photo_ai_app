@@ -4,7 +4,6 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework import permissions
-from rest_framework.decorators import api_view
 from .models import Frame
 from .serializers import FrameSerializer
 from django.views import View
@@ -14,6 +13,7 @@ from django.contrib import messages
 import os
 from django.conf import settings
 from django.http import JsonResponse
+import base64
 
 
 # Create your views here.
@@ -27,20 +27,22 @@ def get_device_list():
         return response.json()
     return []
 
-@api_view(['POST'])
 def upload_full(request):
     if request.method == 'POST':
-          image_data = request.POST.get('image')
-          if image_data:            
+          photo_data = request.POST.get('photo')
+          if photo_data:
+              # decode base64 data
+              photo_data = base64.b64decode(photo_data)
+          if photo_data:            
                 filename = 'photo.png'
                 file_path = os.path.join(settings.BASE_DIR, '../app/public/photo_saved/', filename)
                 if os.path.exists(file_path) and os.path.isfile(file_path):
                     os.remove(file_path)
                 with open(file_path, 'wb') as f:
-                    for chunk in image_data.chunks():
+                    for chunk in photo_data.chunks():
                         f.write(chunk)
                 return JsonResponse({
-                    'photo_url': f'/photo_saved/{filename}'
+                    'photo_url': f'/photo_saved/{filename}' if photo_data else None
                 }, status=status.HTTP_201_CREATED)                  
     else:
         return JsonResponse({'error': 'Image not provided'}, status=status.HTTP_400_BAD_REQUEST)

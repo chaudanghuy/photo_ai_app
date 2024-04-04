@@ -276,19 +276,25 @@ function Filter() {
           const oldBackgroundImage = element.style.backgroundImage;
           element.style.backgroundImage = 'none';
           element.style.backgroundColor = 'transparent';
+
           html2canvas(element).then(canvas => {
-               const image = canvas.toDataURL('image/png');
+               const photo_data = canvas.toDataURL('image/png').replace(/.*,/, '');
                const uploadImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/upload-full`
 
-               try {
-                    const response = axios.post(uploadImageUrl, { image });
-                    element.style.backgroundImage = oldBackgroundImage;
-                    element.style.backgroundColor = '';
-                    sessionStorage.setItem('downloaded-image', response.data.photo_url);
-               } catch (error) {
-                    console.error('Error uploading image:', error);
-               }
-          })
+               axios.post(uploadImageUrl, {
+                    photo: photo_data
+               })
+               .then(response => {
+                    if (response.data.photo_url) {
+                         element.style.backgroundImage = oldBackgroundImage;
+                         element.style.backgroundColor = '';
+                         sessionStorage.setItem('downloaded-image', response.data.photo_url);
+                    }
+               })
+               .catch(error => {
+                    console.error(`Failed to copy image: ${error}`);
+               })
+          })          
      }
 
      const displayClassNameForLayout = () => {
