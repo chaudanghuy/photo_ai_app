@@ -97,7 +97,7 @@ class FrameImageCopyAPI(APIView):
 class FrameImagePrintAPI(APIView):
 
     def post(self, request, *args, **kwargs):
-        if request.method == 'POST' and 'photo' in request.FILES:
+        if request.method == 'POST':
             photo_data = request.FILES['photo']
             if photo_data:            
                 filename = photo_data.name

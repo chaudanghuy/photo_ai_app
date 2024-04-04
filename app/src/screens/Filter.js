@@ -24,6 +24,7 @@ import plus_icon from '../assets/Filter/plus.png';
 import minus_icon from '../assets/Filter/minus.png';
 import intensity from '../assets/Filter/intensity.png';
 import html2canvas from 'html2canvas';
+import axios from 'axios';
 
 function Filter() {
      const { t } = useTranslation();
@@ -282,12 +283,13 @@ function Filter() {
                const formData = new FormData();
                formData.append('photo', photo_data);
 
-               fetch(uploadImageUrl, {
-                    method: 'POST',
-                    body: formData
+               axios.post(uploadImageUrl, formData, { 
+                    headers: { 
+                         'Content-Type': 'multipart/form-data' 
+                    } 
                })
-               .then(response => response.json())
-               .then(data => {
+               .then(response => {
+                    const data = response.data;
                     if (data.photo_url) {
                          element.style.backgroundImage = oldBackgroundImage;
                          element.style.backgroundColor = '';
