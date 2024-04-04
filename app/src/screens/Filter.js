@@ -284,7 +284,10 @@ function Filter() {
                     headers: {
                          'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ photo: photo_data })
+                    body: JSON.stringify({ 
+                         photo: photo_data,
+                         filename: 'photo.png'
+                    })
                });
                const data = await response.json();
                if (data.photo_url) {

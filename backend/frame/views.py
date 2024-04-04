@@ -99,11 +99,14 @@ class FrameImagePrintAPI(APIView):
     def post(self, request, *args, **kwargs):
         photo_data = request.data.get('photo')
         if photo_data:            
-            file_path = os.path.join(settings.BASE_DIR, '../app/public/photo_saved', photo_data.name)
+            filename = request.data.get('filename')
+            file_path = os.path.join(settings.BASE_DIR, '../app/public/photo_saved/', filename)
+            if os.path.exists(file_path) and os.path.isfile(file_path):
+                os.remove(file_path)
             with open(file_path, 'wb') as f:
                 f.write(photo_data)
             return Response({
-                'photo_url': f'/photo_saved/{photo_data.name}' if photo_data else None
+                'photo_url': f'/photo_saved/{filename}' if photo_data else None
             }, status=status.HTTP_201_CREATED)
         return Response({
             'error': 'Photo data is required'
