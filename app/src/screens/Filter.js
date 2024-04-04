@@ -277,8 +277,9 @@ function Filter() {
           element.style.backgroundColor = 'transparent';
           const canvas = await html2canvas(element);
           const photo_data = canvas.toDataURL('image/png');
+          const uploadImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/upload-full`
           try {
-               const response = await fetch('/frames/api/upload-full', {
+               const response = await fetch(uploadImageUrl, {
                     method: 'POST',
                     headers: {
                          'Content-Type': 'application/json'
