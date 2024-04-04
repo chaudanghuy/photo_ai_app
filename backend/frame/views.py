@@ -93,6 +93,26 @@ class FrameImageCopyAPI(APIView):
                     'photo_cover_path': f'/photo_covers/{cover_filename}' if photo_cover else None
                 }, status=status.HTTP_201_CREATED)                
         return Response({'error': 'Photo URL is required'}, status=status.HTTP_400_BAD_REQUEST)
+    
+class FrameImagePrintAPI(APIView):
+
+    def post(self, request, *args, **kwargs):
+        photo_full = request.data.get('photo_url')                
+        if photo_full:
+            response = request.get(photo_full)
+            if response.status_code == 200:
+                filename = os.path.basename(photo_full)
+                file_path = os.path.join(settings.BASE_DIR, '../app/public/photo_saved', filename)
+                if os.path.exists(file_path) and os.path.isfile(file_path):
+                    os.remove(file_path)
+                with open(file_path, 'wb') as f:
+                    f.write(response.content)
+                return Response({
+                    'photo_full': f'/photo_saved/{filename}' if photo_full else None
+                }, status=status.HTTP_201_CREATED)
+        return Response({
+            'error': 'Photo URL is required'
+        }, status=status.HTTP_400_BAD_REQUEST)
 
 
 class FrameList(LoginRequiredMixin, View):
