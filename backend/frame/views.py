@@ -35,18 +35,13 @@ def upload_full(request):
           for key, value in request.POST.items():
             if (key == 'photo'):
                 photo_data = value         
-          if photo_data:
-                photo_data = base64.encode(photo_data)                            
+          if photo_data:                                           
                 filename = 'photo.png'
                 file_path = os.path.join(settings.BASE_DIR, '../app/public/photo_saved/', filename)
                 if os.path.exists(file_path) and os.path.isfile(file_path):
                     os.remove(file_path)
                 with open(file_path, 'wb') as f:
-                    if type(photo_data) == str:
-                        f.write(photo_data.encode())   
-                    else:
-                        for chunk in photo_data.chunks():
-                            f.write(chunk)
+                    f.write(base64.b64decode(photo_data.split(',')[1]))
                 return JsonResponse({
                     'photo_url': f'/photo_saved/{filename}' if photo_data else None
                 }, status=status.HTTP_201_CREATED)                  

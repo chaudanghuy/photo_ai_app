@@ -19,7 +19,6 @@ import { stickersData } from './stickers.data';
 import backgroundImg from '../assets/Sticker/items/testSample.jpg';
 
 
-
 function Filter() {
      const { t } = useTranslation();
      const navigate = useNavigate();

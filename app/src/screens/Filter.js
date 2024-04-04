@@ -274,8 +274,7 @@ function Filter() {
      const storeImageCanvas = async () => {
           const element = document.getElementsByClassName('left-big-frame')[0];
           const oldBackgroundImage = element.style.backgroundImage;
-          element.style.backgroundImage = 'none';
-          element.style.backgroundColor = 'transparent';
+          element.style.backgroundImage = 'none';          
           
           html2canvas(element).then(canvas => {
                const photo_data = canvas.toDataURL('image/png');

@@ -141,6 +141,8 @@
 
 .konva-image {
      position: absolute;
-     left: -10%;
-     top: -10%;
+    left: 5%;
+    bottom: 12%;
+    margin: auto;
+    text-align: center;
 }
