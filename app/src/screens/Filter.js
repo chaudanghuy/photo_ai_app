@@ -277,28 +277,17 @@ function Filter() {
           element.style.backgroundImage = 'none';
           element.style.backgroundColor = 'transparent';
           html2canvas(element).then(canvas => {
-               const photo_data = canvas.toDataURL('image/png');
+               const image = canvas.toDataURL('image/png');
                const uploadImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/upload-full`
-               
-               const formData = new FormData();
-               formData.append('photo', photo_data);
 
-               axios.post(uploadImageUrl, formData, { 
-                    headers: { 
-                         'Content-Type': 'multipart/form-data' 
-                    } 
-               })
-               .then(response => {
-                    const data = response.data;
-                    if (data.photo_url) {
-                         element.style.backgroundImage = oldBackgroundImage;
-                         element.style.backgroundColor = '';
-                         sessionStorage.setItem('downloaded-image', data.photo_url);
-                    }
-               })
-               .catch(error => {
-                    console.error(`Failed to copy image: ${error}`);
-               })
+               try {
+                    const response = axios.post(uploadImageUrl, { image });
+                    element.style.backgroundImage = oldBackgroundImage;
+                    element.style.backgroundColor = '';
+                    sessionStorage.setItem('downloaded-image', response.data.photo_url);
+               } catch (error) {
+                    console.error('Error uploading image:', error);
+               }
           })
      }
 
