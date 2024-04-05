@@ -11,7 +11,7 @@ import lovely from '../assets/Sticker/lovely.png';
 import cartoon from '../assets/Sticker/cartoon.png';
 import y2k from '../assets/Sticker/y2k.png';
 import print from '../assets/Sticker/print.png';
-import { Image as KonvaImage, Layer, Stage } from 'react-konva';
+import { Image as KonvaImage, Layer, Stage, Rect, Transformer } from 'react-konva';
 import Konva from 'konva';
 import useImage from 'use-image';
 import { StickerItem } from '../screens/StickerItem';
@@ -28,7 +28,9 @@ function Filter() {
      const [filterEffect, setFilterEffect] = useState(null);
      const [myBackground, setMyBackground] = useState(null);
      const [selectedFrame, setSelectedFrame] = useState(null);
+     
      const [images, setImages] = useState([]);
+     const [selectedId, selectShape] = useState(null);
      const [background] = useImage(sessionStorage.getItem('downloaded-image'));
 
      const chunkArray = (arr, size) => {
@@ -258,6 +260,13 @@ function Filter() {
           [resetAllButtons]
      );
 
+     const checkDeselect = (e) => {
+          const clickedOnEmpty = e.target === e.target.getStage();
+          if (clickedOnEmpty) {
+               selectShape(null);
+          }
+     }
+
      // Chunk the selected photos array into arrays of 2 photos each
      const selectedPhotoRows = chunkArray(selectedPhotos, 2);
 
@@ -271,6 +280,8 @@ function Filter() {
                          onClick={handleCanvasClick}
                          onTap={handleCanvasClick}
                          className="konva-image"
+                         onMouseDown={checkDeselect}
+                         onTouchStart={checkDeselect}
                     >
                          <Layer>
                               <KonvaImage
@@ -293,6 +304,16 @@ function Filter() {
                                              }}
                                              key={i}
                                              image={image}
+                                             shapeProps={image}
+                                             isSelected={image.id === selectedId}
+                                             onSelect={() => {
+                                                  selectShape(image.id)
+                                             }}
+                                             onChange={(newAttrs) => {
+                                                  const newImages = [...images];
+                                                  newImages[i] = newAttrs;
+                                                  setImages(newImages);
+                                             }}
                                         />
                                    );
                               })}
