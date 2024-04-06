@@ -1,4 +1,4 @@
-import React, { useEffect, useState, createRef, useCallback } from 'react';
+import React, { useEffect, useState, createRef, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../translations/i18n';
@@ -15,8 +15,8 @@ import { Image as KonvaImage, Layer, Stage, Rect, Transformer } from 'react-konv
 import Konva from 'konva';
 import useImage from 'use-image';
 import { StickerItem } from '../screens/StickerItem';
-import { stickersData } from './stickers.data';
 import backgroundImg from '../assets/Sticker/items/testSample.jpg';
+import html2canvas from 'html2canvas';
 
 
 function Filter() {
@@ -28,10 +28,15 @@ function Filter() {
      const [filterEffect, setFilterEffect] = useState(null);
      const [myBackground, setMyBackground] = useState(null);
      const [selectedFrame, setSelectedFrame] = useState(null);
+     const [stickersData, setStickersData] = useState([]);
      
      const [images, setImages] = useState([]);
      const [selectedId, selectShape] = useState(null);
      const [background] = useImage(sessionStorage.getItem('downloaded-image'));
+
+     const [selectedCategory, setSelectedCategory] = useState('MOOD');
+
+     const stageRef = useRef(null);
 
      const chunkArray = (arr, size) => {
           return arr.reduce((acc, _, i) => (i % size ? acc : [...acc, arr.slice(i, i + size)]), []);
@@ -71,6 +76,27 @@ function Filter() {
                setSelectedFrame(storedSelectedFrame.frame);
           }
      }, []);
+
+     useEffect(() => {
+          const fetchStickers = async () => {
+               try {
+                    const response = await fetch(`${process.env.REACT_APP_BACKEND}/stickers/api?category=${selectedCategory}`);
+                    const data = await response.json();
+                    const newStickersData = data.map(item => ({
+                         title: item.title,
+                         category: item.category,
+                         photo: process.env.REACT_APP_BACKEND + item.photo
+                    }))
+
+                    // Default filter newStickerData by selectedCatego
+                    setStickersData(newStickersData);                    
+               } catch (error) {
+                    console.error(error);
+               }
+          };  
+
+          fetchStickers();        
+     }, [selectedCategory]);
 
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
@@ -265,11 +291,26 @@ function Filter() {
           if (clickedOnEmpty) {
                selectShape(null);
           }
+     }     
+
+     const filterStickerByCategory = (category) => {
+          setSelectedCategory(category);     
+     }
+
+     const printFrameWithSticker = () => {
+          const uri = stageRef.current.toDataURL();
+          var link = document.createElement('a');
+          link.download = 'stage.png';
+          link.href = uri;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
      }
 
      // Chunk the selected photos array into arrays of 2 photos each
      const selectedPhotoRows = chunkArray(selectedPhotos, 2);
-
+     
+     const myStickers = chunkArray(stickersData, 4);
      return (
           <div className='sticker-container'>
                <div className="go-back" onClick={() => navigate("/filter")}></div>
@@ -282,6 +323,7 @@ function Filter() {
                          className="konva-image"
                          onMouseDown={checkDeselect}
                          onTouchStart={checkDeselect}
+                         ref={stageRef}
                     >
                          <Layer>
                               <KonvaImage
@@ -321,64 +363,35 @@ function Filter() {
                     </Stage>
                </div>
                <div className="middle-sticker" style={{ backgroundImage: `url(${sticker_frame})` }}>
-                    <div className="sticker-line" style={{ marginTop: '23%' }}>
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                    </div>
-                    <div className="sticker-line">
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                    </div>
-                    <div className="sticker-line">
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                    </div>
-                    <div className="sticker-line">
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                    </div>
-                    <div className="sticker-line">
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                         <div className="sticker"></div>
-                    </div>
-                    <div className="sticker-line">
-                         {stickersData.map((sticker) => {
-                              return (
-                                   <button
-                                        className="button"
-                                        onMouseDown={() => {
+                    {myStickers.map((group, index) => (
+                         <div key={index} className={index === 0 ? 'sticker-line-1' : 'sticker-line'}>
+                              {group.map((mySticker, photoIndex) => (
+                                   <div
+                                        key={photoIndex}
+                                        className="sticker"  
+                                        onClick={() => {
                                              addStickerToPanel({
-                                                  src: sticker.url,
-                                                  width: sticker.width,
+                                                  src: mySticker.photo,
+                                                  width: 100,
                                                   x: 500,
                                                   y: 500
                                              });
-                                        }}
+                                        }}                                                                         
                                    >
-                                        <img alt={sticker.alt} src={sticker.url} width={sticker.width} />
-                                   </button>
-                              );
-                         })}
-                    </div>
+                                        <img className="sticker-image" alt={mySticker.title} src={mySticker.photo} width='140px' height='140px'/>
+                                   </div>
+                              ))}
+                         </div>
+                    ))}                                        
                </div>
                <div className="right-sticker" style={{ backgroundImage: `url(${sticker_taskbar})` }}>
                     <div className="sticker-category">
-                         <div className="sticker-category-item" style={{ backgroundImage: `url(${mood})` }}></div>
-                         <div className="sticker-category-item" style={{ backgroundImage: `url(${lovely})` }}></div>
-                         <div className="sticker-category-item" style={{ backgroundImage: `url(${cartoon})` }}></div>
-                         <div className="sticker-category-item" style={{ backgroundImage: `url(${y2k})` }}></div>
+                         <div className="sticker-category-item" style={{ backgroundImage: `url(${mood})` }} onClick={() => filterStickerByCategory('MOOD')}></div>
+                         <div className="sticker-category-item" style={{ backgroundImage: `url(${lovely})` }} onClick={() => filterStickerByCategory('LOVELY')}></div>
+                         <div className="sticker-category-item" style={{ backgroundImage: `url(${cartoon})` }} onClick={() => filterStickerByCategory('CARTOON')}></div>
+                         <div className="sticker-category-item" style={{ backgroundImage: `url(${y2k})` }} onClick={() => filterStickerByCategory('Y2K')}></div>
                     </div>
-                    <div className="sticker-print-btn" onClick={() => navigate('/print')}></div>
+                    <div className="sticker-print-btn" onClick={printFrameWithSticker}></div>
                </div>
           </div>
      );

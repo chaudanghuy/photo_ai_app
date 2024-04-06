@@ -126,7 +126,9 @@ function Filter() {
      useEffect(() => {
           const copyImageApi = async () => {
                const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
-               if (!sessionSelectedLayout) return;
+               if (!sessionSelectedLayout) {
+                 return;
+               }
 
                const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
                const copyImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/copy-image`;
@@ -276,7 +278,9 @@ function Filter() {
           const oldBackgroundImage = element.style.backgroundImage;
           element.style.backgroundImage = 'none';          
           
-          html2canvas(element).then(canvas => {
+          html2canvas(element, {
+               backgroundColor: null,
+          }).then(canvas => {
                const photo_data = canvas.toDataURL('image/png');
                const uploadImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/upload-full`
                

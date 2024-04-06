@@ -16,7 +16,11 @@ from django.contrib import messages
 # Create your views here.
 class StickerAPI(APIView):
     def get(self, request, *args, **kwargs):
-        stickers = Sticker.objects.all()
+        category = request.query_params.get('category', None)
+        if category is not None:
+            stickers = Sticker.objects.filter(category=category)
+        else:
+            stickers = Sticker.objects.all()
         serializer = StickerSerializer(stickers, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)     
     
