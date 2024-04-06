@@ -41,7 +41,7 @@ function Payment() {
 
   return (
     <div className='payment-container'>
-      <div className="go-back" onClick={() => navigate("/frame-step-3")}></div>
+      <div className="go-back" onClick={() => navigate("/layout")}></div>
       <div className="payment-line">
         <div className="payment-method" style={{ backgroundImage: `url(${hoveredImage === cash ? cash_click : cash})` }} onMouseEnter={() => handleMouseEnter(cash)} onMouseLeave={handleMouseLeave} onClick={() => goToPay('cash')}></div>
         <div className="payment-method" style={{ backgroundImage: `url(${hoveredImage === momo ? momo_click : momo})` }} onMouseEnter={() => handleMouseEnter(momo)} onMouseLeave={handleMouseLeave} onClick={() => goToPay('momo')}></div>

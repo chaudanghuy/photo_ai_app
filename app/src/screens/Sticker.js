@@ -29,10 +29,14 @@ function Filter() {
      const [myBackground, setMyBackground] = useState(null);
      const [selectedFrame, setSelectedFrame] = useState(null);
      const [stickersData, setStickersData] = useState([]);
-     
+
      const [images, setImages] = useState([]);
      const [selectedId, selectShape] = useState(null);
-     const [background] = useImage(sessionStorage.getItem('downloaded-image'));
+     // const [background] = useImage(sessionStorage.getItem('downloaded-image'), 'Anonymous');
+
+     const background = new Image();
+     background.crossOrigin = 'Anonymous';
+     background.src = sessionStorage.getItem('downloaded-image');
 
      const [selectedCategory, setSelectedCategory] = useState('MOOD');
 
@@ -85,17 +89,17 @@ function Filter() {
                     const newStickersData = data.map(item => ({
                          title: item.title,
                          category: item.category,
-                         photo: process.env.REACT_APP_BACKEND + item.photo
+                         photo: 'http://localhost:8000' + item.photo
                     }))
 
                     // Default filter newStickerData by selectedCatego
-                    setStickersData(newStickersData);                    
+                    setStickersData(newStickersData);
                } catch (error) {
                     console.error(error);
                }
-          };  
+          };
 
-          fetchStickers();        
+          fetchStickers();
      }, [selectedCategory]);
 
      const handleMouseEnter = (image) => {
@@ -291,25 +295,27 @@ function Filter() {
           if (clickedOnEmpty) {
                selectShape(null);
           }
-     }     
+     }
 
      const filterStickerByCategory = (category) => {
-          setSelectedCategory(category);     
+          setSelectedCategory(category);
      }
 
      const printFrameWithSticker = () => {
           const uri = stageRef.current.toDataURL();
-          var link = document.createElement('a');
-          link.download = 'stage.png';
-          link.href = uri;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+          console.log(uri);
+
+          // var link = document.createElement('a');
+          // link.download = 'stage.jpg';
+          // link.href = uri;
+          // document.body.appendChild(link);
+          // link.click();
+          // document.body.removeChild(link);
      }
 
      // Chunk the selected photos array into arrays of 2 photos each
      const selectedPhotoRows = chunkArray(selectedPhotos, 2);
-     
+
      const myStickers = chunkArray(stickersData, 4);
      return (
           <div className='sticker-container'>
@@ -366,23 +372,23 @@ function Filter() {
                     {myStickers.map((group, index) => (
                          <div key={index} className={index === 0 ? 'sticker-line-1' : 'sticker-line'}>
                               {group.map((mySticker, photoIndex) => (
+
                                    <div
                                         key={photoIndex}
-                                        className="sticker"  
-                                        onClick={() => {
+                                        className="sticker"
+                                   >
+                                        <img crossOrigin="anonymous" className="sticker-image" alt={mySticker.title} src={mySticker.photo} width='140px' height='140px' onClick={() => {
                                              addStickerToPanel({
                                                   src: mySticker.photo,
                                                   width: 100,
                                                   x: 500,
                                                   y: 500
                                              });
-                                        }}                                                                         
-                                   >
-                                        <img className="sticker-image" alt={mySticker.title} src={mySticker.photo} width='140px' height='140px'/>
+                                        }} />
                                    </div>
                               ))}
                          </div>
-                    ))}                                        
+                    ))}
                </div>
                <div className="right-sticker" style={{ backgroundImage: `url(${sticker_taskbar})` }}>
                     <div className="sticker-category">
