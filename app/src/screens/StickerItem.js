@@ -60,15 +60,15 @@ export const StickerItem = ({ image, onDelete, onDragEnd, isSelected, onSelect, 
             <KonvaImage
                 ref={imageRef}
                 width={image.width}
-                height={stickerHeight}            
-                image={stickerImage}            
+                height={stickerHeight}
+                image={stickerImage}
                 {...longPressEvent}
                 onClick={onSelect}
-                onTap={onSelect}                
-                {...stickerImage}                
+                onTap={onSelect}
+                {...stickerImage}
                 onDragEnd={(event) => {
                     onChange({
-                        ...image,
+                        ...stickerImage,
                         x: event.target.x(),
                         y: event.target.y()
                     });
@@ -92,7 +92,7 @@ export const StickerItem = ({ image, onDelete, onDragEnd, isSelected, onSelect, 
                     // })
                 }}
             />
-            {isSelected && (
+            {isSelected && !isDragging && (
                 <Transformer
                     ref={trRef}
                     boundBoxFunc={(oldBox, newBox) => {
@@ -111,7 +111,7 @@ export const StickerItem = ({ image, onDelete, onDragEnd, isSelected, onSelect, 
                     image={deleteImage}
                     width={25}
                     height={25}
-                    offsetX={-stickerWidth / 2 - 20}
+                    offsetX={-stickerWidth / 2 - 50}
                 />
             )}
         </Group>

@@ -92,7 +92,7 @@
 
 .sticker {
      width: 50%;
-     height: 160px;
+     height: 139px;
      background-image: url('../assets/Sticker/sticker.png');
      background-size: contain;
      background-repeat: no-repeat;
@@ -155,8 +155,8 @@
 
 .konva-image {
      position: absolute;
-    left: 5%;
-    bottom: 12%;
-    margin: auto;
-    text-align: center;
+     left: -2%;
+     top: -10%;
+     margin: auto;
+     text-align: center;
 }

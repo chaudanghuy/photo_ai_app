@@ -18,9 +18,7 @@ function Print() {
      }
 
      return (
-          <div className='print-container'>
-               <div className="go-back" onClick={() => navigate("/sticker")}></div>                    
-          </div>
+          <div className='print-container'></div>
      );
 }
 

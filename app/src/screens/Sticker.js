@@ -15,8 +15,9 @@ import { Image as KonvaImage, Layer, Stage, Rect, Transformer } from 'react-konv
 import Konva from 'konva';
 import useImage from 'use-image';
 import { StickerItem } from '../screens/StickerItem';
-import backgroundImg from '../assets/Sticker/items/testSample.jpg';
-import html2canvas from 'html2canvas';
+import axios from 'axios';
+// Sticker
+import { stickers } from './stickers.data';
 
 
 function Filter() {
@@ -28,8 +29,6 @@ function Filter() {
      const [filterEffect, setFilterEffect] = useState(null);
      const [myBackground, setMyBackground] = useState(null);
      const [selectedFrame, setSelectedFrame] = useState(null);
-     const [stickersData, setStickersData] = useState([]);
-
      const [images, setImages] = useState([]);
      const [selectedId, selectShape] = useState(null);
      // const [background] = useImage(sessionStorage.getItem('downloaded-image'), 'Anonymous');
@@ -80,27 +79,6 @@ function Filter() {
                setSelectedFrame(storedSelectedFrame.frame);
           }
      }, []);
-
-     useEffect(() => {
-          const fetchStickers = async () => {
-               try {
-                    const response = await fetch(`${process.env.REACT_APP_BACKEND}/stickers/api?category=${selectedCategory}`);
-                    const data = await response.json();
-                    const newStickersData = data.map(item => ({
-                         title: item.title,
-                         category: item.category,
-                         photo: 'http://localhost:8000' + item.photo
-                    }))
-
-                    // Default filter newStickerData by selectedCatego
-                    setStickersData(newStickersData);
-               } catch (error) {
-                    console.error(error);
-               }
-          };
-
-          fetchStickers();
-     }, [selectedCategory]);
 
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
@@ -302,18 +280,32 @@ function Filter() {
      }
 
      const printFrameWithSticker = () => {
-          const uri = stageRef.current.toDataURL();
-          console.log(uri);
+          // callPrintAPI();
+          navigate("/print");
+     }
 
-          // var link = document.createElement('a');
-          // link.download = 'stage.jpg';
-          // link.href = uri;
-          // document.body.appendChild(link);
-          // link.click();
-          // document.body.removeChild(link);
+     const callPrintAPI = () => {
+          try {
+               const uri = stageRef.current.toDataURL();
+               console.log(uri);
+
+               var link = document.createElement('a');
+               link.download = 'stage.jpg';
+               link.href = uri;
+               document.body.appendChild(link);
+               link.click();
+               document.body.removeChild(link);
+
+               axios.post('/api/frame/print', {
+                    frame: selectedFrame,
+               })
+          } catch (error) {
+               console.log(error);
+          }
      }
 
      // Chunk the selected photos array into arrays of 2 photos each
+     const stickersData = stickers.filter(sticker => sticker.category === selectedCategory);
      const selectedPhotoRows = chunkArray(selectedPhotos, 2);
 
      const myStickers = chunkArray(stickersData, 4);
@@ -322,8 +314,8 @@ function Filter() {
                <div className="go-back" onClick={() => navigate("/filter")}></div>
                <div className="left-sticker">
                     <Stage
-                         width={1000}
-                         height={800}
+                         width={1200}
+                         height={1000}
                          onClick={handleCanvasClick}
                          onTap={handleCanvasClick}
                          className="konva-image"
@@ -334,8 +326,8 @@ function Filter() {
                          <Layer>
                               <KonvaImage
                                    image={background}
-                                   height={800}
-                                   width={1000}
+                                   height={1000}
+                                   width={1200}
                                    id="backgroundImage"
                               />
                               {images.map((image, i) => {
@@ -376,15 +368,16 @@ function Filter() {
                                    <div
                                         key={photoIndex}
                                         className="sticker"
-                                   >
-                                        <img crossOrigin="anonymous" className="sticker-image" alt={mySticker.title} src={mySticker.photo} width='140px' height='140px' onClick={() => {
+                                        onClick={() => {
                                              addStickerToPanel({
                                                   src: mySticker.photo,
                                                   width: 100,
                                                   x: 500,
                                                   y: 500
                                              });
-                                        }} />
+                                        }}
+                                   >
+                                        <img className="sticker-image" alt={mySticker.title} src={mySticker.photo} width='140px' height='140px' />
                                    </div>
                               ))}
                          </div>
