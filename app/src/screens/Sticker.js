@@ -284,21 +284,26 @@ function Filter() {
           navigate("/print");
      }
 
+     // TODO
      const callPrintAPI = () => {
           try {
-               const uri = stageRef.current.toDataURL();
-               console.log(uri);
+               const formData = new FormData();
+               formData.append('image', stageRef.current.toDataURL());               
 
-               var link = document.createElement('a');
-               link.download = 'stage.jpg';
-               link.href = uri;
-               document.body.appendChild(link);
-               link.click();
-               document.body.removeChild(link);
-
-               axios.post('/api/frame/print', {
-                    frame: selectedFrame,
-               })
+               axios.post(
+                    `${process.env.REACT_APP_BACKEND}/frames/api/print`,               
+                    formData,
+                    {
+                         headers: {
+                              'Content-Type': 'multipart/form-data'
+                         }
+                    })
+                    .then(response => {
+                         console.log(response);
+                    })
+                    .catch(error => {
+                         console.log(error);
+                    });
           } catch (error) {
                console.log(error);
           }

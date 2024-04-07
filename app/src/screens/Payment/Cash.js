@@ -11,6 +11,39 @@ function Cash() {
   const navigate = useNavigate();
   const [hoveredImage, setHoveredImage] = useState(null);
 
+  useEffect(() => {
+    const fetchCashPayment = async () => {
+      try {
+        const deviceNumber = process.env.REACT_APP_DEVICE_NUMBER;
+        const framePrice = sessionStorage.getItem('framePrice');
+        const response = await fetch(`${process.env.REACT_APP_BACKEND}/cash/api?device=${deviceNumber}&amount=${framePrice}`);
+        const cashPaymentData = await response.json();
+        if (cashPaymentData.return_code == 1) {
+          navigate("/payment-result");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    fetchCashPayment();
+  }, []);
+
+  useEffect(() => {
+    const checkPaymentStatus = async () => {
+      try {
+        const deviceNumber = process.env.REACT_APP_DEVICE_NUMBER;
+        const response = await fetch(`${process.env.REACT_APP_BACKEND}/cash/api/webhook?device=${deviceNumber}`);
+        const paymentData = await response.json();
+        if (paymentData.status === "Success") {
+          navigate("/payment-result");
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    checkPaymentStatus();
+  })
+
   const handleMouseEnter = (image) => {
     setHoveredImage(image);
   }

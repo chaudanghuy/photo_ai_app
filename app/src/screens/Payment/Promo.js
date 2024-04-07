@@ -70,6 +70,19 @@ function Cash() {
           navigate('/payment-result');
      }
 
+     const checkReedeem = async () => {
+          try {
+               const deviceNumber = process.env.REACT_APP_DEVICE_NUMBER;
+               const response = await fetch(`${process.env.REACT_APP_BACKEND}/cash/api/redeem?device=${deviceNumber}&code=${redeemCode}`);
+               const paymentData = await response.json();
+               if (paymentData.status === "Success") {
+                    navigate("/payment-result");
+               }
+          } catch (error) {
+               console.error(error);
+          }
+     }
+
      return (
           <div className='promo-container'>
                <div className="go-back" onClick={() => navigate("/payment")}></div>
