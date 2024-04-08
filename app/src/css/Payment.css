@@ -95,9 +95,19 @@
      background-position: center;
 }
 
+.paid-cash-text {
+     position: absolute;
+     top: 39%;
+     left: 51%;
+     width: 55%;
+     height: calc(100% - 20px);
+     font-size: 31px;
+     font-family: Arial, Helvetica, sans-serif;
+}
+
 .insert-cash {
      position: absolute;
-     top: calc(29% + 100px);
+     top: calc(29% + 115px);
      left: 11%;
      width: 30%;
      height: 30%;
@@ -105,6 +115,16 @@
      background-size: contain;
      background-repeat: no-repeat;
      background-position: center;
+}
+
+.insert-cash-text {
+     position: absolute;
+     top: 39%;
+     left: 51%;
+     width: 55%;
+     height: calc(100% - 20px);
+     font-size: 31px;
+     font-family: Arial, Helvetica, sans-serif;
 }
 
 .done-button {

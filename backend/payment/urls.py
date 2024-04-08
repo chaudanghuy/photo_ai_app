@@ -4,13 +4,19 @@ from .views import (
     PaymentDetailAPI,
     PaymentList,
     PaymentCreateView,
-    PaymentEditView    
+    PaymentEditView,
 )
+from .views import start_cash_pay, stop_cash_pay, create_cash_order, webhook_cash_api
 
 urlpatterns = [
     # API
-    path('api', PaymentAPI.as_view()),
-    path('api/<str:code>', PaymentDetailAPI.as_view()),       
+    path('api/list', PaymentAPI.as_view()),     
+
+    # Cash
+    path('api/cash/start', start_cash_pay, name='start_cash_pay'),
+    path('api/cash/create', create_cash_order, name='stop_cash_pay'),
+    path('api/cash/webhook', webhook_cash_api, name='create_cash_order'),
+    path('api/cash/stop', stop_cash_pay, name='webhook_cash_api'),
      
     # WEB
     path('', PaymentList.as_view(), name='payments'),

@@ -5,44 +5,86 @@ import i18n from '../../translations/i18n';
 import "../../css/Payment.css";
 import done from '../../assets/Payment/Cash/done.png';
 import done_click from '../../assets/Payment/Cash/done_click.png';
+import axios from 'axios';
 
 function Cash() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const [hoveredImage, setHoveredImage] = useState(null);
+  const [orderCode, setOrderCode] = useState(null);
+  const [amountToPay, setAmountToPay] = useState(0);
+  const [insertedMoney, setInsertedMoney] = useState(0);
+
+  useEffect(() => {
+    const startCashPayment = async () => {
+      try {
+        const requestOptions = {
+          method: "POST",
+          redirect: "follow"
+        };
+        
+        fetch("http://127.0.0.1:8002/api/start/", requestOptions)
+          .then((response) => response.text())
+          .then((result) => console.log(result))
+          .catch((error) => console.error(error));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    startCashPayment();
+  }, []);
 
   useEffect(() => {
     const fetchCashPayment = async () => {
       try {
         const deviceNumber = process.env.REACT_APP_DEVICE_NUMBER;
         const framePrice = sessionStorage.getItem('framePrice');
-        const response = await fetch(`${process.env.REACT_APP_BACKEND}/cash/api?device=${deviceNumber}&amount=${framePrice}`);
-        const cashPaymentData = await response.json();
-        if (cashPaymentData.return_code == 1) {
-          navigate("/payment-result");
+        setAmountToPay(framePrice);
+
+        const response = await fetch(`${process.env.REACT_APP_BACKEND}/payments/api/cash/create?device=${deviceNumber}&amount=${framePrice}`)
+
+        const responseData = await response.json();
+        console.log(responseData);
+        if (responseData) {
+          console.log(responseData.order_code);
+          setOrderCode(responseData.order_code);
         }
       } catch (error) {
         console.error(error);
       }
     }
-    fetchCashPayment();
+
+    if (!orderCode) {
+      fetchCashPayment();
+    }
   }, []);
 
-  useEffect(() => {
-    const checkPaymentStatus = async () => {
-      try {
-        const deviceNumber = process.env.REACT_APP_DEVICE_NUMBER;
-        const response = await fetch(`${process.env.REACT_APP_BACKEND}/cash/api/webhook?device=${deviceNumber}`);
-        const paymentData = await response.json();
-        if (paymentData.status === "Success") {
-          navigate("/payment-result");
-        }
-      } catch (error) {
-        console.error(error);
+  const checkPaymentStatus = async (orderCodeNum) => {
+    try {
+      const response = await fetch(`${process.env.REACT_APP_BACKEND}/payments/api/cash/webhook?order=${orderCodeNum}`)
+
+      const responseData = await response.json();
+      setInsertedMoney(responseData.total_money);
+      return responseData;
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  const continuePay = () => {
+    if (orderCode) {
+      checkPaymentStatus(orderCode);
+
+      if (insertedMoney > amountToPay) {
+        axios.post(
+          `${process.env.REACT_APP_BACKEND}/payments/api/cash/stop`,
+          {}
+        );
+        //navigate("/payment-result");
       }
     }
-    checkPaymentStatus();
-  })
+  }
 
   const handleMouseEnter = (image) => {
     setHoveredImage(image);
@@ -55,9 +97,13 @@ function Cash() {
   return (
     <div className='cash-container'>
       <div className="go-back" onClick={() => navigate("/payment")}></div>
-      <div className="paid-cash"></div>
-      <div className="insert-cash"></div>
-      <div style={{backgroundImage: `url(${hoveredImage === done ? done_click : done})`}} className="done-button" onClick={() => navigate('/payment-result')} onMouseEnter={() => handleMouseEnter(done)} onMouseLeave={handleMouseLeave}></div>
+      <div className="paid-cash">
+        <div className="paid-cash-text">{amountToPay}</div>
+      </div>
+      <div className="insert-cash">
+        <div className="insert-cash-text">{insertedMoney}</div>
+      </div>
+      <div style={{ backgroundImage: `url(${hoveredImage === done ? done_click : done})` }} className="done-button" onClick={continuePay} onMouseEnter={() => handleMouseEnter(done)} onMouseLeave={handleMouseLeave}></div>
     </div>
   );
 }
