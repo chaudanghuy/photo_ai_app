@@ -4,12 +4,12 @@ import { Image as KonvaImage, Group, Rect, Transformer } from 'react-konva';
 import { useHoverDirty, useLongPress } from 'react-use';
 import cancelImage from "../assets/Sticker/items/cancel.png";
 
-export const StickerItem = ({ image, onDelete, onDragEnd, isSelected, onSelect, onChange }) => {
+export const StickerItem = ({ image, onDelete, onDragEnd, isSelected, onSelect, onChange, isDoneSticker }) => {
     const imageRef = useRef(null);
     const isHovered = useHoverDirty(imageRef);
     const [stickerImage] = useImage(image.src);
     const [deleteImage] = useImage(cancelImage);
-    const [showDeleteButton, setShowDeleteButton] = useState(false);
+    const [showDeleteButton, setShowDeleteButton] = useState(false);    
 
     const trRef = useRef();
 
@@ -92,7 +92,7 @@ export const StickerItem = ({ image, onDelete, onDragEnd, isSelected, onSelect, 
                     // })
                 }}
             />
-            {isSelected && !isDragging && (
+            {isSelected && !isDragging && !isDoneSticker && (
                 <Transformer
                     ref={trRef}
                     boundBoxFunc={(oldBox, newBox) => {

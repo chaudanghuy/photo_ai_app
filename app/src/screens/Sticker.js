@@ -31,7 +31,7 @@ function Filter() {
      const [selectedFrame, setSelectedFrame] = useState(null);
      const [images, setImages] = useState([]);
      const [selectedId, selectShape] = useState(null);
-     // const [background] = useImage(sessionStorage.getItem('downloaded-image'), 'Anonymous');
+     const [doneSticker, setDoneSticker] = useState(false);
 
      const background = new Image();
      background.crossOrigin = 'Anonymous';
@@ -281,7 +281,10 @@ function Filter() {
 
      const printFrameWithSticker = () => {
           // callPrintAPI();
-          navigate("/print");
+          setDoneSticker(true);
+          setTimeout(() => {
+               navigate("/print");
+          }, 3000);          
      }
 
      // TODO
@@ -359,6 +362,7 @@ function Filter() {
                                                   newImages[i] = newAttrs;
                                                   setImages(newImages);
                                              }}
+                                             isDoneSticker={doneSticker}
                                         />
                                    );
                               })}
