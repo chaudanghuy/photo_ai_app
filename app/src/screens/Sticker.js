@@ -281,10 +281,22 @@ function Filter() {
 
      const printFrameWithSticker = () => {
           // callPrintAPI();
+          savePrintPhoto();
+
           setDoneSticker(true);
           setTimeout(() => {
                navigate("/print");
           }, 3000);          
+     }
+     
+     const savePrintPhoto = () => {
+          const uri = stageRef.current.toDataURL();
+          var link = document.createElement('a');
+          link.download = 'stage.png';
+          link.href = uri;
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
      }
 
      // TODO

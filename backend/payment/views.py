@@ -39,13 +39,7 @@ def stop_cash_pay(request):
     try:
         cash_url = 'http://127.0.0.1:8002/api/stop/'
         response = requests.post(cash_url, {})
-
-        if response.status_code == 200:
-            log_file_path = 'C:\\Users\\Thanh\\Desktop\\Bill-Acceptor\\tp70cashreader\\cash.log'
-            if os.path.exists(log_file_path):
-                # Delete the file
-                os.remove(log_file_path)
-            return JsonResponse({'message': 'Stop'}, status=status.HTTP_200_OK)                
+        return JsonResponse({'message': 'Stop'}, status=status.HTTP_200_OK)                
     except Payment.DoesNotExist:
         return JsonResponse({'error': 'Payment not found'}, status=status.HTTP_404_NOT_FOUND)            
     return JsonResponse({'error': 'Error Failed'}, status=status.HTTP_200_OK)           
@@ -65,7 +59,6 @@ def create_cash_order(request):
             total_price=amount,
             status="Pending",
         )    
-
         return JsonResponse({'order_code': order_code})    
 
 @csrf_exempt
@@ -74,27 +67,23 @@ def webhook_cash_api(request):
         if order_code:
             order = Order.objects.filter(order_code=order_code).first()
 
-        log_file_path = 'C:\\Users\\Thanh\\Desktop\\Bill-Acceptor\\tp70cashreader\\cash.log'
-
         try:
             total_money = 0
-            with open(log_file_path, 'r') as file:
-                for line in file:
-                    line = line.strip()
-                    total_money += int(line)
-
-            if total_money >= order.total_price:
-                order.status = "Success"
-                order.save()                      
-
-            if order.status == 'Success':
-                Transaction.objects.create(
-                    order_id=order,
-                    payment_id=Payment.objects.filter(code='Cash').first(),
-                    amount=order.total_price,
-                    transaction_status="Success"
-                )
-                return JsonResponse({'total_money': total_money, 'status': 'OK'}, status=status.HTTP_200_OK)           
+            cash_url = 'http://127.0.0.1:8002/api/money/'
+            response = requests.get(cash_url)
+            
+            if response.status_code == 200:
+                data = response.json()
+                total_money = data['total_money']
+                if (int(total_money) >= order.total_price):
+                    Transaction.objects.create(
+                        order_id=order,
+                        payment_id=Payment.objects.filter(code='Cash').first(),
+                        amount=order.total_price,
+                        transaction_status="Success"
+                    )
+                    return JsonResponse({'total_money': total_money, 'status': 'OK'}, status=status.HTTP_200_OK)           
+                return JsonResponse({'total_money': total_money, 'status': 'NOK'})    
 
             return JsonResponse({'total_money': total_money, 'status': 'NOK'})
         except Exception as e:

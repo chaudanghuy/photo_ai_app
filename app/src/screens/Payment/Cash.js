@@ -22,7 +22,7 @@ function Cash() {
           method: "POST",
           redirect: "follow"
         };
-        
+
         fetch("http://127.0.0.1:8002/api/start/", requestOptions)
           .then((response) => response.text())
           .then((result) => console.log(result))
@@ -60,28 +60,36 @@ function Cash() {
     }
   }, []);
 
-  const checkPaymentStatus = async (orderCodeNum) => {
-    try {
-      const response = await fetch(`${process.env.REACT_APP_BACKEND}/payments/api/cash/webhook?order=${orderCodeNum}`)
-
-      const responseData = await response.json();
-      setInsertedMoney(responseData.total_money);
-      return responseData;
-    } catch (error) {
-      console.error(error);
+  useEffect(() => {
+    const checkPaymentStatus = async (orderCodeNum) => {
+      try {
+        const response = await fetch(`${process.env.REACT_APP_BACKEND}/payments/api/cash/webhook?order=${orderCodeNum}`)
+        const responseData = await response.json();
+        setInsertedMoney(responseData.total_money);        
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }
+
+    const intervalId = setInterval(() => {
+      if (orderCode) {
+        checkPaymentStatus(orderCode);
+      }
+    }, 15000);
+
+    return () => {
+      clearInterval(intervalId);
+    }
+  })
 
   const continuePay = () => {
     if (orderCode) {
-      checkPaymentStatus(orderCode);
-
       if (insertedMoney > amountToPay) {
         axios.post(
           `${process.env.REACT_APP_BACKEND}/payments/api/cash/stop`,
           {}
         );
-        //navigate("/payment-result");
+        navigate("/payment-result");
       }
     }
   }

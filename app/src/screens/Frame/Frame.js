@@ -65,9 +65,7 @@ function Frame() {
         if (frame.position === 'row-2-3') {
           setFrameRow23(process.env.REACT_APP_BACKEND + frame.photo);
           setFrameRow23Hover(process.env.REACT_APP_BACKEND + frame.photo_hover);
-        }
-
-        sessionStorage.setItem('framePrice', frame.price);
+        }        
       });
     } catch (error) {
       console.error('Error fetching frames:', error);
@@ -82,11 +80,12 @@ function Frame() {
     setHoveredImage(null);
   }
 
-  const goToBackground = (titleFrame) => {
+  const goToBackground = (titleFrame, price) => {
     // save the selected frame in session storage
     sessionStorage.setItem('selectedFrame', JSON.stringify({
       frame: titleFrame
     }))
+    sessionStorage.setItem('framePrice', price);
     navigate('/background');
   }
 
@@ -95,24 +94,24 @@ function Frame() {
       <div className="go-back" onClick={() => navigate("/")}></div>
       <div className="topSection">
         <div className="column">
-          <div className="imageDiv" style={{ backgroundImage: `url( ${hoveredImage === frameRow11 ? frameRow11Hover : frameRow11})` }} onMouseEnter={() => handleMouseEnter(frameRow11)} onMouseLeave={handleMouseLeave} onClick={() => goToBackground('Stripx2')}></div>
+          <div className="imageDiv" style={{ backgroundImage: `url( ${hoveredImage === frameRow11 ? frameRow11Hover : frameRow11})` }} onMouseEnter={() => handleMouseEnter(frameRow11)} onMouseLeave={handleMouseLeave} onClick={() => goToBackground('Stripx2', 70000)}></div>
         </div>
         <div className="column">
-          <div className="imageDiv" style={{ backgroundImage: `url(${hoveredImage === frameRow12 ? frameRow12Hover : frameRow12})`, marginLeft: '-40%', }} onMouseEnter={() => handleMouseEnter(frameRow12)} onMouseLeave={handleMouseLeave} onClick={() => goToBackground('2cut-x2')}></div>
+          <div className="imageDiv" style={{ backgroundImage: `url(${hoveredImage === frameRow12 ? frameRow12Hover : frameRow12})`, marginLeft: '-40%', }} onMouseEnter={() => handleMouseEnter(frameRow12)} onMouseLeave={handleMouseLeave} onClick={() => goToBackground('2cut-x2', 100000)}></div>
         </div>
         <div className="column">
-          <div className="imageDiv" style={{ backgroundImage: `url(${hoveredImage === frameRow13 ? frameRow13Hover : frameRow13})`, marginLeft: '-80%' }} onMouseEnter={() => handleMouseEnter(frameRow13)} onMouseLeave={handleMouseLeave} onClick={() => goToBackground('3-cutx2')}></div>
+          <div className="imageDiv" style={{ backgroundImage: `url(${hoveredImage === frameRow13 ? frameRow13Hover : frameRow13})`, marginLeft: '-80%' }} onMouseEnter={() => handleMouseEnter(frameRow13)} onMouseLeave={handleMouseLeave} onClick={() => goToBackground('3-cutx2', 100000)}></div>
         </div>
       </div>
       <div className="bottomSection">
         <div className="column">
-          <div className="imageDiv" style={{ backgroundImage: `url(${hoveredImage === frameRow21 ? frameRow21Hover : frameRow21})` }} onMouseEnter={() => handleMouseEnter(frameRow21)} onMouseLeave={() => handleMouseLeave} onClick={() => goToBackground('4-cutx2')}></div>
+          <div className="imageDiv" style={{ backgroundImage: `url(${hoveredImage === frameRow21 ? frameRow21Hover : frameRow21})` }} onMouseEnter={() => handleMouseEnter(frameRow21)} onMouseLeave={() => handleMouseLeave} onClick={() => goToBackground('4-cutx2', 100000)}></div>
         </div>
         <div className="column">
-          <div className="imageDiv" style={{ backgroundImage: `url(${hoveredImage === frameRow22 ? frameRow22Hover : frameRow22})`, marginLeft: '-40%', }} onMouseEnter={() => handleMouseEnter(frameRow22)} onMouseLeave={() => handleMouseLeave} onClick={() => goToBackground('5-cutx2')}></div>
+          <div className="imageDiv" style={{ backgroundImage: `url(${hoveredImage === frameRow22 ? frameRow22Hover : frameRow22})`, marginLeft: '-40%', }} onMouseEnter={() => handleMouseEnter(frameRow22)} onMouseLeave={() => handleMouseLeave} onClick={() => goToBackground('5-cutx2', 100000)}></div>
         </div>
         <div className="column">
-          <div className="imageDiv" style={{ backgroundImage: `url(${hoveredImage === frameRow23 ? frameRow23Hover : frameRow23})`, marginLeft: '-80%' }} onMouseEnter={() => handleMouseEnter(frameRow23)} onMouseLeave={() => handleMouseLeave} onClick={() => goToBackground('6-cutx2')}></div>
+          <div className="imageDiv" style={{ backgroundImage: `url(${hoveredImage === frameRow23 ? frameRow23Hover : frameRow23})`, marginLeft: '-80%' }} onMouseEnter={() => handleMouseEnter(frameRow23)} onMouseLeave={() => handleMouseLeave} onClick={() => goToBackground('6-cutx2', 100000)}></div>
         </div>
       </div>
     </div>
