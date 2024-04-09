@@ -139,14 +139,13 @@
 
 .left-choose-container {
      position: absolute;
-     top: 7%;
+     top: 16%;
      left: 12%;
      width: 79%;
-     height: 86%;
+     height: 79%;
      background-size: contain;
      background-repeat: no-repeat;
      background-position: center;
-
      display: flex;
      flex-direction: column;
      justify-content: center;
@@ -362,14 +361,14 @@
 /** Frame 3cut **/
 
 .choose-photo-item-3cut-top-line {
-     width: 397px;
-     height: 252px;
+     width: 428px;
+     height: 254px;
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
      position: fixed;
-     top: 29%;
-     left: 18.9%;
+     top: 33%;
+     left: 18.5%;
 }
 
 .choose-photo-item-3cut-0-0 {
@@ -524,8 +523,8 @@
 
 .left-choose-photos {
      margin-top: 8%;
-     margin-left: 31%;
-     width: 41%;
+     margin-left: 29%;
+     width: 45%;
      height: 86%;
      position: initial;
      background-size: contain;

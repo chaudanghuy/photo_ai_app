@@ -65,7 +65,10 @@ function Cash() {
       try {
         const response = await fetch(`${process.env.REACT_APP_BACKEND}/payments/api/cash/webhook?order=${orderCodeNum}`)
         const responseData = await response.json();
-        setInsertedMoney(responseData.total_money);        
+        setInsertedMoney(responseData.total_money);  
+        if (responseData.total_money >= amountToPay) {
+          setHoveredImage(done);
+        }      
       } catch (error) {
         console.error(error);
       }
@@ -75,7 +78,7 @@ function Cash() {
       if (orderCode) {
         checkPaymentStatus(orderCode);
       }
-    }, 15000);
+    }, 30000);
 
     return () => {
       clearInterval(intervalId);
@@ -84,7 +87,7 @@ function Cash() {
 
   const continuePay = () => {
     if (orderCode) {
-      if (insertedMoney > amountToPay) {
+      if (insertedMoney >= amountToPay) {
         axios.post(
           `${process.env.REACT_APP_BACKEND}/payments/api/cash/stop`,
           {}
@@ -111,7 +114,7 @@ function Cash() {
       <div className="insert-cash">
         <div className="insert-cash-text">{insertedMoney}</div>
       </div>
-      <div style={{ backgroundImage: `url(${hoveredImage === done ? done_click : done})` }} className="done-button" onClick={continuePay} onMouseEnter={() => handleMouseEnter(done)} onMouseLeave={handleMouseLeave}></div>
+      <div style={{ backgroundImage: `url(${hoveredImage === done ? done_click : done})` }} className="done-button" onClick={continuePay}></div>
     </div>
   );
 }

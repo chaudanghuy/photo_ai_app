@@ -438,7 +438,7 @@ function Filter() {
                     ))
                );
           }
-     }
+     }     
 
      const goToSticker = () => {
           sessionStorage.setItem('filter', getImageStyle());
@@ -476,7 +476,13 @@ function Filter() {
                          <div className="filter-image" style={{ backgroundImage: `url(${smooth})` }} onClick={() => handleFilter(5)}></div>
                     </div>
                </div>
-               <div className="bottom-filter" style={{ backgroundImage: `url(${continue_btn})` }} onClick={goToSticker}></div>
+               <div 
+                    className="bottom-filter" 
+                    style={{ backgroundImage: `url(${hoveredImage === continue_btn ? continue_btn_click : continue_btn})` }}
+                    onMouseEnter={() => handleMouseEnter(continue_btn)}
+                    onMouseLeave={handleMouseLeave}
+                    onClick={goToSticker}
+               ></div>
           </div>
      );
 }

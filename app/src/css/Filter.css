@@ -66,7 +66,7 @@
 .right-filter {
      position: absolute;
      top: 22%;
-     right: 14%;
+     right: 11%;
      display: flex;
      flex-direction: column;
      width: 30%;
@@ -75,7 +75,7 @@
 .middle-filter {
      position: absolute;
      top: 24%;
-     left: 48%;
+     left: 50%;
      width: 3%;
      height: 48%;
      border: 9px solid gray;
@@ -103,12 +103,12 @@
 }
 
 .filter-image {
-     width: 50%;
-     height: 266px;
+     width: 55%;
+     height: 350px;
      background-size: contain;
      background-repeat: no-repeat;
      background-position: center;
-     margin: 10px auto;
+     margin: 18px auto;
 }
 
 .bottom-filter {
@@ -140,7 +140,7 @@
      background-repeat: no-repeat;
      background-position: center;
      position: relative;
-     left: 8%;
+     left: 10%;
      bottom: 21%;
 }
 
@@ -151,7 +151,7 @@
      background-repeat: no-repeat;
      background-position: center;
      position: relative;
-     left: 7%;
+     left: 10%;
      top: 19%;
 }
 
@@ -162,5 +162,6 @@
      background-repeat: no-repeat;
      background-position: center;
      position: relative;
-     top: 30%;
+     top: 28%;
+     left: 2%;
 }
