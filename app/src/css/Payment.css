@@ -101,8 +101,8 @@
      left: 51%;
      width: 55%;
      height: calc(100% - 20px);
-     font-size: 31px;
-     font-family: Arial, Helvetica, sans-serif;
+     font-size: 51px;
+     font-family: fantasy;
 }
 
 .insert-cash {
@@ -123,8 +123,8 @@
      left: 51%;
      width: 55%;
      height: calc(100% - 20px);
-     font-size: 31px;
-     font-family: Arial, Helvetica, sans-serif;
+     font-size: 51px;
+     font-family: fantasy;
 }
 
 .done-button {
