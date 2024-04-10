@@ -30,8 +30,7 @@ function Filter() {
      const [myBackground, setMyBackground] = useState(null);
      const [selectedFrame, setSelectedFrame] = useState(null);
      const [images, setImages] = useState([]);
-     const [selectedId, selectShape] = useState(null);
-     const [doneSticker, setDoneSticker] = useState(false);
+     const [selectedId, selectShape] = useState(null);     
 
      const background = new Image();
      background.crossOrigin = 'Anonymous';
@@ -282,8 +281,7 @@ function Filter() {
      const printFrameWithSticker = () => {
           // callPrintAPI();
           savePrintPhoto();
-
-          setDoneSticker(true);
+          
           setTimeout(() => {
                navigate("/print");
           }, 3000);          
@@ -364,17 +362,7 @@ function Filter() {
                                              }}
                                              key={i}
                                              image={image}
-                                             shapeProps={image}
-                                             isSelected={image.id === selectedId}
-                                             onSelect={() => {
-                                                  selectShape(image.id)
-                                             }}
-                                             onChange={(newAttrs) => {
-                                                  const newImages = [...images];
-                                                  newImages[i] = newAttrs;
-                                                  setImages(newImages);
-                                             }}
-                                             isDoneSticker={doneSticker}
+                                             shapeProps={image}                                                                                        
                                         />
                                    );
                               })}
