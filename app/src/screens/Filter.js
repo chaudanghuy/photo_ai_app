@@ -36,7 +36,7 @@ function Filter() {
      const [myBackground, setMyBackground] = useState(null);
      const [selectedFrame, setSelectedFrame] = useState(null);
      const [confirmButton, setConfirmButton] = useState(false);
-     const [percentage, setPercentage] = useState(20);
+     const [percentage, setPercentage] = useState(350);
      const [options, setOptions] = useState([]);
      const [sliderChange, setSliderChange] = useState(false);
      const [filterIndex, setFilterIndex] = useState(1);
@@ -168,7 +168,7 @@ function Filter() {
 
      const handleFilter = (index) => {
           setSliderChange(false);
-          setPercentage(20);
+          setPercentage(350);
           setFilterIndex(index);
           setFilterEffect(selectedFilterEffects[index].effect);
           setOptions([]);

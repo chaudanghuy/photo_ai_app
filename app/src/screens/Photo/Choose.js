@@ -167,7 +167,7 @@ function Choose() {
      }
 
      const displayClassNameForPhoto = (rowIndex, photoIndex) => {
-          if (selectedFrame === 'Stripx2' || selectedFrame === '6-cutx2') {
+          if (selectedFrame === 'Stripx2') {
                if (rowIndex === 0 && photoIndex === 0) {
                     return 'choose-photo-item-0-0';
                } else if (rowIndex === 0 && photoIndex === 1) {
@@ -184,6 +184,20 @@ function Choose() {
                     return 'choose-photo-item-3-0';
                } else if (rowIndex === 3 && photoIndex === 1) {
                     return 'choose-photo-item-3-1';
+               }
+          } else if (selectedFrame === '6-cutx2') {
+               if (rowIndex === 0 && photoIndex === 0) {
+                    return 'choose-photo-item6-0-0';
+               } else if (rowIndex === 0 && photoIndex === 1) {
+                    return 'choose-photo-item6-0-1';
+               } else if (rowIndex === 1 && photoIndex === 0) {
+                    return 'choose-photo-item6-1-0';
+               } else if (rowIndex === 1 && photoIndex === 1) {
+                    return 'choose-photo-item6-1-1';
+               } else if (rowIndex === 2 && photoIndex === 0) {
+                    return 'choose-photo-item6-2-0';
+               } else if (rowIndex === 2 && photoIndex === 1) {
+                    return 'choose-photo-item6-2-1';
                }
           } else if (selectedFrame === '2cut-x2') {
                if (rowIndex === 0 && photoIndex === 0) {
@@ -224,7 +238,7 @@ function Choose() {
      }
 
      const showSelectedPhotos = () => {
-          if (selectedFrame == '3-cutx2' && selectedPhotos.length > 1) {
+          if (selectedFrame == '3-cutx2' && selectedPhotos.length > 0) {
                const firstPhotoTpl = (
                     <div className="choose-photo-row">
                          <div
@@ -247,29 +261,47 @@ function Choose() {
                          </div>
                     ))]
                );
-          } else if (selectedFrame == '5-cutx2' && selectedPhotos.length > 1) {
-               const lastPhotoTpl = (
-                    <div className="choose-photo-row">
-                         <div
-                              className="choose-photo-item-5cut-last-line"
-                              style={{ backgroundImage: `url(${photos[selectedPhotos[selectedPhotos.length - 1]].url})` }}
-                         />
-                    </div>
-               )
-               const selectedPhotoRows = chunkArray(selectedPhotos.slice(0, selectedPhotos.length - 1), 2);
-               return (
-                    [selectedPhotoRows.map((row, rowIndex) => (
-                         <div key={rowIndex} className="choose-photo-row">
-                              {row.map((selectedIndex, photoIndex) => (
-                                   <div
-                                        key={photoIndex}
-                                        className={displayClassNameForPhoto(rowIndex, photoIndex)}
-                                        style={{ backgroundImage: `url(${photos[selectedIndex].url})` }}
-                                   />
-                              ))}
+          } else if (selectedFrame == '5-cutx2' && selectedPhotos.length > 0) {
+               if (selectedPhotos.length == 5) {
+                    const lastPhotoTpl = (
+                         <div className="choose-photo-row">
+                              <div
+                                   className="choose-photo-item-5cut-last-line"
+                                   style={{ backgroundImage: `url(${photos[selectedPhotos[selectedPhotos.length - 1]].url})` }}
+                              />
                          </div>
-                    )), lastPhotoTpl]
-               );
+                    )
+                    const selectedPhotoRows = chunkArray(selectedPhotos.slice(0, selectedPhotos.length - 1), 2);
+                    return (
+                         [selectedPhotoRows.map((row, rowIndex) => (
+                              <div key={rowIndex} className="choose-photo-row">
+                                   {row.map((selectedIndex, photoIndex) => (
+                                        <div
+                                             key={photoIndex}
+                                             className={displayClassNameForPhoto(rowIndex, photoIndex)}
+                                             style={{ backgroundImage: `url(${photos[selectedIndex].url})` }}
+                                        />
+                                   ))}
+                              </div>
+                         )), lastPhotoTpl]
+                    );
+               } else {
+                    const selectedPhotoRows = chunkArray(selectedPhotos, 2);
+                    return (
+                         [selectedPhotoRows.map((row, rowIndex) => (
+                              <div key={rowIndex} className="choose-photo-row">
+                                   {row.map((selectedIndex, photoIndex) => (
+                                        <div
+                                             key={photoIndex}
+                                             className={displayClassNameForPhoto(rowIndex, photoIndex)}
+                                             style={{ backgroundImage: `url(${photos[selectedIndex].url})` }}
+                                        />
+                                   ))}
+                              </div>
+                         ))]
+                    );
+               }
+               
           } else {
                const selectedPhotoRows = chunkArray(selectedPhotos, 2);
                return (
