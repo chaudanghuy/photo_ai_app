@@ -18,14 +18,20 @@ function Photo() {
      const [photoCount, setPhotoCount] = useState(null);
      const [intervalId, setIntervalId] = useState(null);
      const [photos, setPhotos] = useState([]);
+     const [flash, setFlash] = useState(false);
 
      const rightCornerDivValue = (photoCount + 1) * (1 / 8);
 
      const takeSnapshot = () => {
+          setFlash(true);
           const imageSrc = webcamRef.current.getScreenshot();
           const newPhotoArray = [...photos, imageSrc];
           setPhotos(newPhotoArray);
           setPhotoCount(photoCount + 1);
+
+          setTimeout(() => {
+               setFlash(false);
+          }, 100);
 
           if (photoCount === 7) {
                const photosWithIds = newPhotoArray.map((photo, index) => ({
@@ -60,7 +66,7 @@ function Photo() {
      }
 
      return (
-          <div className='photo-container'>
+          <div className={`photo-container ${flash ? ' animate' : ''}`}>
                <div className="left-photo-div" style={{ backgroundImage: `url(${countdownImg})` }}>
                     <div className="photo-countdown">{countdown}</div>
                </div>
