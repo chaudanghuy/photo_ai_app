@@ -17,6 +17,17 @@ function Print() {
           setHoveredImage(null);
      }
 
+     const clearSessionStorageAndLeaveOut = () => {
+          sessionStorage.clear();
+          setTimeout(() => {
+               navigate('/');
+          }, 5000);
+     }
+
+     useEffect(() => {
+          clearSessionStorageAndLeaveOut();
+     }, []);
+
      return (
           <div className='print-container'></div>
      );
