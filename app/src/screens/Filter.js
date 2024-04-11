@@ -319,7 +319,7 @@ function Filter() {
      }
 
      const displayClassNameForPhoto = (rowIndex, photoIndex) => {
-          if (selectedFrame === 'Stripx2' || selectedFrame === '6-cutx2') {
+          if (selectedFrame === 'Stripx2') {
                if (rowIndex === 0 && photoIndex === 0) {
                     return 'choose-photo-item-0-0';
                } else if (rowIndex === 0 && photoIndex === 1) {
@@ -336,6 +336,20 @@ function Filter() {
                     return 'choose-photo-item-3-0';
                } else if (rowIndex === 3 && photoIndex === 1) {
                     return 'choose-photo-item-3-1';
+               }
+          }  else if (selectedFrame === '6-cutx2') {
+               if (rowIndex === 0 && photoIndex === 0) {
+                    return 'choose-photo-item6-0-0';
+               } else if (rowIndex === 0 && photoIndex === 1) {
+                    return 'choose-photo-item6-0-1';
+               } else if (rowIndex === 1 && photoIndex === 0) {
+                    return 'choose-photo-item6-1-0';
+               } else if (rowIndex === 1 && photoIndex === 1) {
+                    return 'choose-photo-item6-1-1';
+               } else if (rowIndex === 2 && photoIndex === 0) {
+                    return 'choose-photo-item6-2-0';
+               } else if (rowIndex === 2 && photoIndex === 1) {
+                    return 'choose-photo-item6-2-1';
                }
           } else if (selectedFrame === '2cut-x2') {
                if (rowIndex === 0 && photoIndex === 0) {
