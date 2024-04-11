@@ -78,7 +78,7 @@ function Cash() {
       if (orderCode) {
         checkPaymentStatus(orderCode);
       }
-    }, 30000);
+    }, 3000);
 
     return () => {
       clearInterval(intervalId);
