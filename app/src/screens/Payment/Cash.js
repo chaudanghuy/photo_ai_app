@@ -66,7 +66,7 @@ function Cash() {
         const response = await fetch(`${process.env.REACT_APP_BACKEND}/payments/api/cash/webhook?order=${orderCodeNum}`)
         const responseData = await response.json();
         setInsertedMoney(responseData.total_money);  
-        if (responseData.total_money >= amountToPay) {
+        if (parseInt(responseData.total_money) >= parseInt(amountToPay)) {
           setHoveredImage(done);
         }      
       } catch (error) {
@@ -87,7 +87,7 @@ function Cash() {
 
   const continuePay = () => {
     if (orderCode) {
-      if (insertedMoney >= amountToPay) {
+      if (parseInt(insertedMoney) >= parseInt(amountToPay)) {
         axios.post(
           `${process.env.REACT_APP_BACKEND}/payments/api/cash/stop`,
           {}
