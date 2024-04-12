@@ -2,11 +2,12 @@ import requests
 from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework.decorators import api_view
 from .models import Frame
-from .serializers import FrameSerializer
+from .serializers import FrameSerializer, CloudPhotoSerializer
 from django.views import View
 from .forms import FrameForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,7 +16,9 @@ import os
 from django.conf import settings
 from django.http import JsonResponse
 import base64
+from .forms import PhotoForm
 
+import cloudinary.uploader
 
 # Create your views here.
 DEVICE_API_URL = "http://localhost:8000/devices/api"
@@ -46,8 +49,23 @@ def upload_full(request):
                     'photo_url': f'/photo_saved/{filename}' if photo_data else None
                 }, status=status.HTTP_201_CREATED)                  
     else:
-        return JsonResponse({'error': 'Image not provided'}, status=status.HTTP_400_BAD_REQUEST)
-
+        return JsonResponse({'error': 'Image not provided'}, status=status.HTTP_400_BAD_REQUEST)                                       
+        
+class UploadPhotoCloud(APIView):
+    parser_classes = (
+        MultiPartParser,
+        JSONParser,
+    )
+    
+    @staticmethod
+    def post(request):
+        file = request.data.get('picture')
+        
+        upload_data = cloudinary.uploader.upload(file)
+        return Response({
+            'status': 'success',
+            'data': upload_data
+        }, status=201)
 
 class FrameAPI(APIView):
     

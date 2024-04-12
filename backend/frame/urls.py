@@ -5,7 +5,8 @@ from .views import (
     FrameList,
     FrameCreateView,
     FrameEditView,
-    FrameImageCopyAPI,    
+    FrameImageCopyAPI,
+    UploadPhotoCloud    
 )
 from .views import upload_full
 
@@ -13,9 +14,12 @@ urlpatterns = [
     # API
     path('api', FrameAPI.as_view()),
     path('api/<int:pk>', FrameDetailAPI.as_view()),
+    
     # API Image
     path('api/copy-image', FrameImageCopyAPI.as_view()),
     path('api/upload-full', upload_full, name='upload-full'),
+    path('api/upload_cloud', UploadPhotoCloud.as_view()),
+    
     # WEB
     path('', FrameList.as_view(), name='frames'),
     path('add', FrameCreateView.as_view(), name='frames-add'),

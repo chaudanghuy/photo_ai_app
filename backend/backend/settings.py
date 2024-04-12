@@ -13,10 +13,24 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import cloudinary
 
 load_dotenv()
 
 BACKEND_ENV = os.getenv('ENVIRONMENT')
+
+# Cloudinary
+CLOUDINARY_NAME = os.getenv('CLOUDINARY_NAME')
+CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY')
+CLOUDINARY_SECRET_KEY = os.getenv('CLOUDINARY_SECRET_KEY')
+CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
+
+# Start Cloudinary
+cloudinary.config(
+    cloud_name=CLOUDINARY_NAME,
+    api_key=CLOUDINARY_API_KEY,
+    api_secret=CLOUDINARY_SECRET_KEY,    
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
