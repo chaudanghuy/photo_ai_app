@@ -27,6 +27,7 @@ from revenue import urls as revenue_urls
 from dashboard import urls as dashboard_urls
 from account import urls as account_urls
 from zalopay import urls as zalopay_urls
+from redeem import urls as redeem_urls
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -44,6 +45,7 @@ urlpatterns = [
     path('', include(dashboard_urls)),
     path('account/', include(account_urls)),
     path('zalopay/', include(zalopay_urls)),
+    path('redeem/', include(redeem_urls)),
 ]
 
 if settings.DEBUG:

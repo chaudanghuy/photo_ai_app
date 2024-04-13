@@ -15,6 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http import JsonResponse
 from revenue.models import Transaction, Order
+from redeem.models import Redeem
 import random
 import string
 from django.views.decorators.csrf import csrf_exempt
@@ -89,6 +90,64 @@ def webhook_cash_api(request):
             return JsonResponse({'total_money': total_money, 'status': 'NOK'})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)    
+        
+@csrf_exempt
+def redeem_pay(request):
+    device_code = request.GET.get('device')
+    redeem_code = request.GET.get('code')
+    request_amount = request.GET.get('amount')
+
+    if device_code and redeem_code:
+        try:
+            redeem = Redeem.objects.filter(code=redeem_code).first()
+            if redeem and not redeem.is_used and redeem.is_active:
+                order_code = random_string_generator()
+                device = Device.objects.get(code=device_code)
+                amount = int(redeem.amount)
+                request_amount = int(request_amount)
+
+                order = Order.objects.create(
+                    order_code=order_code,
+                    device_id=device,
+                    product_price=amount,
+                    base_price=0,
+                    tax=0,
+                    total_price=amount,
+                    status="Pending",
+                )
+
+                if amount >= request_amount:
+                    Transaction.objects.create(
+                        order_id=order,
+                        payment_id=Payment.objects.get(code='REDEEM'),
+                        amount=amount,
+                        transaction_status="Success"
+                    )
+                    
+                    redeem.is_used = True                    
+                    redeem.save()
+
+                    order.status = "Success"
+                    order.save()
+
+                    return JsonResponse({'status': 'OK'}, status=status.HTTP_200_OK)
+                else:
+                    Transaction.objects.create(
+                        order=order,
+                        payment=Payment.objects.get(code='REDEEM'),
+                        amount=amount,
+                        transaction_status="Failed"
+                    )
+
+                    return JsonResponse({'error': 'Redeem Amount not enough'}, status=status.HTTP_400_BAD_REQUEST)
+
+            return JsonResponse({'error': 'Redeem Already Used'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Redeem.DoesNotExist:
+            return JsonResponse({'error': 'Redeem Does Not Exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class PaymentAPI(APIView):
     permission_classes = [permissions.IsAuthenticated]
