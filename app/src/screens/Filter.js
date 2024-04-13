@@ -127,7 +127,7 @@ function Filter() {
           const copyImageApi = async () => {
                const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
                if (!sessionSelectedLayout) {
-                 return;
+                    return;
                }
 
                const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
@@ -276,33 +276,33 @@ function Filter() {
      const storeImageCanvas = async () => {
           const element = document.getElementsByClassName('left-big-frame')[0];
           const oldBackgroundImage = element.style.backgroundImage;
-          element.style.backgroundImage = 'none';          
-          
+          element.style.backgroundImage = 'none';
+
           html2canvas(element, {
                backgroundColor: null,
           }).then(canvas => {
                const photo_data = canvas.toDataURL('image/png');
                const uploadImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/upload-full`
-               
+
                const formData = new FormData();
                formData.append('photo', photo_data);
 
-               axios.post(uploadImageUrl, formData, { 
-                    headers: { 
-                         'Content-Type': 'multipart/form-data' 
-                    } 
-               })
-               .then(response => {
-                    const data = response.data;
-                    if (data.photo_url) {
-                         element.style.backgroundImage = oldBackgroundImage;
-                         element.style.backgroundColor = '';
-                         sessionStorage.setItem('downloaded-image', data.photo_url);
+               axios.post(uploadImageUrl, formData, {
+                    headers: {
+                         'Content-Type': 'multipart/form-data'
                     }
                })
-               .catch(error => {
-                    console.error(`Failed to copy image: ${error}`);
-               })
+                    .then(response => {
+                         const data = response.data;
+                         if (data.photo_url) {
+                              element.style.backgroundImage = oldBackgroundImage;
+                              element.style.backgroundColor = '';
+                              sessionStorage.setItem('downloaded-image', data.photo_url);
+                         }
+                    })
+                    .catch(error => {
+                         console.error(`Failed to copy image: ${error}`);
+                    })
           })
      }
 
@@ -337,7 +337,7 @@ function Filter() {
                } else if (rowIndex === 3 && photoIndex === 1) {
                     return 'choose-photo-item-3-1';
                }
-          }  else if (selectedFrame === '6-cutx2') {
+          } else if (selectedFrame === '6-cutx2') {
                if (rowIndex === 0 && photoIndex === 0) {
                     return 'choose-photo-item6-0-0';
                } else if (rowIndex === 0 && photoIndex === 1) {
@@ -452,7 +452,7 @@ function Filter() {
                               </div>
                          ))]
                     );
-               }               
+               }
           } else {
                const selectedPhotoRows = chunkArray(selectedPhotos, 2);
                return (
@@ -469,7 +469,7 @@ function Filter() {
                     ))
                );
           }
-     }     
+     }
 
      const goToSticker = () => {
           sessionStorage.setItem('filter', getImageStyle());
@@ -507,8 +507,8 @@ function Filter() {
                          <div className="filter-image" style={{ backgroundImage: `url(${smooth})` }} onClick={() => handleFilter(5)}></div>
                     </div>
                </div>
-               <div 
-                    className="bottom-filter" 
+               <div
+                    className="bottom-filter"
                     style={{ backgroundImage: `url(${hoveredImage === continue_btn ? continue_btn_click : continue_btn})` }}
                     onMouseEnter={() => handleMouseEnter(continue_btn)}
                     onMouseLeave={handleMouseLeave}

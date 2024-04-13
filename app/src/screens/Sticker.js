@@ -30,7 +30,8 @@ function Filter() {
      const [myBackground, setMyBackground] = useState(null);
      const [selectedFrame, setSelectedFrame] = useState(null);
      const [images, setImages] = useState([]);
-     const [selectedId, selectShape] = useState(null);     
+     const [selectedId, selectShape] = useState(null);
+     const [clickPrint, setClickPrint] = useState(false);
 
      const background = new Image();
      background.crossOrigin = 'Anonymous';
@@ -292,33 +293,57 @@ function Filter() {
           setSelectedCategory(category);
      }
 
-     const printFrameWithSticker = () => {
-          // callPrintAPI();
-          savePrintPhoto();
-          
-          setTimeout(() => {
-               navigate("/print");
-          }, 3000);          
+     const printFrameWithSticker = (event) => {
+          // if (clickPrint == true) {
+          //      return;
+          // }
+          setClickPrint(true);
+
+          callPrinter();
+          uploadCloud();
+
+          // setTimeout(() => {
+          //      navigate("/print");
+          // }, 2000);
      }
-     
-     const savePrintPhoto = () => {
-          const uri = stageRef.current.toDataURL();
-          var link = document.createElement('a');
-          link.download = 'stage.png';
-          link.href = uri;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+
+     const uploadCloud = () => {
+          try {
+               const formData = new FormData();
+               formData.append("photo", stageRef.current.toDataURL());
+
+               axios.post(
+                    `${process.env.REACT_APP_BACKEND}/frames/api/upload_cloud`,
+                    formData,
+                    {
+                         headers: {
+                              'Content-Type': 'multipart/form-data'
+                         }
+                    })
+                    .then(response => {
+                         const data = response.data;
+                         if (data.photo_url) {
+                              sessionStorage.setItem('uploadedCloudPhotoUrl', data.photo_url);
+                              console.log(data.photo_url);
+                         }
+                    })
+                    .catch(error => {
+                         console.log(error);
+                    });
+          } catch (error) {
+               console.log(error);
+          }
      }
 
      // TODO
-     const callPrintAPI = () => {
+     const callPrinter = () => {
           try {
                const formData = new FormData();
-               formData.append('image', stageRef.current.toDataURL());               
+               formData.append('photo', stageRef.current.toDataURL());
+               formData.append('frame', selectedFrame);
 
                axios.post(
-                    `${process.env.REACT_APP_BACKEND}/frames/api/print`,               
+                    `${process.env.REACT_APP_BACKEND}/frames/api/print`,
                     formData,
                     {
                          headers: {
@@ -376,7 +401,7 @@ function Filter() {
                                              }}
                                              key={i}
                                              image={image}
-                                             shapeProps={image}                                                                                        
+                                             shapeProps={image}
                                         />
                                    );
                               })}

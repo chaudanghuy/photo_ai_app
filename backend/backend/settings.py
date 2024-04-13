@@ -19,6 +19,10 @@ load_dotenv()
 
 BACKEND_ENV = os.getenv('ENVIRONMENT')
 
+# API
+API_CASH_READER = os.getenv('API_CASH_READER')
+API_PRINTER = os.getenv('API_PRINTER')
+
 # Cloudinary
 CLOUDINARY_NAME = os.getenv('CLOUDINARY_NAME')
 CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY')
@@ -57,6 +61,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'rest_framework',
     'corsheaders',
     'dashboard',
@@ -70,7 +75,7 @@ INSTALLED_APPS = [
     'revenue',
     'sticker',
     'account',
-    'zalopay'
+    'zalopay',    
 ]
 
 MIDDLEWARE = [

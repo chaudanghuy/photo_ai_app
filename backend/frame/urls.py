@@ -8,7 +8,7 @@ from .views import (
     FrameImageCopyAPI,
     UploadPhotoCloud    
 )
-from .views import upload_full
+from .views import upload_full, print_photo
 
 urlpatterns = [
     # API
@@ -19,6 +19,7 @@ urlpatterns = [
     path('api/copy-image', FrameImageCopyAPI.as_view()),
     path('api/upload-full', upload_full, name='upload-full'),
     path('api/upload_cloud', UploadPhotoCloud.as_view()),
+    path('api/print', print_photo, name='print_photo'), 
     
     # WEB
     path('', FrameList.as_view(), name='frames'),

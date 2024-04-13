@@ -41,38 +41,12 @@ function Choose() {
           if (storedSelectedFrame) {
                setSelectedFrame(storedSelectedFrame.frame);
           }
-     }, []);
 
-     useEffect(() => {
-          const copyImageApi = async () => {
-               const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
-               if (!sessionSelectedLayout) return;
-
+          const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
+          if (sessionSelectedLayout) {
                const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
-               const copyImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/copy-image`;
-               const copyImageData = {
-                    photo_url: parsedSelectedLayout.photo,
-                    photo_cover: parsedSelectedLayout.photo_cover
-               };
-
-               try {
-                    const response = await fetch(copyImageUrl, {
-                         method: 'POST',
-                         headers: {
-                              'Content-Type': 'application/json'
-                         },
-                         body: JSON.stringify(copyImageData)
-                    });
-                    const data = await response.json();
-                    setMyBackground(data.photo_path);
-                    setSelectedLayout(data.photo_cover_path);
-               } catch (error) {
-                    console.error(`Failed to copy image: ${error}`);
-               }
-          };
-
-          if (myBackground === null) {
-               copyImageApi();
+               setMyBackground(parsedSelectedLayout.photo);
+               setSelectedLayout(parsedSelectedLayout.photo_cover);
           }
      }, []);
 
@@ -301,7 +275,7 @@ function Choose() {
                          ))]
                     );
                }
-               
+
           } else {
                const selectedPhotoRows = chunkArray(selectedPhotos, 2);
                return (

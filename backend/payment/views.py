@@ -20,6 +20,7 @@ import string
 from django.views.decorators.csrf import csrf_exempt
 from device.models import Device
 import os
+from django.conf import settings
 
 # Create your views here.
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
@@ -27,7 +28,7 @@ def random_string_generator(size=10, chars=string.ascii_lowercase + string.digit
 
 @csrf_exempt
 def start_cash_pay(request):
-    url = "http://127.0.0.1:8002/api/start/"
+    url = settings.API_CASH_READER + '/api/start/'
     payload = {}
     headers = {}
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -37,7 +38,7 @@ def start_cash_pay(request):
 @csrf_exempt
 def stop_cash_pay(request):
     try:
-        cash_url = 'http://127.0.0.1:8002/api/stop/'
+        cash_url = settings.API_CASH_READER + '/api/stop/'
         response = requests.post(cash_url, {})
         return JsonResponse({'message': 'Stop'}, status=status.HTTP_200_OK)                
     except Payment.DoesNotExist:
@@ -69,7 +70,7 @@ def webhook_cash_api(request):
 
         try:
             total_money = 0
-            cash_url = 'http://127.0.0.1:8002/api/money/'
+            cash_url = settings.API_CASH_READER + '/api/money/'
             response = requests.get(cash_url)
             
             if response.status_code == 200:

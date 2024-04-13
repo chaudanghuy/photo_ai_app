@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load static %}
+{% load humanize %}
 
 {% block content %}
   <div class="content-wrapper">
@@ -18,8 +19,8 @@
         <div class="card bg-gradient-danger card-img-holder text-white">
           <div class="card-body">
             <img src="{% static 'images/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
-            <h4 class="font-weight-normal mb-3">Sales <i class="mdi mdi-chart-line mdi-24px float-right"></i></h4>
-            <h2 class="mb-5">{{ total_amount }}</h2>
+            <h4 class="font-weight-normal mb-3">Sales <i class="mdi mdi-square-inc-cash mdi-24px float-right"></i></h4>
+            <h2 class="mb-5">{{ total_amount|intcomma }}</h2>
             <!-- <h6 class="card-text">Increased by 60%</h6> -->
           </div>
         </div>
@@ -28,7 +29,7 @@
         <div class="card bg-gradient-info card-img-holder text-white">
           <div class="card-body">
             <img src="{% static 'images/dashboard/circle.svg' %}" class="card-img-absolute" alt="circle-image" />
-            <h4 class="font-weight-normal mb-3">Orders <i class="mdi mdi-square-inc-cash mdi-24px float-right"></i></h4>
+            <h4 class="font-weight-normal mb-3">Orders <i class="mdi mdi-chart-line mdi-24px float-right"></i></h4>
             <h2 class="mb-5">{{ total_orders }}</h2>
             <!-- <h6 class="card-text">Decreased by 10%</h6> -->
           </div>
@@ -58,6 +59,7 @@
                       <th>Order</th>
                       <th>Device</th>
                       <th>Payment</th>
+                      <th>Total</th>
                       <th>Status</th>
                       <th>Created Date</th>
                       <th>Tracking ID</th>
@@ -69,6 +71,7 @@
                         <td>{{ transaction.order_id.order_code }}</td>
                         <td>{{ transaction.order_id.device_id.name }}</td>
                         <td>{{ transaction.payment_id.name }}</td>
+                        <td>{{ transaction.amount|intcomma }}</td>
                         <td>
                           {% if transaction.transaction_status == 'Pending' %}
                             <label class="badge badge-gradient-warning">Pending</label>

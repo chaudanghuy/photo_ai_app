@@ -49,8 +49,44 @@ def upload_full(request):
                     'photo_url': f'/photo_saved/{filename}' if photo_data else None
                 }, status=status.HTTP_201_CREATED)                  
     else:
-        return JsonResponse({'error': 'Image not provided'}, status=status.HTTP_400_BAD_REQUEST)                                       
+        return JsonResponse({'error': 'Image not provided'}, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['POST'])
+def print_photo(request):
+    if request.method == 'POST':
+        # Copy file to folder for printer
+        # Check folder exist
+        folder_path = "C:\\Mongta\\Printer-Python\\image"
+        if os.path.exists(folder_path):
+            image_file = request.data.get('photo')
+            frame = request.data.get('frame')
+            
+            print_file_name = ''
+            if frame == 'Stripx2':
+                print_file_name = 'stripx2.png'
+            elif frame == '2cut-x2':
+                print_file_name = 'cutx2.png'
+            elif frame == '3-cutx2':
+                print_file_name = 'cutx3.png'
+            elif frame == '4-cutx2':
+                print_file_name = 'cutx4.png'
+            elif frame == '5-cutx2':
+                print_file_name = 'cutx5.png'
+            elif frame == '6-cutx2':
+                print_file_name = 'cutx6.png'
+            if image_file is not None:
+                with open(os.path.join(folder_path, print_file_name), 'wb+') as destination:
+                    destination.write(base64.b64decode(image_file.split(',')[1]))
+                
+                # Call POST method to printer
+                print_url = settings.API_PRINTER + '/api/print/'
+                response = requests.post(print_url, {})        
         
+        return JsonResponse({'message': 'OK'}, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({'error': 'Image not provided'}, status=status.HTTP_400_BAD_REQUEST)    
+    
+                                           
 class UploadPhotoCloud(APIView):
     parser_classes = (
         MultiPartParser,
@@ -59,12 +95,11 @@ class UploadPhotoCloud(APIView):
     
     @staticmethod
     def post(request):
-        file = request.data.get('picture')
+        file = request.data.get('photo')
         
-        upload_data = cloudinary.uploader.upload(file)
+        upload_data = cloudinary.uploader.upload(file)        
         return Response({
-            'status': 'success',
-            'data': upload_data
+            'photo_url': upload_data.get('url')
         }, status=201)
 
 class FrameAPI(APIView):
