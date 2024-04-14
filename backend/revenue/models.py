@@ -13,6 +13,7 @@ class Order(models.Model):
     status = models.CharField(max_length=100)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    photo_url_done = models.TextField(default='')
 
     def __str__(self):
         return f"Order #{self.order_code} with {self.total_price}"

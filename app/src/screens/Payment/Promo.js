@@ -31,6 +31,7 @@ import num6_click from '../../assets/Payment/Promo/num6_click.png';
 import num7_click from '../../assets/Payment/Promo/num7_click.png';
 import num8_click from '../../assets/Payment/Promo/num8_click.png';
 import num9_click from '../../assets/Payment/Promo/num9_click.png';
+import axios from 'axios';
 
 function Cash() {
      const { t } = useTranslation();
@@ -38,6 +39,7 @@ function Cash() {
      const [hoveredImage, setHoveredImage] = useState(null);
      const [hoveredRedeem, setHoveredRedeem] = useState(null);
      const [redeemCode, setRedeemCode] = useState('');
+     const [frameAmount, setFrameAmount] = useState(0);
 
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
@@ -66,16 +68,29 @@ function Cash() {
      }
 
      const redeemClick = () => {
-          // Check redeem code
-          navigate('/payment-result');
+          checkReedeem();
      }
+
+     useEffect(() => {
+          const storedLanguage = sessionStorage.getItem('language');
+          if (storedLanguage) {
+               i18n.changeLanguage(storedLanguage);
+          }
+
+          const storedFrameAmount = sessionStorage.getItem('framePrice');
+          console.log(storedFrameAmount);
+          if (storedFrameAmount) {
+               setFrameAmount(storedFrameAmount);
+          }
+     }, []);
 
      const checkReedeem = async () => {
           try {
                const deviceNumber = process.env.REACT_APP_DEVICE_NUMBER;
-               const response = await fetch(`${process.env.REACT_APP_BACKEND}/cash/api/redeem?device=${deviceNumber}&code=${redeemCode}`);
+               const response = await fetch(`${process.env.REACT_APP_BACKEND}/payments/api/redeem?device=${deviceNumber}&code=${redeemCode}&amount=${frameAmount}`);
                const paymentData = await response.json();
-               if (paymentData.status === "Success") {
+               if (paymentData.status === "OK") {
+                    sessionStorage.setItem('orderCodeNum', paymentData.order_code);
                     navigate("/payment-result");
                }
           } catch (error) {

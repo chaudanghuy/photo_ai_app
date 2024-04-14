@@ -32,6 +32,7 @@ function Filter() {
      const [images, setImages] = useState([]);
      const [selectedId, selectShape] = useState(null);
      const [clickPrint, setClickPrint] = useState(false);
+     const [orderCode, setOrderCode] = useState(null);
 
      const background = new Image();
      background.crossOrigin = 'Anonymous';
@@ -294,23 +295,24 @@ function Filter() {
      }
 
      const printFrameWithSticker = (event) => {
-          // if (clickPrint == true) {
-          //      return;
-          // }
+          if (clickPrint == true) {
+               return;
+          }
           setClickPrint(true);
 
           callPrinter();
           uploadCloud();
 
-          // setTimeout(() => {
-          //      navigate("/print");
-          // }, 2000);
+          setTimeout(() => {
+               navigate("/print");
+          }, 3000);
      }
 
      const uploadCloud = () => {
           try {
                const formData = new FormData();
                formData.append("photo", stageRef.current.toDataURL());
+               formData.append("order_code", sessionStorage.getItem('orderCodeNum'));
 
                axios.post(
                     `${process.env.REACT_APP_BACKEND}/frames/api/upload_cloud`,

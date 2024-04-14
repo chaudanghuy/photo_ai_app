@@ -215,7 +215,7 @@
 .choose-image {
      width: 100%;
      height: 250px;
-     background-size: cover;
+     background-size: contain;
      background-image: url('../assets/Photo/Choose/photo_box.png');
      background-repeat: no-repeat;
      background-position: center;
@@ -624,10 +624,10 @@
 }
 
 .left-choose-photos-2cut {
-     margin-top: 13%;
+     margin-top: 11%;
      margin-left: 7%;
      width: 86%;
-     height: 60%;
+     height: 66%;
      position: initial;
      background-size: contain;
      background-repeat: no-repeat;

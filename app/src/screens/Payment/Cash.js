@@ -47,7 +47,7 @@ function Cash() {
         const responseData = await response.json();
         console.log(responseData);
         if (responseData) {
-          console.log(responseData.order_code);
+          sessionStorage.setItem('orderCodeNum', responseData.order_code);
           setOrderCode(responseData.order_code);
         }
       } catch (error) {
@@ -65,10 +65,10 @@ function Cash() {
       try {
         const response = await fetch(`${process.env.REACT_APP_BACKEND}/payments/api/cash/webhook?order=${orderCodeNum}`)
         const responseData = await response.json();
-        setInsertedMoney(responseData.total_money);  
+        setInsertedMoney(responseData.total_money);
         if (parseInt(responseData.total_money) >= parseInt(amountToPay)) {
           setHoveredImage(done);
-        }      
+        }
       } catch (error) {
         console.error(error);
       }

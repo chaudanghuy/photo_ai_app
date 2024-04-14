@@ -110,7 +110,7 @@ def redeem_pay(request):
                     order_code=order_code,
                     device_id=device,
                     product_price=amount,
-                    base_price=0,
+                    base_price=request_amount,
                     tax=0,
                     total_price=amount,
                     status="Pending",
@@ -120,7 +120,7 @@ def redeem_pay(request):
                     Transaction.objects.create(
                         order_id=order,
                         payment_id=Payment.objects.get(code='REDEEM'),
-                        amount=amount,
+                        amount=request_amount,
                         transaction_status="Success"
                     )
                     
@@ -130,12 +130,12 @@ def redeem_pay(request):
                     order.status = "Success"
                     order.save()
 
-                    return JsonResponse({'status': 'OK'}, status=status.HTTP_200_OK)
+                    return JsonResponse({'status': 'OK', 'order_code': order.order_code}, status=status.HTTP_200_OK)
                 else:
                     Transaction.objects.create(
                         order=order,
                         payment=Payment.objects.get(code='REDEEM'),
-                        amount=amount,
+                        amount=request_amount,
                         transaction_status="Failed"
                     )
 

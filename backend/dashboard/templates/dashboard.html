@@ -57,6 +57,7 @@
                   <thead>
                     <tr>
                       <th>Order</th>
+                      <th>Photo</th>
                       <th>Device</th>
                       <th>Payment</th>
                       <th>Total</th>
@@ -69,6 +70,9 @@
                     {% for transaction in transactions %}
                       <tr>
                         <td>{{ transaction.order_id.order_code }}</td>
+                        <td>
+                          <a href="{{ transaction.order_id.photo_url_done }}" target="_blank">Click here</a>
+                        </td>
                         <td>{{ transaction.order_id.device_id.name }}</td>
                         <td>{{ transaction.payment_id.name }}</td>
                         <td>{{ transaction.amount|intcomma }}</td>
