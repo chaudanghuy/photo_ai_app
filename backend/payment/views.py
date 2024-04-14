@@ -132,13 +132,6 @@ def redeem_pay(request):
 
                     return JsonResponse({'status': 'OK', 'order_code': order.order_code}, status=status.HTTP_200_OK)
                 else:
-                    Transaction.objects.create(
-                        order=order,
-                        payment=Payment.objects.get(code='REDEEM'),
-                        amount=request_amount,
-                        transaction_status="Failed"
-                    )
-
                     return JsonResponse({'error': 'Redeem Amount not enough'}, status=status.HTTP_400_BAD_REQUEST)
 
             return JsonResponse({'error': 'Redeem Already Used'}, status=status.HTTP_400_BAD_REQUEST)
