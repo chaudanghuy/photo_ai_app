@@ -124,7 +124,8 @@ def redeem_pay(request):
                         transaction_status="Success"
                     )
                     
-                    redeem.is_used = True                    
+                    redeem.is_used = True   
+                    redeem.date_used = datetime.now()                 
                     redeem.save()
 
                     order.status = "Success"

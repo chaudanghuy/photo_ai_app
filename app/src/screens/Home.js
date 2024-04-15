@@ -3,6 +3,12 @@ import { useTranslation } from 'react-i18next';
 import '../css/Home.css'; // Make sure to create an appropriate CSS file for styling
 import { useNavigate } from 'react-router-dom';
 import i18n from '../translations/i18n';
+import start_en from '../assets/Home/start_click.png';
+import start_click_en from '../assets/Home/start.png';
+import start_vn from '../assets/Home/vn/start.png';
+import start_click_vn from '../assets/Home/vn/start_click.png';
+import start_kr from '../assets/Home/kr/start.png';
+import start_click_kr from '../assets/Home/kr/start_click.png';
 
 function App() {
   const [language, setLanguage] = useState('en');
@@ -10,14 +16,7 @@ function App() {
   const [showLangOption, setShowLangOption] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
-
-  useEffect(() => {
-    const storedLanguage = sessionStorage.getItem('language');
-    if (storedLanguage) {
-      setLanguage(storedLanguage);
-      i18n.changeLanguage(storedLanguage);
-    }
-  }, []);
+  const [buttonBackground, setButtonBackground] = useState(start_en);  
 
   const handleChangeLanguage = (value) => {
     const selectedLanguage = value;
@@ -25,11 +24,23 @@ function App() {
     sessionStorage.setItem('language', selectedLanguage);
     i18n.changeLanguage(selectedLanguage);
     setDisplayLanguage(t(`language.${selectedLanguage}`));
+
+    changeButtonBackground(selectedLanguage);
   };
 
   const toggleShowLangOption = () => {
     setShowLangOption(!showLangOption);
   };
+
+  const changeButtonBackground = (lang) => {
+    if (lang === 'en') {
+      setButtonBackground(buttonBackground === start_en ? start_click_en : start_en);
+    } else if (lang === 'vi') {
+      setButtonBackground(buttonBackground === start_vn ? start_click_vn : start_vn);
+    } else if (lang === 'ko') {
+      setButtonBackground(buttonBackground === start_kr ? start_click_kr : start_kr);
+    }
+  }
 
   return (
     <div className='home-container'>
@@ -43,7 +54,7 @@ function App() {
           </div>
           }
       </div>
-      <div className="start-button" onClick={() => navigate('/frame')}></div>      
+      <div className="start-button" style={{ backgroundImage: `url(${buttonBackground})` }} onMouseEnter={() => changeButtonBackground(language)} onMouseLeave={() => changeButtonBackground(language)} onClick={() => navigate('/frame')}></div>      
     </div>
   );
 }

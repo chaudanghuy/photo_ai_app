@@ -3,8 +3,7 @@
     width: 100vw;
     /* Full width of the viewport */
     height: 100vh;
-    /* Full height of the viewport */
-    background-image: url('../assets/Frame/Type/BG.png');
+    /* Full height of the viewport */    
     /* Specify the path to your background image */
     background-size: contain;
     background-repeat: no-repeat;
@@ -26,8 +25,7 @@
     width: 8%;
     /* Set width of the div */
     height: 10%;
-    /* Set height of the div */
-    background-image: url('../assets/Common/goback.png');
+    /* Set height of the div */    
     /* Specify the path to your initial background image */
     background-size: contain;
     background-repeat: no-repeat;
@@ -105,8 +103,7 @@
     width: 100vw;
     /* Full width of the viewport */
     height: 100vh;
-    /* Full height of the viewport */
-    background-image: url('../assets/Frame/Style/BG.png');
+    /* Full height of the viewport */    
     /* Specify the path to your background image */
     background-size: contain;
     background-repeat: no-repeat;

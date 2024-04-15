@@ -29,6 +29,16 @@
           <label>Photo (Hover)</label>
           <input class="form-control" type="file" id="photo_hover" name="photo_hover" onchange="previewPhoto(event, 'photo_hover_preview')"/>
           <img id="photo_hover_preview" src="{{ background.photo_hover.url }}" alt="Photo Preview"><br>
+        </div>
+        <div class="form-group">
+          <label>Photo <sup>Korean</sup></label>
+          <input class="form-control" type="file" id="photo" name="photo" onchange="previewPhoto(event, 'photo_preview')"/>
+          <img id="photo_preview" src="{{ background.photo.url }}" alt="Photo Preview"><br>
+        </div>
+        <div class="form-group">
+          <label>Photo (Hover) <sup>Korean</sup></label>
+          <input class="form-control" type="file" id="photo_hover" name="photo_hover" onchange="previewPhoto(event, 'photo_hover_preview')"/>
+          <img id="photo_hover_preview" src="{{ background.photo_hover.url }}" alt="Photo Preview"><br>
         </div>        
         <button type="submit" class="btn btn-gradient-primary me-2">Submit</button>
         <a href="{% url 'backgrounds' %}" class="btn btn-light">Cancel</button>

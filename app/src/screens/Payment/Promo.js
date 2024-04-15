@@ -58,6 +58,9 @@ function Cash() {
      }
 
      const handleRedeem = (buttonClick) => {
+          if (redeemCode.length > 10) {
+               return;
+          }
           if (buttonClick) {
                setRedeemCode(redeemCode + buttonClick);
           }
