@@ -16,7 +16,14 @@ function App() {
   const [showLangOption, setShowLangOption] = useState(false);
   const navigate = useNavigate();
   const { t } = useTranslation();
-  const [buttonBackground, setButtonBackground] = useState(start_en);  
+  const [buttonBackground, setButtonBackground] = useState(start_en);
+
+  useEffect(() => {
+    setLanguage('en');
+    sessionStorage.setItem('language', 'en');
+    i18n.changeLanguage('en');
+    setDisplayLanguage(t(`language.en`));
+  }, []);
 
   const handleChangeLanguage = (value) => {
     const selectedLanguage = value;
@@ -46,15 +53,15 @@ function App() {
     <div className='home-container'>
       <div className="language-selector" onClick={toggleShowLangOption}>
         <div className="language-selector-text">{displayLanguage}</div>
-        {showLangOption && 
+        {showLangOption &&
           <div className='language-options'>
             <p className='language-text' onClick={() => handleChangeLanguage('en')}>{t('language.en')}</p>
             <p className='language-text' onClick={() => handleChangeLanguage('ko')}>{t('language.ko')}</p>
             <p className='language-text' onClick={() => handleChangeLanguage('vi')}>{t('language.vi')}</p>
           </div>
-          }
+        }
       </div>
-      <div className="start-button" style={{ backgroundImage: `url(${buttonBackground})` }} onMouseEnter={() => changeButtonBackground(language)} onMouseLeave={() => changeButtonBackground(language)} onClick={() => navigate('/frame')}></div>      
+      <div className="start-button" style={{ backgroundImage: `url(${buttonBackground})` }} onMouseEnter={() => changeButtonBackground(language)} onMouseLeave={() => changeButtonBackground(language)} onClick={() => navigate('/frame')}></div>
     </div>
   );
 }

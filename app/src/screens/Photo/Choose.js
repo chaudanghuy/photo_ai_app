@@ -7,6 +7,26 @@ import continue_btn from '../../assets/Photo/Choose/continue_btn.png';
 import continue_btn_click from '../../assets/Photo/Choose/continue_btn_click.png';
 import photo_frame from '../../assets/Photo/Choose/photo_frame.png';
 
+import background_en from '../../assets/Photo/Choose/BG.png';
+import background_kr from '../../assets/Photo/Choose/kr/BG.png';
+import background_vn from '../../assets/Photo/Choose/vn/BG.png';
+
+// Go Back
+import goback_en from '../../assets/Common/goback.png';
+import goback_en_hover from '../../assets/Common/gobackhover.png';
+import goback_kr from '../../assets/Common/kr/goback.png';
+import goback_kr_hover from '../../assets/Common/kr/gobackhover.png';
+import goback_vn from '../../assets/Common/vn/goback.png';
+import goback_vn_hover from '../../assets/Common/vn/gobackhover.png';
+
+// Continue
+import continue_en from '../../assets/Common/continue.png';
+import continue_en_hover from '../../assets/Common/continue_click.png';
+import continue_kr from '../../assets/Common/kr/continue.png';
+import continue_kr_hover from '../../assets/Common/kr/continue_click.png';
+import continue_vn from '../../assets/Common/vn/continue.png';
+import continue_vn_hover from '../../assets/Common/vn/continue_click.png';
+
 function Choose() {
      const { t } = useTranslation();
      const navigate = useNavigate();
@@ -16,7 +36,11 @@ function Choose() {
      const [selectedPhotos, setSelectedPhotos] = useState([]);
      const [selectedFrame, setSelectedFrame] = useState(null);
      const [confirmButton, setConfirmButton] = useState(false);
+     const [background, setBackground] = useState(background_en);
      const parentRef = useRef(null);
+     const [goBackBg, setGoBackBg] = useState([]);
+     const [language, setLanguage] = useState(null);
+     const [continueButton, setContinueButton] = useState(continue_en);
 
      const photos = JSON.parse(sessionStorage.getItem('photos'));
      // Split photos into arrays of 4 photos each
@@ -33,7 +57,17 @@ function Choose() {
      useEffect(() => {
           const storedLanguage = sessionStorage.getItem('language');
           if (storedLanguage) {
-               i18n.changeLanguage(storedLanguage);
+               setLanguage(storedLanguage);
+               if (storedLanguage === 'en') {
+                    setBackground(background_en);
+                    setContinueButton(continue_en);
+               } else if (storedLanguage === 'ko') {
+                    setBackground(background_kr);
+                    setContinueButton(continue_kr);
+               } else if (storedLanguage === 'vi') {
+                    setBackground(background_vn);
+                    setContinueButton(continue_vn);
+               }
           }
 
           // Retrieve selected frame from session storage
@@ -294,9 +328,30 @@ function Choose() {
           }
      }
 
+     const hoverGoBackBtn = (goBackBG) => {
+          if (goBackBG === 'ko') {
+               setGoBackBg(goBackBg === goback_kr ? goback_kr_hover : goback_kr);
+          } else if (goBackBG === 'vi') {
+               setGoBackBg(goBackBg === goback_vn ? goback_vn_hover : goback_vn);
+          } else {
+               setGoBackBg(goBackBg === goback_en ? goback_en_hover : goback_en);
+          }
+     }
+
+     const hoverContinueButton = () => {
+          const storedLanguage = sessionStorage.getItem('language');
+          if (storedLanguage === 'en') {
+               setContinueButton(continueButton == continue_en ? continue_en_hover : continue_en);
+          } else if (storedLanguage === 'ko') {
+               setContinueButton(continueButton == continue_kr ? continue_kr_hover : continue_kr);
+          } else if (storedLanguage === 'vi') {
+               setContinueButton(continueButton == continue_vn ? continue_vn_hover : continue_vn);
+          }
+     }
+
      return (
-          <div className='photo-choose-container'>
-               <div className="go-back" onClick={() => navigate("/photo")}></div>
+          <div className='photo-choose-container' style={{ backgroundImage: `url(${background})` }}>
+               <div className="go-back" style={{ backgroundImage: `url(${goBackBg})` }} onClick={() => navigate("/photo")} onMouseEnter={() => hoverGoBackBtn(language)} onMouseLeave={() => hoverGoBackBtn(language)}></div>
                <div className="left-big-frame">
                     <div ref={parentRef} className={displayClassNameForBackground()} style={{ backgroundImage: `url(${myBackground})` }}>
                          {showSelectedPhotos()}
@@ -319,9 +374,8 @@ function Choose() {
                </div>
                <div
                     className="bottom_choose_container"
-                    style={{ backgroundImage: `url(${hoveredImage === continue_btn ? continue_btn_click : continue_btn})` }}
-                    onMouseEnter={() => handleMouseEnter(continue_btn)}
-                    onMouseLeave={handleMouseLeave}
+                    style={{ backgroundImage: `url(${continueButton})` }}
+                    onMouseEnter={hoverContinueButton} onMouseLeave={hoverContinueButton}
                     onClick={goToFilter}
                ></div>
           </div>

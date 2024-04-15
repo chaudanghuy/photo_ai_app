@@ -4,10 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import i18n from '../../translations/i18n';
 import '../../css/Frame.css';
 import axios from 'axios';
+
 // Background
 import background_en from '../../assets/Frame/Type/BG.png';
 import background_kr from '../../assets/Frame/Type/kr/BG.png';
 import background_vn from '../../assets/Frame/Type/vn/BG.png';
+
 // Go Back
 import goback_en from '../../assets/Common/goback.png';
 import goback_en_hover from '../../assets/Common/gobackhover.png';
@@ -41,7 +43,7 @@ function Frame() {
 
   const [goBackBg, setGoBackBg] = useState([]);
 
-  
+
   useEffect(() => {
     const storedLanguage = sessionStorage.getItem('language');
     if (storedLanguage) {
@@ -94,7 +96,7 @@ function Frame() {
         if (frame.position === 'row-2-3') {
           setFrameRow23(process.env.REACT_APP_BACKEND + frame.photo);
           setFrameRow23Hover(process.env.REACT_APP_BACKEND + frame.photo_hover);
-        }        
+        }
       });
     } catch (error) {
       console.error('Error fetching frames:', error);

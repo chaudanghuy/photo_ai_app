@@ -4,7 +4,6 @@
      /* Full width of the viewport */
      height: 100vh;
      /* Full height of the viewport */
-     background-image: url('../assets/Photo/Snap/BG.png');
      /* Specify the path to your background image */
      background-size: contain;
      background-repeat: no-repeat;
@@ -124,7 +123,6 @@
      /* Full width of the viewport */
      height: 100vh;
      /* Full height of the viewport */
-     background-image: url('../assets/Photo/Choose/BG.png');
      /* Specify the path to your background image */
      background-size: contain;
      background-repeat: no-repeat;

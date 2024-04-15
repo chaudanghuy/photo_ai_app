@@ -5,18 +5,37 @@ import i18n from '../../translations/i18n';
 import '../../css/Frame.css';
 import Background from './Background';
 import axios from 'axios';
+
 // Import images
 import confirm from '../../assets/Frame/Layout/confirm.png';
 import confirm_click from '../../assets/Frame/Layout/confirm_click.png';
 
+// Go Back
+import goback_en from '../../assets/Common/goback.png';
+import goback_en_hover from '../../assets/Common/gobackhover.png';
+import goback_kr from '../../assets/Common/kr/goback.png';
+import goback_kr_hover from '../../assets/Common/kr/gobackhover.png';
+import goback_vn from '../../assets/Common/vn/goback.png';
+import goback_vn_hover from '../../assets/Common/vn/gobackhover.png';
+
+// Confirm
+import confirm_en from '../../assets/Frame/Layout/confirm.png';
+import confirm_en_hover from '../../assets/Frame/Layout/confirm_click.png';
+import confirm_kr from '../../assets/Frame/Layout/Confirm/kr/confirm.png';
+import confirm_kr_hover from '../../assets/Frame/Layout/Confirm/kr/confirm_click.png';
+import confirm_vn from '../../assets/Frame/Layout/Confirm/vn/confirm.png';
+import confirm_vn_hover from '../../assets/Frame/Layout/Confirm/vn/confirm_click.png';
 
 function Layout() {
-     const [hoveredImage, setHoveredImage] = useState(null);
-     const [hoverImageButton, setHoverImageButton] = useState(null);
      const [layoutBackground, setLayoutBackground] = useState(null);
      const [layouts, setLayouts] = useState([]);
      const [clickedIndex, setClickedIndex] = useState(null);
      const [selectedFrame, setSelectedFrame] = useState(null);
+     const [goBackBg, setGoBackBg] = useState([]);
+     const [language, setLanguage] = useState(null);
+     const [confirmButton, setConfirmButton] = useState(confirm_en);
+     const [confirmHoverButton, setConfirmHoverButton] = useState(confirm_en_hover);
+     const [confirmClick, setConfirmClick] = useState(false);
 
      const { t } = useTranslation();
      const navigate = useNavigate();
@@ -25,6 +44,7 @@ function Layout() {
           const storedLanguage = sessionStorage.getItem('language');
           if (storedLanguage) {
                i18n.changeLanguage(storedLanguage);
+               setLanguage(storedLanguage);
           }
 
           const frame = sessionStorage.getItem('selectedFrame');
@@ -34,19 +54,63 @@ function Layout() {
 
           const sessionStyleBg = sessionStorage.getItem('styleBg');
           if (sessionStyleBg) {
-               let layoutBg = require(`../../assets/Frame/Layout/Seasons/BG.png`);
+               let layoutBg = '';
                if (sessionStyleBg == 'Seasons') {
-                    layoutBg = require(`../../assets/Frame/Layout/Seasons/BG.png`);
+                    if (storedLanguage == 'ko') {
+                         layoutBg = require(`../../assets/Frame/Layout/Seasons/kr/BG.png`);
+                    } else if (storedLanguage == 'vi') {
+                         layoutBg = require(`../../assets/Frame/Layout/Seasons/vn/BG.png`);
+                    } else {
+                         layoutBg = require(`../../assets/Frame/Layout/Seasons/BG.png`);
+                    }
                } else if (sessionStyleBg == 'Party') {
-                    layoutBg = require(`../../assets/Frame/Layout/Party/BG.png`);
+                    if (storedLanguage == 'ko') {
+                         layoutBg = require(`../../assets/Frame/Layout/Party/kr/BG.png`);
+                    } else if (storedLanguage == 'vi') {
+                         layoutBg = require(`../../assets/Frame/Layout/Party/vn/BG.png`);
+                    } else {
+                         layoutBg = require(`../../assets/Frame/Layout/Party/BG.png`);
+                    }
                } else if (sessionStyleBg == 'Cartoon') {
-                    layoutBg = require(`../../assets/Frame/Layout/Cartoon/BG.png`);
+                    if (storedLanguage == 'ko') {
+                         layoutBg = require(`../../assets/Frame/Layout/Cartoon/kr/BG.png`);
+                    } else if (storedLanguage == 'vi') {
+                         layoutBg = require(`../../assets/Frame/Layout/Cartoon/vn/BG.png`);
+                    } else {
+                         layoutBg = require(`../../assets/Frame/Layout/Cartoon/BG.png`);
+                    }
                } else if (sessionStyleBg == 'Minimalism') {
-                    layoutBg = require(`../../assets/Frame/Layout/Minimalism/BG.png`);
+                    if (storedLanguage == 'ko') {
+                         layoutBg = require(`../../assets/Frame/Layout/Minimalism/kr/BG.png`);
+                    } else if (storedLanguage == 'vi') {
+                         layoutBg = require(`../../assets/Frame/Layout/Minimalism/vn/BG.png`);
+                    } else {
+                         layoutBg = require(`../../assets/Frame/Layout/Minimalism/BG.png`);
+                    }
                } else if (sessionStyleBg == 'Collab') {
-                    layoutBg = require(`../../assets/Frame/Layout/Collab/BG.png`);
+                    if (storedLanguage == 'ko') {
+                         layoutBg = require(`../../assets/Frame/Layout/Collab/kr/BG.png`);
+                    } else if (storedLanguage == 'vi') {
+                         layoutBg = require(`../../assets/Frame/Layout/Collab/vn/BG.png`);
+                    } else {
+                         layoutBg = require(`../../assets/Frame/Layout/Collab/BG.png`);
+                    }
                }
                setLayoutBackground(layoutBg);
+          }
+
+          if (storedLanguage === 'en') {
+               setGoBackBg(goback_en);
+               setConfirmButton(confirm_en);
+               setConfirmHoverButton(confirm_en_hover);
+          } else if (storedLanguage === 'ko') {
+               setGoBackBg(goback_kr);
+               setConfirmButton(confirm_kr);
+               setConfirmHoverButton(confirm_kr_hover);
+          } else if (storedLanguage === 'vi') {
+               setGoBackBg(goback_vn);
+               setConfirmButton(confirm_vn);
+               setConfirmHoverButton(confirm_vn_hover);
           }
      }, []);
 
@@ -69,31 +133,33 @@ function Layout() {
           }
 
           fetchLayoutsByBackground()
-     }, [])
-
-     const handleMouseEnter = (image) => {
-          setHoveredImage(image);
-     }
-
-     const handleMouseLeave = () => {
-          setHoveredImage(null);
-     }
+     }, []);
 
      const handleClick = (index) => {
           sessionStorage.setItem('selectedLayout', JSON.stringify(layouts[index]));
           setClickedIndex(index === clickedIndex ? null : index);
-          setHoverImageButton(confirm)
+          setConfirmClick(confirmButton)
      }
 
      const goToPayment = () => {
-          if (hoverImageButton === confirm) {
+          if (confirmClick === confirmButton) {
                navigate('/payment');
+          }
+     }
+
+     const hoverGoBackBtn = (goBackBG) => {
+          if (goBackBG === 'ko') {
+               setGoBackBg(goBackBg === goback_kr ? goback_kr_hover : goback_kr);
+          } else if (goBackBG === 'vi') {
+               setGoBackBg(goBackBg === goback_vn ? goback_vn_hover : goback_vn);
+          } else {
+               setGoBackBg(goBackBg === goback_en ? goback_en_hover : goback_en);
           }
      }
 
      return (
           <div className='layout-container' style={{ backgroundImage: `url(${layoutBackground})` }}>
-               <div className="go-back" onClick={() => navigate("/background")}></div>
+               <div className="go-back" style={{ backgroundImage: `url(${goBackBg})` }} onClick={() => navigate("/background")} onMouseEnter={() => hoverGoBackBtn(language)} onMouseLeave={() => hoverGoBackBtn(language)}></div>
                <div className="style-section">
                     {layouts.map((item, index) => (
                          <div key={item.id} className="style-column">
@@ -105,7 +171,7 @@ function Layout() {
                </div>
                <div
                     className="confirm-layout-button"
-                    style={{ backgroundImage: `url(${hoverImageButton === confirm ? confirm_click : confirm})` }}
+                    style={{ backgroundImage: `url(${confirmClick === confirmButton ? confirmHoverButton : confirmButton})` }}
                     onClick={goToPayment}
                ></div>
           </div>
