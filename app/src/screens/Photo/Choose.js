@@ -38,7 +38,7 @@ function Choose() {
      const [confirmButton, setConfirmButton] = useState(false);
      const [background, setBackground] = useState(background_en);
      const parentRef = useRef(null);
-     const [goBackBg, setGoBackBg] = useState([]);
+     const [goBackButton, setGoBackButton] = useState([]);
      const [language, setLanguage] = useState(null);
      const [continueButton, setContinueButton] = useState(continue_en);
 
@@ -245,6 +245,16 @@ function Choose() {
           return 'choose-photo-item';
      }
 
+     const hoverGoBackButton = (lang) => {
+          if (lang === 'en') {
+               setGoBackButton(goBackButton == goback_en_hover ? goback_en : goback_en_hover);
+          } else if (lang === 'ko') {
+               setGoBackButton(goBackButton == goback_kr_hover ? goback_kr : goback_kr_hover);
+          } else if (lang === 'vi') {
+               setGoBackButton(goBackButton == goback_vn_hover ? goback_vn : goback_vn_hover);
+          }
+     }
+
      const showSelectedPhotos = () => {
           if (selectedFrame == '3-cutx2' && selectedPhotos.length > 0) {
                const firstPhotoTpl = (
@@ -326,17 +336,7 @@ function Choose() {
                     ))
                );
           }
-     }
-
-     const hoverGoBackBtn = (goBackBG) => {
-          if (goBackBG === 'ko') {
-               setGoBackBg(goBackBg === goback_kr ? goback_kr_hover : goback_kr);
-          } else if (goBackBG === 'vi') {
-               setGoBackBg(goBackBg === goback_vn ? goback_vn_hover : goback_vn);
-          } else {
-               setGoBackBg(goBackBg === goback_en ? goback_en_hover : goback_en);
-          }
-     }
+     }     
 
      const hoverContinueButton = () => {
           const storedLanguage = sessionStorage.getItem('language');
@@ -351,7 +351,7 @@ function Choose() {
 
      return (
           <div className='photo-choose-container' style={{ backgroundImage: `url(${background})` }}>
-               <div className="go-back" style={{ backgroundImage: `url(${goBackBg})` }} onClick={() => navigate("/photo")} onMouseEnter={() => hoverGoBackBtn(language)} onMouseLeave={() => hoverGoBackBtn(language)}></div>
+               <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/photo")} onMouseEnter={() => hoverGoBackButton(language)} onMouseLeave={() => hoverGoBackButton(language)}></div>
                <div className="left-big-frame">
                     <div ref={parentRef} className={displayClassNameForBackground()} style={{ backgroundImage: `url(${myBackground})` }}>
                          {showSelectedPhotos()}

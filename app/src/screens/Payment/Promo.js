@@ -3,11 +3,22 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../../translations/i18n';
 import "../../css/Payment.css";
+
 // Image
 import promo_form from '../../assets/Payment/Promo/promo_form.png';
+import promo_form_kr from '../../assets/Payment/Promo/kr/promo_form.png';
+import promo_form_vn from '../../assets/Payment/Promo/vn/promo_form.png';
+
 import promo_input from '../../assets/Payment/Promo/promo_input.png';
+
 import redeem from '../../assets/Payment/Promo/redeem.png';
+import redeem_kr from '../../assets/Payment/Promo/kr/redeem.png';
+import redeem_vn from '../../assets/Payment/Promo/vn/redeem.png';
+
 import redeem_click from '../../assets/Payment/Promo/redeem_click.png';
+import redeem_click_kr from '../../assets/Payment/Promo/kr/redeem_click.png';
+import redeem_click_vn from '../../assets/Payment/Promo/vn/redeem_click.png';
+
 // Promo images
 import button0 from '../../assets/Payment/Promo/button0.png';
 import button1 from '../../assets/Payment/Promo/button1.png';
@@ -31,6 +42,20 @@ import num6_click from '../../assets/Payment/Promo/num6_click.png';
 import num7_click from '../../assets/Payment/Promo/num7_click.png';
 import num8_click from '../../assets/Payment/Promo/num8_click.png';
 import num9_click from '../../assets/Payment/Promo/num9_click.png';
+
+// Background
+import background_en from '../../assets/Payment/Promo/BG.png';
+import background_kr from '../../assets/Payment/Promo/kr/BG.png';
+import background_vn from '../../assets/Payment/Promo/vn/BG.png';
+
+// Go Back
+import goback_en from '../../assets/Common/goback.png';
+import goback_en_hover from '../../assets/Common/gobackhover.png';
+import goback_kr from '../../assets/Common/kr/goback.png';
+import goback_kr_hover from '../../assets/Common/kr/gobackhover.png';
+import goback_vn from '../../assets/Common/vn/goback.png';
+import goback_vn_hover from '../../assets/Common/vn/gobackhover.png';
+
 import axios from 'axios';
 
 function Cash() {
@@ -40,6 +65,34 @@ function Cash() {
      const [hoveredRedeem, setHoveredRedeem] = useState(null);
      const [redeemCode, setRedeemCode] = useState('');
      const [frameAmount, setFrameAmount] = useState(0);
+     const [background, setBackground] = useState(background_en);       
+     const [promoForm, setPromoForm] = useState(promo_form);
+     const [redeemButton, setRedeemButton] = useState(redeem);
+     const [language, setLanguage] = useState('en');
+     const [goBackButton, setGoBackButton] = useState(null);
+
+     useEffect(() => {
+          const storedLanguage = sessionStorage.getItem('language');
+          if (storedLanguage) {
+               setLanguage(storedLanguage);
+               if (storedLanguage === 'en') {
+                    setBackground(background_en);
+                    setPromoForm(promo_form);
+                    setRedeemButton(redeem);
+                    setGoBackButton(goback_en);
+               } else if (storedLanguage === 'ko') {
+                    setBackground(background_kr);
+                    setPromoForm(promo_form_kr);
+                    setRedeemButton(redeem_kr);
+                    setGoBackButton(goback_kr);
+               } else if (storedLanguage === 'vi') {
+                    setBackground(background_vn);
+                    setPromoForm(promo_form_vn);
+                    setRedeemButton(redeem_vn);
+                    setGoBackButton(goback_vn);
+               }
+          }
+     }, []);
 
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
@@ -47,6 +100,16 @@ function Cash() {
 
      const handleMouseLeave = () => {
           setHoveredImage(null);
+     }
+
+     const hoverRedeemButton = (lang) => {
+          if (lang === 'en') {
+               setRedeemButton(redeemButton == redeem_click ? redeem : redeem_click);
+          } else if (lang === 'ko') {
+               setRedeemButton(redeemButton == redeem_click_kr ? redeem_kr : redeem_click_kr);
+          } else if (lang === 'vi') {
+               setRedeemButton(redeemButton == redeem_click_vn ? redeem_vn : redeem_click_vn);
+          }
      }
 
      const handleRedeemEnter = (image) => {
@@ -72,6 +135,16 @@ function Cash() {
 
      const redeemClick = () => {
           checkReedeem();
+     }
+
+     const hoverGoBackButton = (lang) => {
+          if (lang === 'en') {
+               setGoBackButton(goBackButton == goback_en_hover ? goback_en : goback_en_hover);
+          } else if (lang === 'ko') {
+               setGoBackButton(goBackButton == goback_kr_hover ? goback_kr : goback_kr_hover);
+          } else if (lang === 'vi') {
+               setGoBackButton(goBackButton == goback_vn_hover ? goback_vn : goback_vn_hover);
+          }
      }
 
      useEffect(() => {
@@ -102,12 +175,12 @@ function Cash() {
      }
 
      return (
-          <div className='promo-container'>
-               <div className="go-back" onClick={() => navigate("/payment")}></div>
-               <div className="promo-form" style={{ backgroundImage: `url(${promo_form})` }}>
+          <div className='promo-container' style={{ backgroundImage: `url(${background})` }}>
+               <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/payment")}></div>
+               <div className="promo-form" style={{ backgroundImage: `url(${promoForm})` }}>
                     <div className="code-input" style={{ backgroundImage: `url(${promo_input})` }}></div>
                     <div className='code-input-code'>{redeemCode}</div>
-                    <div className="redeem-button" style={{ backgroundImage: `url(${hoveredImage === redeem ? redeem_click : redeem})` }} onMouseEnter={() => handleMouseEnter(redeem)} onMouseLeave={handleMouseLeave} onClick={redeemClick}></div>
+                    <div className="redeem-button" style={{ backgroundImage: `url(${redeemButton})` }} onMouseEnter={() => hoverRedeemButton(language)} onMouseLeave={() => hoverRedeemButton(language)} onClick={redeemClick}></div>
                     <div className="form-buttons">
                          <div className="form-button-container">
                               <div className="form-button" style={{ backgroundImage: `url(${hoveredImage === button1 ? num1_click : button1})` }} onMouseEnter={() => handleMouseEnter(button1)} onMouseLeave={handleMouseLeave} onClick={() => handleRedeem(1)}></div>
