@@ -5,11 +5,26 @@ import i18n from '../../translations/i18n';
 import '../../css/Frame.css';
 import axios from 'axios';
 
+// Background
+import background_en from '../../assets/Frame/Type/BG.png';
+import background_kr from '../../assets/Frame/Type/kr/BG.png';
+import background_vn from '../../assets/Frame/Type/vn/BG.png';
+
+// Go Back
+import goback_en from '../../assets/Common/goback.png';
+import goback_en_hover from '../../assets/Common/gobackhover.png';
+import goback_kr from '../../assets/Common/kr/goback.png';
+import goback_kr_hover from '../../assets/Common/kr/gobackhover.png';
+import goback_vn from '../../assets/Common/vn/goback.png';
+import goback_vn_hover from '../../assets/Common/vn/gobackhover.png';
+
 
 function Frame() {
   const [hoveredImage, setHoveredImage] = useState(null);
   const { t } = useTranslation();
   const navigate = useNavigate();
+
+  const [language, setLanguage] = useState('en');
 
   // Frames 
   const [frameRow11, setFrameRow11] = useState([]);
@@ -24,11 +39,27 @@ function Frame() {
   const [frameRow22Hover, setFrameRow22Hover] = useState([]);
   const [frameRow23, setFrameRow23] = useState([]);
   const [frameRow23Hover, setFrameRow23Hover] = useState([]);
+  const [frameBackground, setFrameBackground] = useState([]);
+
+  const [goBackBg, setGoBackBg] = useState([]);
+
 
   useEffect(() => {
     const storedLanguage = sessionStorage.getItem('language');
     if (storedLanguage) {
       i18n.changeLanguage(storedLanguage);
+      setLanguage(storedLanguage);
+
+      if (storedLanguage === 'ko') {
+        setFrameBackground(background_kr);
+        setGoBackBg(goback_kr);
+      } else if (storedLanguage === 'vi') {
+        setFrameBackground(background_vn);
+        setGoBackBg(goback_vn);
+      } else {
+        setFrameBackground(background_en);
+        setGoBackBg(goback_en);
+      }
     }
   }, []);
 
@@ -65,7 +96,7 @@ function Frame() {
         if (frame.position === 'row-2-3') {
           setFrameRow23(process.env.REACT_APP_BACKEND + frame.photo);
           setFrameRow23Hover(process.env.REACT_APP_BACKEND + frame.photo_hover);
-        }        
+        }
       });
     } catch (error) {
       console.error('Error fetching frames:', error);
@@ -80,6 +111,16 @@ function Frame() {
     setHoveredImage(null);
   }
 
+  const hoverGoBackBtn = (goBackBG) => {
+    if (goBackBG === 'ko') {
+      setGoBackBg(goBackBg === goback_kr ? goback_kr_hover : goback_kr);
+    } else if (goBackBG === 'vi') {
+      setGoBackBg(goBackBg === goback_vn ? goback_vn_hover : goback_vn);
+    } else {
+      setGoBackBg(goBackBg === goback_en ? goback_en_hover : goback_en);
+    }
+  }
+
   const goToBackground = (titleFrame, price) => {
     // save the selected frame in session storage
     sessionStorage.setItem('selectedFrame', JSON.stringify({
@@ -90,8 +131,8 @@ function Frame() {
   }
 
   return (
-    <div className='frame-container'>
-      <div className="go-back" onClick={() => navigate("/")}></div>
+    <div className='frame-container' style={{ backgroundImage: `url(${frameBackground})` }}>
+      <div className="go-back" style={{ backgroundImage: `url(${goBackBg})` }} onClick={() => navigate("/")} onMouseEnter={() => hoverGoBackBtn(language)} onMouseLeave={() => hoverGoBackBtn(language)}></div>
       <div className="topSection">
         <div className="column">
           <div className="imageDiv-top" style={{ backgroundImage: `url( ${hoveredImage === frameRow11 ? frameRow11Hover : frameRow11})` }} onMouseEnter={() => handleMouseEnter(frameRow11)} onMouseLeave={handleMouseLeave} onClick={() => goToBackground('Stripx2', 70000)}></div>

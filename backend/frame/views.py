@@ -2,11 +2,12 @@ import requests
 from django.shortcuts import render, redirect
 from rest_framework.views import APIView
 from rest_framework.response import Response
+from rest_framework.parsers import MultiPartParser, JSONParser
 from rest_framework import status
 from rest_framework import permissions
 from rest_framework.decorators import api_view
 from .models import Frame
-from .serializers import FrameSerializer
+from .serializers import FrameSerializer, CloudPhotoSerializer
 from django.views import View
 from .forms import FrameForm
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -15,7 +16,10 @@ import os
 from django.conf import settings
 from django.http import JsonResponse
 import base64
+from .forms import PhotoForm
+from revenue.models import Order
 
+import cloudinary.uploader
 
 # Create your views here.
 DEVICE_API_URL = "http://localhost:8000/devices/api"
@@ -47,7 +51,65 @@ def upload_full(request):
                 }, status=status.HTTP_201_CREATED)                  
     else:
         return JsonResponse({'error': 'Image not provided'}, status=status.HTTP_400_BAD_REQUEST)
-
+    
+@api_view(['POST'])
+def print_photo(request):
+    if request.method == 'POST':
+        # Copy file to folder for printer
+        # Check folder exist
+        folder_path = "C:\\Mongta\\Printer-Python\\image"
+        if os.path.exists(folder_path):
+            image_file = request.data.get('photo')
+            frame = request.data.get('frame')
+            
+            print_file_name = ''
+            if frame == 'Stripx2':
+                print_file_name = 'stripx2.png'
+            elif frame == '2cut-x2':
+                print_file_name = 'cutx2.png'
+            elif frame == '3-cutx2':
+                print_file_name = 'cutx3.png'
+            elif frame == '4-cutx2':
+                print_file_name = 'cutx4.png'
+            elif frame == '5-cutx2':
+                print_file_name = 'cutx5.png'
+            elif frame == '6-cutx2':
+                print_file_name = 'cutx6.png'
+            if image_file is not None:
+                with open(os.path.join(folder_path, print_file_name), 'wb+') as destination:
+                    destination.write(base64.b64decode(image_file.split(',')[1]))
+                
+                # Call POST method to printer
+                print_url = settings.API_PRINTER + '/api/print/'
+                response = requests.post(print_url, {})        
+        
+        return JsonResponse({'message': 'OK'}, status=status.HTTP_200_OK)
+    else:
+        return JsonResponse({'error': 'Image not provided'}, status=status.HTTP_400_BAD_REQUEST)    
+    
+                                           
+class UploadPhotoCloud(APIView):
+    parser_classes = (
+        MultiPartParser,
+        JSONParser,
+    )
+    
+    @staticmethod
+    def post(request):
+        file = request.data.get('photo')
+        
+        upload_data = cloudinary.uploader.upload(file)     
+        
+        # Update order's photo_url_done
+        order_code = request.data.get('order_code')
+        if (order_code):
+            order = Order.objects.filter(order_code=order_code).first()
+            order.photo_url_done = upload_data.get('url')
+            order.save()        
+           
+        return Response({
+            'photo_url': upload_data.get('url')
+        }, status=201)
 
 class FrameAPI(APIView):
     

@@ -6,7 +6,7 @@ from .views import (
     PaymentCreateView,
     PaymentEditView,
 )
-from .views import start_cash_pay, stop_cash_pay, create_cash_order, webhook_cash_api
+from .views import start_cash_pay, stop_cash_pay, create_cash_order, webhook_cash_api, redeem_pay
 
 urlpatterns = [
     # API
@@ -17,6 +17,7 @@ urlpatterns = [
     path('api/cash/create', create_cash_order, name='stop_cash_pay'),
     path('api/cash/webhook', webhook_cash_api, name='create_cash_order'),
     path('api/cash/stop', stop_cash_pay, name='webhook_cash_api'),
+    path('api/redeem', redeem_pay, name='redeem_pay'),
      
     # WEB
     path('', PaymentList.as_view(), name='payments'),

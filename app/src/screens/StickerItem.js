@@ -4,21 +4,14 @@ import { Image as KonvaImage, Group, Rect, Transformer } from 'react-konva';
 import { useHoverDirty, useLongPress } from 'react-use';
 import cancelImage from "../assets/Sticker/items/cancel.png";
 
-export const StickerItem = ({ image, onDelete, onDragEnd, isSelected, onSelect, onChange, isDoneSticker }) => {
+export const StickerItem = ({ image, onDelete, onDragEnd }) => {
     const imageRef = useRef(null);
     const isHovered = useHoverDirty(imageRef);
     const [stickerImage] = useImage(image.src);
     const [deleteImage] = useImage(cancelImage);
     const [showDeleteButton, setShowDeleteButton] = useState(false);    
 
-    const trRef = useRef();
-
-    React.useEffect(() => {
-        if (isSelected) {
-            trRef.current.nodes([imageRef.current]);
-            trRef.current.getLayer().batchDraw();
-        }
-    }, [isSelected]);
+    const trRef = useRef();    
 
     const onLongPress = () => {
         setShowDeleteButton(true);
@@ -63,47 +56,8 @@ export const StickerItem = ({ image, onDelete, onDragEnd, isSelected, onSelect, 
                 height={stickerHeight}
                 image={stickerImage}
                 {...longPressEvent}
-                onClick={onSelect}
-                onTap={onSelect}
-                {...stickerImage}
-                onDragEnd={(event) => {
-                    onChange({
-                        ...stickerImage,
-                        x: event.target.x(),
-                        y: event.target.y()
-                    });
-                }}
-                onTransformEnd={(e) => {
-                    // transformer is changing scale
-                    const node = imageRef.current;
-                    const scaleX = node.scaleX();
-                    const scaleY = node.scaleY();
-
-                    // we will reset it back
-                    // node.scaleX(1);
-                    // node.scaleY(1);
-                    // onChange({
-                    //     ...image,
-                    //     x: node.x(),
-                    //     y: node.y(),
-                    //     // set minimal value
-                    //     width: Math.max(5, node.width() * scaleX),
-                    //     height: Math.max(node.height() * scaleY)
-                    // })
-                }}
-            />
-            {isSelected && !isDragging && !isDoneSticker && (
-                <Transformer
-                    ref={trRef}
-                    boundBoxFunc={(oldBox, newBox) => {
-                        // limit resize
-                        if (newBox.width < 5 || newBox.height < 5) {
-                            return oldBox;
-                        }
-                        return newBox;
-                    }}
-                />
-            )}
+                {...stickerImage}                
+            />            
             {showDeleteButton && !isDragging && (
                 <KonvaImage
                     onTouchStart={onDelete}

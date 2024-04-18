@@ -4,7 +4,6 @@
      /* Full width of the viewport */
      height: 100vh;
      /* Full height of the viewport */
-     background-image: url('../assets/Payment/BG.png');
      /* Specify the path to your background image */
      background-size: contain;
      background-repeat: no-repeat;
@@ -70,7 +69,6 @@
      /* Full width of the viewport */
      height: 100vh;
      /* Full height of the viewport */
-     background-image: url('../assets/Payment/Cash/BG.png');
      /* Specify the path to your background image */
      background-size: contain;
      background-repeat: no-repeat;
@@ -89,7 +87,6 @@
      left: 11%;
      width: 30%;
      height: 30%;
-     background-image: url('../assets/Payment/Cash/paid.png');
      background-size: contain;
      background-repeat: no-repeat;
      background-position: center;
@@ -111,7 +108,6 @@
      left: 11%;
      width: 30%;
      height: 30%;
-     background-image: url('../assets/Payment/Cash/inserted.png');
      background-size: contain;
      background-repeat: no-repeat;
      background-position: center;
@@ -135,8 +131,7 @@
      height: 35%;
      background-size: contain;
      background-repeat: no-repeat;
-     background-position: center;
-     background-image: url('../assets/Payment/Cash/done.png');
+     background-position: center;     
 }
 
 .done-result-button {
@@ -147,8 +142,7 @@
      height: 35%;
      background-size: contain;
      background-repeat: no-repeat;
-     background-position: center;
-     background-image: url('../assets/Payment/Cash/done.png');
+     background-position: center;     
 }
 
 /** Cash **/
@@ -160,7 +154,6 @@
      /* Full width of the viewport */
      height: 100vh;
      /* Full height of the viewport */
-     background-image: url('../assets/Payment/QR/BG.png');
      /* Specify the path to your background image */
      background-size: contain;
      background-repeat: no-repeat;
@@ -176,7 +169,7 @@
 .qr-code {
      bottom: 8%;
      position: relative;
-     margin-left: 18%;
+     margin-right: 3%;
      width: 55%;
      text-align: right;
      right: 1%;
@@ -192,7 +185,6 @@
      /* Full width of the viewport */
      height: 100vh;
      /* Full height of the viewport */
-     background-image: url('../assets/Payment/Promo/BG.png');
      /* Specify the path to your background image */
      background-size: contain;
      background-repeat: no-repeat;
@@ -235,7 +227,7 @@
      width: 55%;
      height: calc(100% - 20px);
      font-size: 80px;
-     font-family: Arial, Helvetica, sans-serif;
+     font-family: fantasy;
 }
 
 .redeem-button {
@@ -285,7 +277,6 @@
      /* Full width of the viewport */
      height: 100vh;
      /* Full height of the viewport */
-     background-image: url('../assets/Payment/Result/BG.png');
      /* Specify the path to your background image */
      background-size: contain;
      background-repeat: no-repeat;

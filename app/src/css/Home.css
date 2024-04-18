@@ -29,8 +29,7 @@
 
 .start-button {
     width: 30%;
-    height: 20%;
-    background-image: url('../assets/Home/start.png');
+    height: 20%;    
     background-size: contain;
     background-repeat: no-repeat;
     position: absolute;
@@ -40,8 +39,7 @@
     align-items: center;
 }
 
-.start-button:hover {
-    background-image: url('../assets/Home/start_click.png');
+.start-button:hover {    
     cursor: pointer;
 }
 

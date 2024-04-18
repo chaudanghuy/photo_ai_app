@@ -15,11 +15,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.http import JsonResponse
 from revenue.models import Transaction, Order
+from redeem.models import Redeem
 import random
 import string
 from django.views.decorators.csrf import csrf_exempt
 from device.models import Device
 import os
+from django.conf import settings
 
 # Create your views here.
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
@@ -27,7 +29,7 @@ def random_string_generator(size=10, chars=string.ascii_lowercase + string.digit
 
 @csrf_exempt
 def start_cash_pay(request):
-    url = "http://127.0.0.1:8002/api/start/"
+    url = settings.API_CASH_READER + '/api/start/'
     payload = {}
     headers = {}
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -37,7 +39,7 @@ def start_cash_pay(request):
 @csrf_exempt
 def stop_cash_pay(request):
     try:
-        cash_url = 'http://127.0.0.1:8002/api/stop/'
+        cash_url = settings.API_CASH_READER + '/api/stop/'
         response = requests.post(cash_url, {})
         return JsonResponse({'message': 'Stop'}, status=status.HTTP_200_OK)                
     except Payment.DoesNotExist:
@@ -69,7 +71,7 @@ def webhook_cash_api(request):
 
         try:
             total_money = 0
-            cash_url = 'http://127.0.0.1:8002/api/money/'
+            cash_url = settings.API_CASH_READER + '/api/money/'
             response = requests.get(cash_url)
             
             if response.status_code == 200:
@@ -88,6 +90,58 @@ def webhook_cash_api(request):
             return JsonResponse({'total_money': total_money, 'status': 'NOK'})
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)    
+        
+@csrf_exempt
+def redeem_pay(request):
+    device_code = request.GET.get('device')
+    redeem_code = request.GET.get('code')
+    request_amount = request.GET.get('amount')
+
+    if device_code and redeem_code:
+        try:
+            redeem = Redeem.objects.filter(code=redeem_code).first()
+            if redeem and not redeem.is_used and redeem.is_active:
+                order_code = random_string_generator()
+                device = Device.objects.get(code=device_code)
+                amount = int(redeem.amount)
+                request_amount = int(request_amount)
+
+                order = Order.objects.create(
+                    order_code=order_code,
+                    device_id=device,
+                    product_price=amount,
+                    base_price=request_amount,
+                    tax=0,
+                    total_price=amount,
+                    status="Pending",
+                )
+
+                if amount >= request_amount:
+                    Transaction.objects.create(
+                        order_id=order,
+                        payment_id=Payment.objects.get(code='REDEEM'),
+                        amount=request_amount,
+                        transaction_status="Success"
+                    )
+                    
+                    redeem.is_used = True   
+                    redeem.date_used = datetime.now()                 
+                    redeem.save()
+
+                    order.status = "Success"
+                    order.save()
+
+                    return JsonResponse({'status': 'OK', 'order_code': order.order_code}, status=status.HTTP_200_OK)
+                else:
+                    return JsonResponse({'error': 'Redeem Amount not enough'}, status=status.HTTP_400_BAD_REQUEST)
+
+            return JsonResponse({'error': 'Redeem Already Used'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Redeem.DoesNotExist:
+            return JsonResponse({'error': 'Redeem Does Not Exist'}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 class PaymentAPI(APIView):
     permission_classes = [permissions.IsAuthenticated]

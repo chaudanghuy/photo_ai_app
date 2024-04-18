@@ -4,7 +4,6 @@
      /* Full width of the viewport */
      height: 100vh;
      /* Full height of the viewport */
-     background-image: url('../assets/Photo/Snap/BG.png');
      /* Specify the path to your background image */
      background-size: contain;
      background-repeat: no-repeat;
@@ -44,7 +43,7 @@
      position: absolute;
      top: 20%;
      left: 3%;
-     width: 50%;
+     width: 45%;
      height: 75%;
      background-image: url('../assets/Common/frame.png');
      background-size: contain;
@@ -93,11 +92,11 @@
 
 .photo-webcam {
      text-align: center;
-     top: 15%;
+     top: 19%;
      position: relative;
      font-size: 51px;
      font-family: fantasy;
-     width: 80%;
+     width: 85%;
      left: 10%;
 }
 
@@ -111,9 +110,9 @@
 
 .photo-countdown {
      text-align: center;
-     top: 33%;
+     top: 30%;
      position: relative;
-     font-size: 51px;
+     font-size: 88px;
      font-family: fantasy;
 }
 
@@ -124,7 +123,6 @@
      /* Full width of the viewport */
      height: 100vh;
      /* Full height of the viewport */
-     background-image: url('../assets/Photo/Choose/BG.png');
      /* Specify the path to your background image */
      background-size: contain;
      background-repeat: no-repeat;
@@ -155,9 +153,9 @@
 .left-choose-container-2cut {
      position: absolute;
      top: 5%;
-     left: 21%;
-     width: 59%;
-     height: 86%;
+     left: 10%;
+     width: 80%;
+     height: 84%;
      background-size: contain;
      background-repeat: no-repeat;
      background-position: center;
@@ -214,8 +212,8 @@
 
 .choose-image {
      width: 100%;
-     height: 120px;
-     background-size: cover;
+     height: 250px;
+     background-size: contain;
      background-image: url('../assets/Photo/Choose/photo_box.png');
      background-repeat: no-repeat;
      background-position: center;
@@ -224,7 +222,7 @@
 
 .bottom_choose_container {
      position: absolute;
-     top: 73%;
+     top: 77%;
      right: 20%;
      width: 20%;
      height: 20%;
@@ -258,252 +256,339 @@
 }
 
 .choose-photo-item-5cut-0-0 {
-     width: 200px;
-     height: 190px;
+     width: 210px;
+     height: 210px;
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
      position: fixed;
      top: 26%;
-     left: 18.9%;
+     left: 16%;
 }
 
 .choose-photo-item-5cut-0-1 {
-     width: 200px;
-     height: 190px;
+     width: 210px;
+     height: 210px;
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
      position: fixed;
      top: 26%;
-     left: 28.2%;
+     left: 25.5%;
 }
 
 .choose-photo-item-5cut-1-0 {
-     width: 200px;
-     height: 190px;
+     width: 210px;
+     height: 210px;
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
      position: fixed;
-     top: 45.5%;
-     left: 18.9%;
+     top: 45%;
+     left: 16%;
 }
 
 .choose-photo-item-5cut-1-1 {
-     width: 200px;
-     height: 190px;
+     width: 210px;
+     height: 210px;
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
      position: fixed;
-     top: 45.5%;
-     left: 28.2%;
+     top: 45%;
+     left: 25.5%;
 }
 
 .choose-photo-item-5cut-last-line {
-     width: 411px;
-     height: 185px;
+     width: 439px;
+     height: 250px;
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
      position: fixed;
-     top: 65%;
-     left: 18.9%;
+     top: 64%;
+     left: 15.9%;
 }
 
 /** Frame 4cut **/
 
 .choose-photo-item-4cut-0-0 {
-     width: 279px;
-     height: 200px;
+     width: 320px;
+     height: 230px;
      background-size: cover;
      background-repeat: no-repeat;
+     background-position: center;
      margin: 1%;
      position: fixed;
-     top: 33%;
-     left: 14.9%;
+     top: 32%;
+     left: 11%;
 }
 
 .choose-photo-item-4cut-0-1 {
-     width: 279px;
-     height: 200px;
+     width: 320px;
+     height: 230px;
      background-size: cover;
      background-repeat: no-repeat;
+     background-position: center;
      margin: 1%;
      position: fixed;
-     top: 33%;
-     left: 27.9%;
+     top: 32%;
+     left: 25%;
 }
 
 .choose-photo-item-4cut-1-0 {
-     width: 279px;
-     height: 200px;
+     width: 320px;
+     height: 230px;
      background-size: cover;
      background-repeat: no-repeat;
+     background-position: center;
      margin: 1%;
      position: fixed;
-     top: 54%;
-     left: 14.9%;
+     top: 52%;
+     left: 11%;
 }
 
 .choose-photo-item-4cut-1-1 {
-     width: 279px;
-     height: 200px;
+     width: 320px;
+     height: 230px;
      background-size: cover;
      background-repeat: no-repeat;
+     background-position: center;
      margin: 1%;
      position: fixed;
-     top: 54%;
-     left: 27.9%;
+     top: 52%;
+     left: 25%;
 }
 
 /** Frame 3cut **/
 
 .choose-photo-item-3cut-top-line {
-     width: 428px;
-     height: 254px;
+     width: 450px;
+     height: 255px;
      background-size: cover;
      background-repeat: no-repeat;
+     background-position: center;
      margin: 1%;
      position: fixed;
      top: 33%;
-     left: 18.5%;
+     left: 16%;
 }
 
 .choose-photo-item-3cut-0-0 {
-     width: 205px;
-     height: 250px;
+     width: 210px;
+     height: 310px;
      background-size: cover;
      background-repeat: no-repeat;
+     background-position: center;
      margin: 1%;
      position: fixed;
-     top: 55%;
-     left: 18.3%;
+     top: 57%;
+     left: 16%;
 }
 
 .choose-photo-item-3cut-0-1 {
-     width: 205px;
-     height: 250px;
+     width: 210px;
+     height: 310px;
      background-size: cover;
-     background-repeat: no-repeat;
+     background-repeat: revert-layer;
+     background-position: center;
      margin: 1%;
      position: fixed;
-     top: 55%;
-     left: 27.9%;
+     top: 57%;
+     left: 26%;
 }
 
 /** Frame 2cut **/
 .choose-photo-item-2cut-0-0 {
-     width: 250px;
-     height: 250px;
+     width: 350px;
+     height: 480px;
      background-size: cover;
      background-repeat: revert-layer;
+     background-position: center;
      margin: 1%;
      position: fixed;
-     top: 41%;
-     left: 16.3%;
+     top: 32%;
+     left: 9%;
 }
 
 .choose-photo-item-2cut-0-1 {
-     width: 250px;
-     height: 250px;
+     width: 350px;
+     height: 480px;
      background-size: cover;
      background-repeat: no-repeat;
+     background-position: center;
      margin: 1%;
      position: fixed;
-     top: 41%;
-     left: 27.9%;
+     top: 32%;
+     left: 26%;
 }
+
+/** Frame 6 cut **/
+.choose-photo-item6-0-0 {
+     width: 200px;
+     height: 200px;
+     background-size: cover;
+     background-repeat: no-repeat;
+     background-position: center;
+     margin: 1%;
+     position: fixed;
+     top: 33.5%;
+     left: 16%;
+}
+
+.choose-photo-item6-0-1 {
+     width: 200px;
+     height: 200px;
+     background-size: cover;
+     background-repeat: no-repeat;
+     background-position: center;
+     margin: 1%;
+     position: fixed;
+     top: 33.5%;
+     left: 25.9%;
+}
+
+.choose-photo-item6-1-0 {
+     width: 200px;
+     height: 200px;
+     background-size: cover;
+     background-repeat: no-repeat;
+     background-position: center;
+     margin: 1%;
+     position: fixed;
+     top: 52%;
+     left: 16%;
+}
+
+.choose-photo-item6-1-1 {
+     width: 200px;
+     height: 200px;
+     background-size: cover;
+     background-repeat: no-repeat;
+     background-position: center;
+     margin: 1%;
+     position: fixed;
+     top: 52%;
+     left: 25.9%;
+}
+
+.choose-photo-item6-2-0 {
+     width: 200px;
+     height: 200px;
+     background-size: cover;
+     background-repeat: no-repeat;
+     background-position: center;
+     margin: 1%;
+     position: fixed;
+     top: 71.3%;
+     left: 16%;
+}
+
+.choose-photo-item6-2-1 {
+     width: 200px;
+     height: 200px;
+     background-size: cover;
+     background-repeat: no-repeat;
+     background-position: center;
+     margin: 1%;
+     position: fixed;
+     top: 71.3%;
+     left: 25.9%;
+}
+
+/** Frame 6 cut-end **/
 
 /** Frame 8 cut **/
 .choose-photo-item-0-0 {
-     width: 184px;
-     height: 125px;
+     width: 225px;
+     height: 151px;
      background-size: cover;
      background-repeat: no-repeat;
+     background-position: center;
      margin: 1%;
      position: fixed;
      top: 33.5%;
-     left: 19.3%;
+     left: 14.5%;
 }
 
 .choose-photo-item-0-1 {
-     width: 184px;
-     height: 125px;
+     width: 225px;
+     height: 151px;
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
      position: fixed;
      top: 33.5%;
-     left: 27.9%;
+     left: 25.9%;
 }
 
 .choose-photo-item-1-0 {
-     width: 184px;
-     height: 125px;
+     width: 225px;
+     height: 151px;
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
      position: fixed;
      top: 46.5%;
-     left: 19.3%;
+     left: 14.5%;
 }
 
 .choose-photo-item-1-1 {
-     width: 184px;
-     height: 125px;
+     width: 225px;
+     height: 151px;
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
      position: fixed;
      top: 46.5%;
-     left: 27.9%;
+     left: 25.9%;
 }
 
 .choose-photo-item-2-0 {
-     width: 184px;
-     height: 125px;
+     width: 225px;
+     height: 151px;
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
      position: fixed;
      top: 59.5%;
-     left: 19.3%;
+     left: 14.5%;
 }
 
 .choose-photo-item-2-1 {
-     width: 184px;
-     height: 125px;
+     width: 225px;
+     height: 151px;
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
      position: fixed;
      top: 59.5%;
-     left: 27.9%;
+     left: 25.9%;
 }
 
 .choose-photo-item-3-0 {
-     width: 184px;
-     height: 125px;
+     width: 225px;
+     height: 151px;
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
      position: fixed;
      top: 72.5%;
-     left: 19.3%;
+     left: 14.5%;
 }
 
 .choose-photo-item-3-1 {
-     width: 184px;
-     height: 125px;
+     width: 225px;
+     height: 151px;
      background-size: cover;
      background-repeat: no-repeat;
      margin: 1%;
      position: fixed;
      top: 72.5%;
-     left: 27.9%;
+     left: 25.9%;
 }
+
+/** Frame 8 cut end **/
 
 .choose-photo-item-alone {
      width: 190px;
@@ -523,8 +608,8 @@
 
 .left-choose-photos {
      margin-top: 8%;
-     margin-left: 29%;
-     width: 45%;
+     margin-left: 24%;
+     width: 55%;
      height: 86%;
      position: initial;
      background-size: contain;
@@ -537,10 +622,10 @@
 }
 
 .left-choose-photos-2cut {
-     margin-top: 12%;
-     margin-left: 8%;
-     width: 85%;
-     height: 59%;
+     margin-top: 11%;
+     margin-left: 7%;
+     width: 86%;
+     height: 66%;
      position: initial;
      background-size: contain;
      background-repeat: no-repeat;
@@ -582,3 +667,30 @@
 }
 
 /** Choose **/
+
+.flash {
+     position: fixed;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     background: white;
+     /* Adjust color as needed */
+     opacity: 0;
+     pointer-events: none;
+     /* Prevents clicks on the flash div */
+}
+
+.animate {
+     animation: flashAnimation 0.2s ease-out forwards;
+}
+
+@keyframes flashAnimation {
+     0% {
+          opacity: 1;
+     }
+
+     100% {
+          opacity: 0;
+     }
+}

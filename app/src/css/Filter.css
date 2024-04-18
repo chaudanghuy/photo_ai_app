@@ -21,7 +21,7 @@
      position: absolute;
      top: 20%;
      left: 3%;
-     width: 50%;
+     width: 45%;
      height: 75%;
      background-image: url('../assets/Common/frame.png');
      background-size: contain;
@@ -157,11 +157,11 @@
 
 .intensity-icon {
      width: 8%;
-     height: 10%;
+     height: 3%;
      background-size: contain;
      background-repeat: no-repeat;
      background-position: center;
      position: relative;
      top: 28%;
-     left: 2%;
+     left: 1%;
 }

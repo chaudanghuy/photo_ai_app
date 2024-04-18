@@ -13,10 +13,28 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import cloudinary
 
 load_dotenv()
 
 BACKEND_ENV = os.getenv('ENVIRONMENT')
+
+# API
+API_CASH_READER = os.getenv('API_CASH_READER')
+API_PRINTER = os.getenv('API_PRINTER')
+
+# Cloudinary
+CLOUDINARY_NAME = os.getenv('CLOUDINARY_NAME')
+CLOUDINARY_API_KEY = os.getenv('CLOUDINARY_API_KEY')
+CLOUDINARY_SECRET_KEY = os.getenv('CLOUDINARY_SECRET_KEY')
+CLOUDINARY_URL = os.getenv('CLOUDINARY_URL')
+
+# Start Cloudinary
+cloudinary.config(
+    cloud_name=CLOUDINARY_NAME,
+    api_key=CLOUDINARY_API_KEY,
+    api_secret=CLOUDINARY_SECRET_KEY,    
+)
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -43,6 +61,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.humanize',
     'rest_framework',
     'corsheaders',
     'dashboard',
@@ -56,7 +75,8 @@ INSTALLED_APPS = [
     'revenue',
     'sticker',
     'account',
-    'zalopay'
+    'zalopay',    
+    'redeem'
 ]
 
 MIDDLEWARE = [
@@ -95,9 +115,20 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
 DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': BASE_DIR / 'db.sqlite3',
+    # }
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'photomong_main',
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': 'localhost',
+        'PORT': '3306',    
+        'OPTIONS': {
+            'sql_mode': 'traditional',
+        }
     }
 }
 

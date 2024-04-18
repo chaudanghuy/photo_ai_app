@@ -1,5 +1,6 @@
 from django.db import models
 from device.models import Device
+from cloudinary.models import CloudinaryField
 
 # Create your models here.
 class Frame(models.Model):     
@@ -14,3 +15,6 @@ class Frame(models.Model):
 
      def __str__(self):
           return f"Frame for {self.device.name}"          
+     
+class CloudPhoto(models.Model):
+     image = CloudinaryField('image')          
