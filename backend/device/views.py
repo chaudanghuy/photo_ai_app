@@ -14,8 +14,9 @@ from .forms import DeviceForm
 from django.contrib.auth.mixins import LoginRequiredMixin
 from frame.models import Frame
 from django.contrib import messages
+from django.conf import settings
 
-STORE_API_URL = 'http://localhost:8000/stores/api'
+STORE_API_URL = settings.DEV_URL + 'stores/api'
 
 def get_store_list():
     response = requests.get(STORE_API_URL)

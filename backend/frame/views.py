@@ -18,11 +18,12 @@ from django.http import JsonResponse
 import base64
 from .forms import PhotoForm
 from revenue.models import Order
+from django.conf import settings
 
 import cloudinary.uploader
 
 # Create your views here.
-DEVICE_API_URL = "http://localhost:8000/devices/api"
+DEVICE_API_URL = settings.DEV_URL + "devices/api"
 
 POSITION_FRAMES = ["row-1-1", "row-1-2", "row-1-3", "row-2-1", "row-2-2", "row-2-3"]
 

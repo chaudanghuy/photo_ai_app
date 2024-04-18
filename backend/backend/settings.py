@@ -17,7 +17,11 @@ import cloudinary
 
 load_dotenv()
 
+# Env
 BACKEND_ENV = os.getenv('ENVIRONMENT')
+
+# URI
+DEV_URL = os.getenv('DEVELOPMENT_URL')
 
 # API
 API_CASH_READER = os.getenv('API_CASH_READER')

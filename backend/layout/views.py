@@ -15,12 +15,13 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from background.models import Background
 from django.core.paginator import Paginator
 from frame.models import Frame
+from django.conf import settings
 
 # Create your views here.
 
-BACKGROUND_API_URL = "http://localhost:8000/backgrounds/api"
+BACKGROUND_API_URL = settings.DEV_URL + "backgrounds/api"
 
-FRAME_API_URL = "http://localhost:8000/frames/api"
+FRAME_API_URL = settings.DEV_URL + "frames/api"
 
 POSITION_LIST = ['row-1-1', 'row-1-2', 'row-1-3', 'row-1-4', 'row-1-5']
 
