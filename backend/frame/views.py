@@ -64,9 +64,11 @@ def print_photo(request):
             image_file = request.data.get('photo')
             frame = request.data.get('frame')
             
+            print_url = settings.API_PRINTER
             print_file_name = ''
             if frame == 'Stripx2':
                 print_file_name = 'stripx2.png'
+                print_url = settings.API_PRINTER_CUT
             elif frame == '2cut-x2':
                 print_file_name = 'cutx2.png'
             elif frame == '3-cutx2':
@@ -81,8 +83,7 @@ def print_photo(request):
                 with open(os.path.join(folder_path, print_file_name), 'wb+') as destination:
                     destination.write(base64.b64decode(image_file.split(',')[1]))
                 
-                # Call POST method to printer
-                print_url = settings.API_PRINTER + '/api/print/'
+                # Call POST method to printer                
                 response = requests.post(print_url, {})        
         
         return JsonResponse({'message': 'OK'}, status=status.HTTP_200_OK)
