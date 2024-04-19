@@ -161,7 +161,8 @@ function Choose() {
                });
                const data = await response.json();
                sessionStorage.setItem('copiedPhoto', data.photo_path);
-               sessionStorage.setItem('copiedPhotoCover', data.photo_cover_path);               
+               sessionStorage.setItem('copiedPhotoCover', data.photo_cover_path);    
+
           } catch (error) {
                console.error(`Failed to copy image: ${error}`);
           }
@@ -188,7 +189,9 @@ function Choose() {
 
           if (selectedPhotos.length === totalMeetsPhotos) {
                copyImageApi();
-               navigate("/filter")
+               setTimeout(() => {
+                    navigate("/filter");
+               }, 5000);
           }
      }
 
