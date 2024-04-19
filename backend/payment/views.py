@@ -22,6 +22,8 @@ from django.views.decorators.csrf import csrf_exempt
 from device.models import Device
 import os
 from django.conf import settings
+import datetime
+from datetime import datetime as dt
 
 # Create your views here.
 def random_string_generator(size=10, chars=string.ascii_lowercase + string.digits):
@@ -125,7 +127,7 @@ def redeem_pay(request):
                     )
                     
                     redeem.is_used = True   
-                    redeem.date_used = datetime.now()                 
+                    redeem.date_used = dt.now()                 
                     redeem.save()
 
                     order.status = "Success"
