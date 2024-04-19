@@ -138,6 +138,35 @@ function Choose() {
           setHoveredImage(null);
      }
 
+     const copyImageApi = async () => {
+          const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
+          if (!sessionSelectedLayout) {
+               return;
+          }
+
+          const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
+          const copyImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/copy-image`;
+          const copyImageData = {
+               photo_url: parsedSelectedLayout.photo,
+               photo_cover: parsedSelectedLayout.photo_cover
+          };
+
+          try {
+               const response = await fetch(copyImageUrl, {
+                    method: 'POST',
+                    headers: {
+                         'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(copyImageData)
+               });
+               const data = await response.json();
+               sessionStorage.setItem('copiedPhoto', data.photo_path);
+               sessionStorage.setItem('copiedPhotoCover', data.photo_cover_path);               
+          } catch (error) {
+               console.error(`Failed to copy image: ${error}`);
+          }
+     };
+
      const goToFilter = () => {
           sessionStorage.setItem('choosePhotos', JSON.stringify(selectedPhotos));
 
@@ -158,6 +187,7 @@ function Choose() {
           }
 
           if (selectedPhotos.length === totalMeetsPhotos) {
+               copyImageApi();
                navigate("/filter")
           }
      }

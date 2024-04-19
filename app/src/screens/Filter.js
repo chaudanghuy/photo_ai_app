@@ -226,38 +226,12 @@ function Filter() {
      }, []);
 
      useEffect(() => {
-          const copyImageApi = async () => {
-               const sessionSelectedLayout = sessionStorage.getItem('selectedLayout');
-               if (!sessionSelectedLayout) {
-                    return;
-               }
-
-               const parsedSelectedLayout = JSON.parse(sessionSelectedLayout);
-               const copyImageUrl = `${process.env.REACT_APP_BACKEND}/frames/api/copy-image`;
-               const copyImageData = {
-                    photo_url: parsedSelectedLayout.photo,
-                    photo_cover: parsedSelectedLayout.photo_cover
-               };
-
-               try {
-                    const response = await fetch(copyImageUrl, {
-                         method: 'POST',
-                         headers: {
-                              'Content-Type': 'application/json'
-                         },
-                         body: JSON.stringify(copyImageData)
-                    });
-                    const data = await response.json();
-                    setMyBackground(data.photo_path);
-                    setSelectedLayout(data.photo_cover_path);
-               } catch (error) {
-                    console.error(`Failed to copy image: ${error}`);
-               }
-          };
-
-          if (myBackground === null) {
-               copyImageApi();
-          }
+          const copiedPhoto = sessionStorage.getItem('copiedPhoto');
+          const copiedPhotoCover = sessionStorage.getItem('copiedPhotoCover');
+          if (copiedPhoto && copiedPhotoCover) {
+               setMyBackground(copiedPhoto);
+               setSelectedLayout(copiedPhotoCover); 
+          }         
      }, []);
 
      const handleMouseEnter = (image) => {
