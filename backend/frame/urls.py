@@ -6,7 +6,8 @@ from .views import (
     FrameCreateView,
     FrameEditView,
     FrameImageCopyAPI,
-    UploadPhotoCloud    
+    UploadPhotoCloud  ,
+    ClearImagesAPIView  
 )
 from .views import upload_full, print_photo
 
@@ -14,6 +15,7 @@ urlpatterns = [
     # API
     path('api', FrameAPI.as_view()),
     path('api/<int:pk>', FrameDetailAPI.as_view()),
+    path('api/clear-images', ClearImagesAPIView.as_view(), name='clear-images'),
     
     # API Image
     path('api/copy-image', FrameImageCopyAPI.as_view()),

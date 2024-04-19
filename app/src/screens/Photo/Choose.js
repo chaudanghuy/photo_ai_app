@@ -84,6 +84,18 @@ function Choose() {
           }
      }, []);
 
+     useEffect(() => {
+          fetch(`${process.env.REACT_APP_BACKEND}/frames/api/clear-images`, {
+               method: 'POST',
+               headers: {
+                    'Content-Type': 'application/json'
+               }
+          })
+          .then(response => response.json())
+          .then(data => console.log(data))
+          .catch(error => console.error(`Failed to clear images: ${error}`));
+     }, []);
+
      const toggleSelection = (index) => {
           // Determine total photos
           let totalMeetsPhotos = 0;

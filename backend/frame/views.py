@@ -90,6 +90,27 @@ def print_photo(request):
         return JsonResponse({'error': 'Image not provided'}, status=status.HTTP_400_BAD_REQUEST)    
     
                                            
+class ClearImagesAPIView(APIView):
+    def post(self, request, format=None):
+        folder_path = os.path.join(settings.BASE_DIR, '../app/public/photos')
+        try:
+            files = os.listdir(folder_path)
+            for file_name in files:
+                if file_name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+                    file_path = os.path.join(folder_path, file_name)
+                    os.remove(file_path)
+            
+            folder_path = os.path.join(settings.BASE_DIR, '../app/public/photo_covers')
+            files = os.listdir(folder_path)
+            for file_name in files:
+                if file_name.lower().endswith(('.png', '.jpg', '.jpeg', '.gif')):
+                    file_path = os.path.join(folder_path, file_name)
+                    os.remove(file_path)
+                
+            return Response({"message": "All images cleared successfully"}, status=status.HTTP_200_OK)
+        except FileNotFoundError:
+            return Response({"error": "Folder not found."}, status=status.HTTP_404_NOT_FOUND)
+
 class UploadPhotoCloud(APIView):
     parser_classes = (
         MultiPartParser,

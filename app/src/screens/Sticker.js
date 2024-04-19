@@ -105,6 +105,12 @@ function Filter() {
      const photos = JSON.parse(sessionStorage.getItem('photos'));
 
      useEffect(() => {
+          if (!background.src) {
+            window.location.reload();
+          }
+     }, []);
+
+     useEffect(() => {
           const storedLanguage = sessionStorage.getItem('language');
           if (storedLanguage) {
                setLanguage(storedLanguage);
