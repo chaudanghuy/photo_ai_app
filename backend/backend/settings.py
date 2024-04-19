@@ -25,7 +25,11 @@ DEV_URL = os.getenv('DEVELOPMENT_URL')
 
 # API
 API_CASH_READER = os.getenv('API_CASH_READER')
-API_PRINTER = os.getenv('API_PRINTER')
+API_PRINTER_2 = os.getenv('API_PRINTER_2')
+API_PRINTER_3 = os.getenv('API_PRINTER_3')
+API_PRINTER_4 = os.getenv('API_PRINTER_4')
+API_PRINTER_5 = os.getenv('API_PRINTER_5')
+API_PRINTER_6 = os.getenv('API_PRINTER_6')
 API_PRINTER_CUT = os.getenv('API_PRINTER_CUT')
 
 # Cloudinary

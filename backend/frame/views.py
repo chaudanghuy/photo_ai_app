@@ -64,21 +64,26 @@ def print_photo(request):
             image_file = request.data.get('photo')
             frame = request.data.get('frame')
             
-            print_url = settings.API_PRINTER
+            print_url = settings.API_PRINTER_2
             print_file_name = ''
             if frame == 'Stripx2':
                 print_file_name = 'stripx2.png'
                 print_url = settings.API_PRINTER_CUT
             elif frame == '2cut-x2':
                 print_file_name = 'cutx2.png'
+                print_url = settings.API_PRINTER_2
             elif frame == '3-cutx2':
                 print_file_name = 'cutx3.png'
+                print_url = settings.API_PRINTER_3
             elif frame == '4-cutx2':
                 print_file_name = 'cutx4.png'
+                print_url = settings.API_PRINTER_4
             elif frame == '5-cutx2':
                 print_file_name = 'cutx5.png'
+                print_url = settings.API_PRINTER_5
             elif frame == '6-cutx2':
                 print_file_name = 'cutx6.png'
+                print_url = settings.API_PRINTER_6
             if image_file is not None:
                 with open(os.path.join(folder_path, print_file_name), 'wb+') as destination:
                     destination.write(base64.b64decode(image_file.split(',')[1]))
