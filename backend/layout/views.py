@@ -16,6 +16,8 @@ from background.models import Background
 from django.core.paginator import Paginator
 from frame.models import Frame
 from django.conf import settings
+from background.models import Background
+from frame.models import Frame
 
 # Create your views here.
 
@@ -95,22 +97,22 @@ class LayoutList(LoginRequiredMixin, ListView):
         paginator = Paginator(all_data, 10)
         layouts = paginator.get_page(page_number)
         
-        backgrounds = get_background_list()
-        frames = get_frame_list()
+        backgrounds = Background.objects.all()
+        frames = Frame.objects.all()
         return render(request, 'layouts/list.html', {'layouts': layouts, 'backgrounds': backgrounds, 'frames': frames, 'position_list': POSITION_LIST})
 
 class LayoutCreateView(LoginRequiredMixin, View):
     template_name = 'layouts/add.html'
     def get(self, request):
         form = LayoutForm()
-        frames = get_frame_list()
-        backgrounds = get_background_list()
+        frames = Frame.objects.all()
+        backgrounds = Background.objects.all()
         return render(request, self.template_name, {'form': form, 'backgrounds': backgrounds, 'frames': frames,  'position_list': POSITION_LIST})
 
     def post(self, request):
         form = LayoutForm(request.POST, request.FILES)
-        backgrounds = get_background_list()
-        frames = get_frame_list()
+        backgrounds = Background.objects.all()
+        frames = Frame.objects.all()
         if form.is_valid():
             form.save()
             return redirect(reverse_lazy('layouts'))
@@ -119,16 +121,16 @@ class LayoutCreateView(LoginRequiredMixin, View):
 class LayoutEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
         layout = Layout.objects.get(id=pk)
-        backgrounds = get_background_list()
-        frames = get_frame_list()
+        backgrounds = Background.objects.all()
+        frames = Frame.objects.all()
         form = LayoutForm(instance=layout)
         return render(request, 'layouts/edit.html', {'form': form, 'backgrounds': backgrounds, 'frames': frames, 'layout': layout, 'position_list': POSITION_LIST})
 
     def post(self, request, pk):
         layout = Layout.objects.get(id=pk)
         form = LayoutForm(request.POST, request.FILES, instance=layout)
-        backgrounds = get_background_list()
-        frames = get_frame_list()
+        backgrounds = Background.objects.all()
+        frames = Frame.objects.all()
         if form.is_valid():
             form.save()
             return redirect(reverse_lazy('layouts'))

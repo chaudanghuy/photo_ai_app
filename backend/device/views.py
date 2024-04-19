@@ -15,6 +15,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from frame.models import Frame
 from django.contrib import messages
 from django.conf import settings
+from store.models import Store
 
 STORE_API_URL = settings.DEV_URL + 'stores/api'
 
@@ -63,18 +64,18 @@ class DeviceDetailAPI(APIView):
 
 class DeviceList(LoginRequiredMixin, ListView):    
     def get(self, request):
-        stores = get_store_list()
+        stores = Store.objects.all()
         devices = Device.objects.all()        
         return render(request, 'devices/list.html', {'stores': stores, 'devices': devices})
 
 class DeviceCreateView(View):
     def get(self, request):
         form = DeviceForm()
-        stores = get_store_list()
+        stores = Store.objects.all()
         return render(request, 'devices/add.html', {'form': form, 'stores': stores})
     
     def post(self, request):
-        stores = get_store_list()                
+        stores = Store.objects.all()                
         form = DeviceForm(request.POST)
         form.instance.user = request.user        
         if form.is_valid():
@@ -86,13 +87,13 @@ class DeviceCreateView(View):
     
 class DeviceEditView(LoginRequiredMixin, View):
     def get(self, request, pk):
-        stores = get_store_list()
+        stores = Store.objects.all()
         device = Device.objects.get(id=pk)
         form = DeviceForm(instance=device)
         return render(request, 'devices/edit.html', {'form': form, 'device': device, 'stores': stores})
     
     def post(self, request, pk):
-        stores = get_store_list()
+        stores = Store.objects.all()
         device = Device.objects.get(id=pk)              
         form = DeviceForm(request.POST, instance=device)        
         if form.is_valid():

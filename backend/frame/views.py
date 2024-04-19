@@ -19,6 +19,7 @@ import base64
 from .forms import PhotoForm
 from revenue.models import Order
 from django.conf import settings
+from device.models import Device
 
 import cloudinary.uploader
 
@@ -185,7 +186,7 @@ class FrameList(LoginRequiredMixin, View):
     template_name = "frames/list.html"
 
     def get(self, request, *args, **kwargs):
-        devices = get_device_list()
+        devices = Device.objects.all()
         frames = Frame.objects.all()
         return render(
             request, self.template_name, {"devices": devices, "frames": frames}
@@ -196,12 +197,12 @@ class FrameCreateView(LoginRequiredMixin, View):
     template_name = "frames/add.html"
 
     def get(self, request, *args, **kwargs):
-        devices = get_device_list()
+        devices = Device.objects.all()
         form = FrameForm()
         return render(request, self.template_name, {"form": form, "devices": devices, "positions": POSITION_FRAMES})
 
     def post(self, request, *args, **kwargs):
-        devices = get_device_list()
+        devices = Device.objects.all()
         form = FrameForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
@@ -216,7 +217,7 @@ class FrameEditView(LoginRequiredMixin, View):
 
     def get(self, request, pk, *args, **kwargs):
         frame = Frame.objects.get(id=pk)
-        devices = get_device_list()
+        devices = Device.objects.all()
         form = FrameForm(instance=frame)
         return render(
             request,
@@ -226,7 +227,7 @@ class FrameEditView(LoginRequiredMixin, View):
 
     def post(self, request, pk):
         frame = Frame.objects.get(id=pk)
-        devices = get_device_list()
+        devices = Device.objects.all()
         form = FrameForm(request.POST, request.FILES, instance=frame)
         if form.is_valid():
             form.save()
