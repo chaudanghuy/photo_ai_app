@@ -7,7 +7,7 @@
     {% if stores %}
       {% for store in stores %}
         <div class="page-header">
-          <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2"><i class="mdi mdi-store"></i></span> Store {{ store.name }}</h3>
+          <h3 class="page-title"><span class="page-title-icon bg-gradient-primary text-white me-2"><i class="mdi mdi-store"></i></span>{{ store.name }}</h3>
           <nav aria-label="breadcrumb">
             <ul class="breadcrumb">
               <li class="breadcrumb-item active" aria-current="page">
@@ -18,7 +18,7 @@
         </div>
         <div class="row">
           {% for device in devices %}
-            {% if device.store_id|floatformat:'0' == store.name %}
+            {% if device.store_id|stringformat:"s" == store.name|stringformat:"s" %}
               <div class="col-md-4 stretch-card grid-margin">
                 {% if device.status == 'Online' %}
                 <div class="card bg-gradient-success card-img-holder text-white">
