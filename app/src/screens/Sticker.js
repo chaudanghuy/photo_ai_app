@@ -402,7 +402,7 @@ function Filter() {
                formData.append("order_code", sessionStorage.getItem('orderCodeNum'));
 
                axios.post(
-                    `${process.env.REACT_APP_BACKEND}/frames/api/upload_cloud`,
+                    `${process.env.REACT_APP_BE_PROD}/frames/api/upload_cloud`,
                     formData,
                     {
                          headers: {

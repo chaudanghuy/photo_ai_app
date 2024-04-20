@@ -118,13 +118,13 @@ function Layout() {
           const fetchLayoutsByBackground = async () => {
                try {
                     const frame = sessionStorage.getItem('selectedFrame');
-                    const response = await axios.get(`${process.env.REACT_APP_BACKEND}/layouts/api/by-background/` + sessionStorage.getItem('styleBg') + '/frame/' + JSON.parse(frame).frame);
+                    const response = await axios.get(`${process.env.REACT_APP_BE_PROD}/layouts/api/by-background/` + sessionStorage.getItem('styleBg') + '/frame/' + JSON.parse(frame).frame);
                     const layoutDatas = response.data
                     const newBackgrounds = layoutDatas.map(item => ({
                          title: item.title,
-                         photo: process.env.REACT_APP_BACKEND + item.photo,
-                         photo_cover: process.env.REACT_APP_BACKEND + item.photo_cover,
-                         photo_full: process.env.REACT_APP_BACKEND + item.photo_full
+                         photo: process.env.REACT_APP_BE_PROD + item.photo,
+                         photo_cover: process.env.REACT_APP_BE_PROD + item.photo_cover,
+                         photo_full: process.env.REACT_APP_BE_PROD + item.photo_full
                     }));
                     setLayouts(newBackgrounds);
                } catch (error) {

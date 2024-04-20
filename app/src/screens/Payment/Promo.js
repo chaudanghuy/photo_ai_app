@@ -163,7 +163,7 @@ function Cash() {
      const checkReedeem = async () => {
           try {
                const deviceNumber = process.env.REACT_APP_DEVICE_NUMBER;
-               const response = await fetch(`${process.env.REACT_APP_BACKEND}/payments/api/redeem?device=${deviceNumber}&code=${redeemCode}&amount=${frameAmount}`);
+               const response = await fetch(`${process.env.REACT_APP_BE_PROD}/payments/api/redeem?device=${deviceNumber}&code=${redeemCode}&amount=${frameAmount}`);
                const paymentData = await response.json();
                if (paymentData.status === "OK") {
                     sessionStorage.setItem('orderCodeNum', paymentData.order_code);

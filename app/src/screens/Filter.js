@@ -629,7 +629,7 @@ function Filter() {
      const selectedPhotoRows = chunkArray(selectedPhotos, 2);
 
      return (
-          <div className='filter-container' style={{ backgroundImage: `url(${background})` }}>
+          <div className='filter-container' style={{ backgroundImage: `url(${background})`, cursor: 'none' }}>
                <div className="go-back" style={{ backgroundImage: `url(${goBackButton})` }} onClick={() => navigate("/photo-choose")} onMouseEnter={() => hoverGoBackButton()} onMouseLeave={() => hoverGoBackButton()}></div>
                <div className="left-big-frame">
                     <div className={displayClassNameForBackground()} style={{ backgroundImage: `url(${myBackground})` }}>

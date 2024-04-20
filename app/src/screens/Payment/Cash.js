@@ -105,7 +105,7 @@ function Cash() {
         const framePrice = sessionStorage.getItem('framePrice');
         setAmountToPay(framePrice);
 
-        const response = await fetch(`${process.env.REACT_APP_BACKEND}/payments/api/cash/create?device=${deviceNumber}&amount=${framePrice}`)
+        const response = await fetch(`${process.env.REACT_APP_BE_PROD}/payments/api/cash/create?device=${deviceNumber}&amount=${framePrice}`)
 
         const responseData = await response.json();
         if (responseData) {
@@ -125,7 +125,7 @@ function Cash() {
   useEffect(() => {
     const checkPaymentStatus = async (orderCodeNum) => {
       try {
-        const response = await fetch(`${process.env.REACT_APP_BACKEND}/payments/api/cash/webhook?order=${orderCodeNum}`)
+        const response = await fetch(`${process.env.REACT_APP_BE_PROD}/payments/api/cash/webhook?order=${orderCodeNum}`)
         const responseData = await response.json();
         setInsertedMoney(responseData.total_money);
         if (parseInt(responseData.total_money) >= parseInt(amountToPay)) {
@@ -138,6 +138,7 @@ function Cash() {
 
     const intervalId = setInterval(() => {
       if (orderCode) {
+        console.log(orderCode);
         checkPaymentStatus(orderCode);
       }
     }, 3000);
