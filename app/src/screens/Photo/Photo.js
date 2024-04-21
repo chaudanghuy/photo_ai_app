@@ -18,8 +18,8 @@ function Photo() {
      const webcamRef = useRef(null);
      const navigate = useNavigate();
      const [hoveredImage, setHoveredImage] = useState(null);
-     const [countdown, setCountdown] = useState(3);
-     const [photoCount, setPhotoCount] = useState(null);
+     const [countdown, setCountdown] = useState(8);
+     const [photoCount, setPhotoCount] = useState(0);
      const [intervalId, setIntervalId] = useState(null);
      const [photos, setPhotos] = useState([]);
      const [flash, setFlash] = useState(false);
@@ -33,13 +33,13 @@ function Photo() {
           const imageSrc = webcamRef.current.getScreenshot();
           const newPhotoArray = [...photos, imageSrc];
           setPhotos(newPhotoArray);
-          setPhotoCount(photoCount + 1);
+          setPhotoCount((prevCount) => prevCount + 1);
 
           setTimeout(() => {
                setFlash(false);
           }, 100);
 
-          if (photoCount === 7) {
+          if (photoCount == 7) {
                const photosWithIds = newPhotoArray.map((photo, index) => ({
                     id: index,
                     url: photo
@@ -47,7 +47,7 @@ function Photo() {
                sessionStorage.setItem('photos', JSON.stringify(photosWithIds));
                navigate('/photo-choose')
           } else {
-               setCountdown(3);
+               setCountdown(8);
           }
      };
 
@@ -90,10 +90,15 @@ function Photo() {
                <div className="right-photo-div" style={{ backgroundImage: `url(${photocountImg})` }}>
                     <div className="photo-count">{photoCount}/8</div>
                </div>
-               <div className="middle-photo-div" style={{ backgroundImage: `url(${frame})` }} onClick={() => navigate('/photo-choose')}>
+               <div className="middle-photo-div" onClick={() => navigate('/photo-choose')}>
                     <Webcam
                          audio={false}
                          ref={webcamRef}
+                         forceScreenshotSourceSize={true}
+                         videoConstraints={{
+                              height: 720,
+                              width: 1280
+                         }}
                          screenshotFormat='image/jpeg'
                          className='photo-webcam'
                     />

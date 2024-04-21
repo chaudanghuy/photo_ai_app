@@ -91,9 +91,9 @@ function Choose() {
                     'Content-Type': 'application/json'
                }
           })
-          .then(response => response.json())
-          .then(data => console.log(data))
-          .catch(error => console.error(`Failed to clear images: ${error}`));
+               .then(response => response.json())
+               .then(data => console.log(data))
+               .catch(error => console.error(`Failed to clear images: ${error}`));
      }, []);
 
      const toggleSelection = (index) => {
@@ -161,7 +161,7 @@ function Choose() {
                });
                const data = await response.json();
                sessionStorage.setItem('copiedPhoto', data.photo_path);
-               sessionStorage.setItem('copiedPhotoCover', data.photo_cover_path);    
+               sessionStorage.setItem('copiedPhotoCover', data.photo_cover_path);
 
           } catch (error) {
                console.error(`Failed to copy image: ${error}`);
@@ -191,7 +191,7 @@ function Choose() {
                copyImageApi();
                setTimeout(() => {
                     navigate("/filter");
-               }, 5000);
+               }, 2000);
           }
      }
 
@@ -381,7 +381,7 @@ function Choose() {
                     ))
                );
           }
-     }     
+     }
 
      const hoverContinueButton = () => {
           const storedLanguage = sessionStorage.getItem('language');
