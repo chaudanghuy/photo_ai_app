@@ -96,8 +96,8 @@
      position: relative;
      font-size: 51px;
      font-family: fantasy;
-     width: 85%;
-     left: 10%;
+     width: 100%;
+     left: 1%;
 }
 
 .photo-count {
@@ -508,7 +508,7 @@
      margin: 1%;
      position: fixed;
      top: 33.5%;
-     left: 14.5%;
+     left: 15.5%;
 }
 
 .choose-photo-item-0-1 {
@@ -530,7 +530,7 @@
      margin: 1%;
      position: fixed;
      top: 46.5%;
-     left: 14.5%;
+     left: 15.5%;
 }
 
 .choose-photo-item-1-1 {
@@ -552,7 +552,7 @@
      margin: 1%;
      position: fixed;
      top: 59.5%;
-     left: 14.5%;
+     left: 15.5%;
 }
 
 .choose-photo-item-2-1 {
@@ -574,7 +574,7 @@
      margin: 1%;
      position: fixed;
      top: 72.5%;
-     left: 14.5%;
+     left: 15.5%;
 }
 
 .choose-photo-item-3-1 {
