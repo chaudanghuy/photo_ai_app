@@ -206,9 +206,9 @@ function Filter() {
                     setClassic(classic_vn);
                     setBw(bw_vn);
                     setSmooth(skin_vn);
-                    setContinueButton(continue_vn);     
-                    setIntensity(intensity_vn);         
-                    setGoBackButton(goback_vn);      
+                    setContinueButton(continue_vn);
+                    setIntensity(intensity_vn);
+                    setGoBackButton(goback_vn);
                }
           }
 
@@ -230,8 +230,8 @@ function Filter() {
           const copiedPhotoCover = sessionStorage.getItem('copiedPhotoCover');
           if (copiedPhoto && copiedPhotoCover) {
                setMyBackground(copiedPhoto);
-               setSelectedLayout(copiedPhotoCover); 
-          }         
+               setSelectedLayout(copiedPhotoCover);
+          }
      }, []);
 
      const handleMouseEnter = (image) => {
@@ -660,7 +660,7 @@ function Filter() {
                     style={{ backgroundImage: `url(${continueButton})` }}
                     onMouseEnter={() => hoverContinueButton()}
                     onMouseLeave={() => hoverContinueButton()}
-                    onClick={() => goToSticker()}                    
+                    onClick={() => goToSticker()}
                ></div>
           </div>
      );

@@ -9,6 +9,9 @@ import background_en from '../assets/Prints/BG.png';
 import background_kr from '../assets/Prints/kr/BG.png';
 import background_vn from '../assets/Prints/vn/BG.png';
 
+// QR
+import QRCode from 'qrcode.react';
+
 function Print() {
      const { t } = useTranslation();
      const navigate = useNavigate();
@@ -25,7 +28,7 @@ function Print() {
           } else if (storedLanguage === 'vi') {
                setBackground(background_vn);
           }
-     }, [])
+     }, []);
 
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
@@ -37,17 +40,25 @@ function Print() {
 
      const clearSessionStorageAndLeaveOut = () => {
           sessionStorage.clear();
-          setTimeout(() => {
-               navigate('/');
-          }, 5000);
+          navigate('/');
      }
 
-     useEffect(() => {
-          clearSessionStorageAndLeaveOut();
-     }, []);
+     const QRCodeComponent = () => {
+          const myImage = sessionStorage.getItem('uploadedCloudPhotoUrl');
+          return (
+               <QRCode
+                    value={myImage}
+                    size={200}
+               />
+          )
+     }
 
      return (
-          <div className='print-container' style={{ backgroundImage: `url(${background})` }}></div>
+          <div className='print-container' style={{ backgroundImage: `url(${background})` }} onClick={clearSessionStorageAndLeaveOut}>
+               <div className="qr-code-container">
+                    <QRCodeComponent />
+               </div>
+          </div>
      );
 }
 

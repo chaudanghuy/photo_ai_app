@@ -19,7 +19,7 @@
 .go-back {
      position: absolute;
      top: 4.4%;
-    left: 10%;
+     left: 10%;
      width: 9%;
      height: 10%;
      /* Set height of the div */
@@ -37,4 +37,10 @@
      /* Specify the path to your hover background image */
      cursor: pointer;
      /* Change cursor on hover */
+}
+
+.qr-code-container {
+     position: absolute;
+     bottom: 2%;
+     right: 2%;
 }
