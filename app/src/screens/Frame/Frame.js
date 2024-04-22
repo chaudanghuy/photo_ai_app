@@ -69,34 +69,34 @@ function Frame() {
 
   const fetchFrames = async () => {
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BE_PROD}/frames/api`)
+      const response = await axios.get(`${process.env.REACT_APP_BACKEND}/frames/api`)
       const frames = response.data
 
       frames.forEach(frame => {
         if (frame.position === 'row-1-1') {
-          setFrameRow11(process.env.REACT_APP_BE_PROD + frame.photo);
-          setFrameRow11Hover(process.env.REACT_APP_BE_PROD + frame.photo_hover)
+          setFrameRow11(process.env.REACT_APP_BACKEND + frame.photo);
+          setFrameRow11Hover(process.env.REACT_APP_BACKEND + frame.photo_hover)
         }
         if (frame.position === 'row-1-2') {
-          setFrameRow12(process.env.REACT_APP_BE_PROD + frame.photo);
-          setFrameRow12Hover(process.env.REACT_APP_BE_PROD + frame.photo_hover);
+          setFrameRow12(process.env.REACT_APP_BACKEND + frame.photo);
+          setFrameRow12Hover(process.env.REACT_APP_BACKEND + frame.photo_hover);
         }
-        if (frame.position === 'row-1-3') {
-          setFrameRow13(process.env.REACT_APP_BE_PROD + frame.photo);
-          setFrameRow13Hover(process.env.REACT_APP_BE_PROD + frame.photo_hover)
-        }
+        // if (frame.position === 'row-1-3') {
+        //   setFrameRow13(process.env.REACT_APP_BACKEND + frame.photo);
+        //   setFrameRow13Hover(process.env.REACT_APP_BACKEND + frame.photo_hover)
+        // }
         if (frame.position === 'row-2-1') {
-          setFrameRow21(process.env.REACT_APP_BE_PROD + frame.photo);
-          setFrameRow21Hover(process.env.REACT_APP_BE_PROD + frame.photo_hover);
+          setFrameRow21(process.env.REACT_APP_BACKEND + frame.photo);
+          setFrameRow21Hover(process.env.REACT_APP_BACKEND + frame.photo_hover);
         }
         if (frame.position === 'row-2-2') {
-          setFrameRow22(process.env.REACT_APP_BE_PROD + frame.photo);
-          setFrameRow22Hover(process.env.REACT_APP_BE_PROD + frame.photo_hover);
+          setFrameRow22(process.env.REACT_APP_BACKEND + frame.photo);
+          setFrameRow22Hover(process.env.REACT_APP_BACKEND + frame.photo_hover);
         }
-        if (frame.position === 'row-2-3') {
-          setFrameRow23(process.env.REACT_APP_BE_PROD + frame.photo);
-          setFrameRow23Hover(process.env.REACT_APP_BE_PROD + frame.photo_hover);
-        }
+        // if (frame.position === 'row-2-3') {
+        //   setFrameRow23(process.env.REACT_APP_BACKEND + frame.photo);
+        //   setFrameRow23Hover(process.env.REACT_APP_BACKEND + frame.photo_hover);
+        // }
       });
     } catch (error) {
       console.error('Error fetching frames:', error);
@@ -135,25 +135,25 @@ function Frame() {
       <div className="go-back" style={{ backgroundImage: `url(${goBackBg})` }} onClick={() => navigate("/")} onMouseEnter={() => hoverGoBackBtn(language)} onMouseLeave={() => hoverGoBackBtn(language)}></div>
       <div className="topSection">
         <div className="column">
-          <div className="imageDiv-top" style={{ backgroundImage: `url( ${hoveredImage === frameRow11 ? frameRow11Hover : frameRow11})` }} onMouseEnter={() => handleMouseEnter(frameRow11)} onMouseLeave={handleMouseLeave} onClick={() => goToBackground('Stripx2', 70000)}></div>
+          <div className="imageDiv-top-left" style={{ backgroundImage: `url( ${hoveredImage === frameRow11 ? frameRow11Hover : frameRow11})` }} onMouseEnter={() => handleMouseEnter(frameRow11)} onMouseLeave={handleMouseLeave} onClick={() => goToBackground('Stripx2', 70000)}></div>
         </div>
         <div className="column">
-          <div className="imageDiv" style={{ backgroundImage: `url(${hoveredImage === frameRow12 ? frameRow12Hover : frameRow12})`, marginLeft: '-40%', }} onMouseEnter={() => handleMouseEnter(frameRow12)} onMouseLeave={handleMouseLeave} onClick={() => goToBackground('2cut-x2', 100000)}></div>
+          <div className="imageDiv-top-right" style={{ backgroundImage: `url(${hoveredImage === frameRow12 ? frameRow12Hover : frameRow12})`, marginLeft: '-40%', }} onMouseEnter={() => handleMouseEnter(frameRow12)} onMouseLeave={handleMouseLeave} onClick={() => goToBackground('2cut-x2', 100000)}></div>
         </div>
-        <div className="column">
+        {/* <div className="column">
           <div className="imageDiv-end" style={{ backgroundImage: `url(${hoveredImage === frameRow13 ? frameRow13Hover : frameRow13})`, marginLeft: '-80%' }} onMouseEnter={() => handleMouseEnter(frameRow13)} onMouseLeave={handleMouseLeave} onClick={() => goToBackground('3-cutx2', 100000)}></div>
-        </div>
+        </div> */}
       </div>
       <div className="bottomSection">
         <div className="column">
-          <div className="imageDiv-top" style={{ backgroundImage: `url(${hoveredImage === frameRow21 ? frameRow21Hover : frameRow21})` }} onMouseEnter={() => handleMouseEnter(frameRow21)} onMouseLeave={() => handleMouseLeave} onClick={() => goToBackground('4-cutx2', 100000)}></div>
+          <div className="imageDiv-bottom-left" style={{ backgroundImage: `url(${hoveredImage === frameRow21 ? frameRow21Hover : frameRow21})` }} onMouseEnter={() => handleMouseEnter(frameRow21)} onMouseLeave={() => handleMouseLeave} onClick={() => goToBackground('4-cutx2', 100000)}></div>
         </div>
         <div className="column">
-          <div className="imageDiv" style={{ backgroundImage: `url(${hoveredImage === frameRow22 ? frameRow22Hover : frameRow22})`, marginLeft: '-40%', }} onMouseEnter={() => handleMouseEnter(frameRow22)} onMouseLeave={() => handleMouseLeave} onClick={() => goToBackground('5-cutx2', 100000)}></div>
+          <div className="imageDiv-bottom-right" style={{ backgroundImage: `url(${hoveredImage === frameRow22 ? frameRow22Hover : frameRow22})`, marginLeft: '-40%', }} onMouseEnter={() => handleMouseEnter(frameRow22)} onMouseLeave={() => handleMouseLeave} onClick={() => goToBackground('6-cutx2', 100000)}></div>
         </div>
-        <div className="column">
+        {/* <div className="column">
           <div className="imageDiv-end" style={{ backgroundImage: `url(${hoveredImage === frameRow23 ? frameRow23Hover : frameRow23})`, marginLeft: '-80%' }} onMouseEnter={() => handleMouseEnter(frameRow23)} onMouseLeave={() => handleMouseLeave} onClick={() => goToBackground('6-cutx2', 100000)}></div>
-        </div>
+        </div> */}
       </div>
     </div>
   );

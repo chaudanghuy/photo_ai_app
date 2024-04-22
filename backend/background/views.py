@@ -21,7 +21,7 @@ BACKGROUND_POSITIONS = ['row-1-1', 'row-1-2', 'row-1-3', 'row-1-4', 'row-1-5']
 class BackgroundAPI(APIView):    
     
     def get(self, request, *args, **kwargs):
-        backgrounds = Background.objects.all()
+        backgrounds = Background.objects.exclude(title='Collab')
         serializer = BackgroundSerializer(backgrounds, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)     
     
@@ -57,7 +57,7 @@ class BackgroundDetailAPI(APIView):
 class BackgroundList(LoginRequiredMixin, ListView):
     
     def get(self, request):
-        backgrounds = Background.objects.all()
+        backgrounds = Background.objects.all()        
         return render(request, 'backgrounds/list.html', {'backgrounds': backgrounds})
     
 class BackgroundCreateView(LoginRequiredMixin, View):

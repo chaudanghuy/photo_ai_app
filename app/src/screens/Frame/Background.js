@@ -60,14 +60,14 @@ function Background() {
 
      const fetchBackgrounds = async () => {
           try {
-               const response = await axios.get(`${process.env.REACT_APP_BE_PROD}/backgrounds/api`)
+               const response = await axios.get(`${process.env.REACT_APP_BACKEND}/backgrounds/api`)
                const backgroundDatas = response.data
                const storedLanguage = sessionStorage.getItem('language');
 
                const newBackgrounds = backgroundDatas.map(item => ({
                     title: item.title,
-                    photo: (storedLanguage === 'en' ? process.env.REACT_APP_BE_PROD + item.photo : (storedLanguage === 'ko' ? process.env.REACT_APP_BACKEND + item.photo_kr : process.env.REACT_APP_BACKEND + item.photo_vn)),
-                    photo_hover: (storedLanguage === 'en' ? process.env.REACT_APP_BE_PROD + item.photo_hover : (storedLanguage === 'ko' ? process.env.REACT_APP_BACKEND + item.photo_kr_hover : process.env.REACT_APP_BACKEND + item.photo_vn_hover))
+                    photo: (storedLanguage === 'en' ? process.env.REACT_APP_BACKEND + item.photo : (storedLanguage === 'ko' ? process.env.REACT_APP_BACKEND + item.photo_kr : process.env.REACT_APP_BACKEND + item.photo_vn)),
+                    photo_hover: (storedLanguage === 'en' ? process.env.REACT_APP_BACKEND + item.photo_hover : (storedLanguage === 'ko' ? process.env.REACT_APP_BACKEND + item.photo_kr_hover : process.env.REACT_APP_BACKEND + item.photo_vn_hover))
                }));
                setBackgrounds(backgrounds.concat(newBackgrounds));
           } catch (error) {
