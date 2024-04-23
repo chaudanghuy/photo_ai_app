@@ -137,8 +137,7 @@ function Cash() {
     }
 
     const intervalId = setInterval(() => {
-      if (orderCode) {
-        console.log(orderCode);
+      if (orderCode) {        
         checkPaymentStatus(orderCode);
       }
     }, 3000);

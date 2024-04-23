@@ -11,28 +11,26 @@ Setup guide for PhotoMong
 
 ```bash
   cd backend
+  pip install -r /path/to/requirements.txt
   python manage.py runserver
-```
-
-### Admin
-
-```bash
-  rm -rf node_modules
-  npm cache clean --force
-  npm install
-  npm start
 ```
 
 ### Frontend (App)
 
 ```bash
   cd app
+  rm -rf node_modules
+  npm cache clean --force
   npm install
   npm start
 ```
 
 
 ## Usage/Examples
+
+```bash
+   run.bat
+```
 
 ### Backend
 
