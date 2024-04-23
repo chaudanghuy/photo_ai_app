@@ -11,8 +11,7 @@ Setup guide for PhotoMong
 
 ```bash
   cd backend
-  npm install
-  npm start
+  python manage.py runserver
 ```
 
 ### Admin
