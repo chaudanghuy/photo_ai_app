@@ -1,0 +1,37 @@
+version: '3'
+
+services:
+  frontend:
+    build:
+      context: ./app
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_NAME=photomong_main
+      - DB_USER=test
+      - DB_PASSWORD=abc123
+
+  db:
+    image: mysql:latest
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: photomong_main
+      MYSQL_USER: test
+      MYSQL_PASSWORD: abc123
+      MYSQL_ROOT_PASSWORD: root123
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+
