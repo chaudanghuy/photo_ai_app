@@ -133,8 +133,9 @@ class UploadPhotoCloud(APIView):
         order_code = request.data.get('order_code')
         if (order_code):
             order = Order.objects.filter(order_code=order_code).first()
-            order.photo_url_done = upload_data.get('url')
-            order.save()        
+            if order:
+                order.photo_url_done = upload_data.get('url')
+                order.save()                    
            
         return Response({
             'photo_url': upload_data.get('url')
