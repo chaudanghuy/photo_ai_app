@@ -234,6 +234,18 @@ function Filter() {
           }
      }, []);
 
+     useEffect(() => {
+          const timeout = useRef(null);
+          if (timeout.current === null) {
+               timeout.current = setTimeout(() => {
+                    window.location.reload();
+                    timeout.current = setTimeout(() => {
+                         window.location.reload();
+                    }, 1000000);
+               }, 2000);
+          }
+     }, []);
+
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
      }
