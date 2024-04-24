@@ -231,7 +231,7 @@ function Filter() {
                console.log(copiedPhoto);
                setMyBackground(copiedPhoto);
           }
-     }, []);
+     });
 
      useEffect(() => {
           const copiedPhotoCover = sessionStorage.getItem('copiedPhotoCover');
@@ -239,7 +239,7 @@ function Filter() {
                console.log(copiedPhotoCover);
                setSelectedLayout(copiedPhotoCover);
           }
-     }, []);
+     });
 
      const handleMouseEnter = (image) => {
           setHoveredImage(image);
