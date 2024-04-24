@@ -563,9 +563,7 @@ function Filter() {
           setClickedButton(true);
           sessionStorage.setItem('filter', getImageStyle());
           storeImageCanvas();
-          setTimeout(() => {
-               navigate('/sticker')
-          }, 2000);
+          navigate('/sticker')
      }
 
      const hoverFilterEffect = (effect) => {
