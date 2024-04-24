@@ -137,8 +137,10 @@ function Cash() {
     }
 
     const intervalId = setInterval(() => {
-      if (orderCode) {        
-        checkPaymentStatus(orderCode);
+      const ooCode = sessionStorage.getItem('orderCodeNum');
+      if (ooCode) {        
+        console.log(ooCode);
+        checkPaymentStatus(ooCode);
       }
     }, 3000);
 

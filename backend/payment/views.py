@@ -72,13 +72,13 @@ def webhook_cash_api(request):
             order = Order.objects.filter(order_code=order_code).first()
 
         try:
-            # total_money = 0
-            # cash_url = settings.API_CASH_READER + '/api/money/'
-            # response = requests.get(cash_url)
+            total_money = 0
+            cash_url = settings.API_CASH_READER + '/api/money/'
+            response = requests.get(cash_url)
             
             if True:
-                # data = response.json()
-                total_money = 100000
+                data = response.json()
+                total_money = data['total_money']
                 if (int(total_money) >= order.total_price):
                     Transaction.objects.create(
                         order_id=order,
