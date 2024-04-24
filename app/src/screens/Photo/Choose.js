@@ -42,6 +42,8 @@ function Choose() {
      const [language, setLanguage] = useState(null);
      const [continueButton, setContinueButton] = useState(continue_en);
 
+     const [clickedButton, setClickedButton] = useState(false);
+
      const photos = JSON.parse(sessionStorage.getItem('photos'));
      // Split photos into arrays of 4 photos each
      const photoGroups = [];
@@ -169,6 +171,9 @@ function Choose() {
      };
 
      const goToFilter = () => {
+          if (clickedButton) {
+               return;
+          }
           sessionStorage.setItem('choosePhotos', JSON.stringify(selectedPhotos));
 
           // Determine total photos
@@ -188,6 +193,7 @@ function Choose() {
           }
 
           if (selectedPhotos.length === totalMeetsPhotos) {
+               setClickedButton(true);
                copyImageApi();
                setTimeout(() => {
                     navigate("/filter");

@@ -108,6 +108,7 @@ function Filter() {
 
      const [continueButton, setContinueButton] = useState(continue_en);
      const [goBackButton, setGoBackButton] = useState(goback_en);
+     const [clickedButton, setClickedButton] = useState(false);
 
      const selectedFilterEffects = [
           {
@@ -555,6 +556,11 @@ function Filter() {
      }
 
      const goToSticker = () => {
+          if (clickedButton) {
+               return;
+          }
+
+          setClickedButton(true);
           sessionStorage.setItem('filter', getImageStyle());
           storeImageCanvas();
           navigate('/sticker')

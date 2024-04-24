@@ -89,6 +89,7 @@ function Filter() {
      const [printButton, setPrintButton] = useState(null);
 
      const [goBackButton, setGoBackButton] = useState(goback_en);
+     const [clickedButton, setClickedButton] = useState(false);
 
      const background = new Image();
      background.crossOrigin = 'Anonymous';
