@@ -191,7 +191,7 @@ function Choose() {
                copyImageApi();
                setTimeout(() => {
                     navigate("/filter");
-               }, 2000);
+               }, 5000);
           }
      }
 
