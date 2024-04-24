@@ -90,7 +90,7 @@ function Photo() {
                <div className="right-photo-div" style={{ backgroundImage: `url(${photocountImg})` }}>
                     <div className="photo-count">{photoCount}/8</div>
                </div>
-               <div className="middle-photo-div" onClick={() => navigate('/photo-choose')}>
+               <div className="middle-photo-div">
                     <Webcam
                          audio={false}
                          ref={webcamRef}
