@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import i18n from '../translations/i18n';
@@ -235,14 +235,8 @@ function Filter() {
      }, []);
 
      useEffect(() => {
-          const timeout = useRef(null);
-          if (timeout.current === null) {
-               timeout.current = setTimeout(() => {
-                    window.location.reload();
-                    timeout.current = setTimeout(() => {
-                         window.location.reload();
-                    }, 1000000);
-               }, 2000);
+          if (sessionStorage.getItem('copiedPhotoCover')) {
+               window.location.reload();
           }
      }, []);
 
