@@ -227,16 +227,17 @@ function Filter() {
 
      useEffect(() => {
           const copiedPhoto = sessionStorage.getItem('copiedPhoto');
-          const copiedPhotoCover = sessionStorage.getItem('copiedPhotoCover');
-          if (copiedPhoto && copiedPhotoCover) {
+          if (copiedPhoto) {
+               console.log(copiedPhoto);
                setMyBackground(copiedPhoto);
-               setSelectedLayout(copiedPhotoCover);
           }
      }, []);
 
      useEffect(() => {
-          if (sessionStorage.getItem('copiedPhotoCover')) {
-               window.location.reload();
+          const copiedPhotoCover = sessionStorage.getItem('copiedPhotoCover');
+          if (copiedPhotoCover) {
+               console.log(copiedPhotoCover);
+               setSelectedLayout(copiedPhotoCover);
           }
      }, []);
 
