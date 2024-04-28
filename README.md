@@ -3,6 +3,13 @@
 
 Setup guide for PhotoMong
 
+## Software Requirement
+
+https://docs.google.com/document/d/1FQ5ymvjH7Cqen4Xe6SP6PP8iYMq-D1Bs0hz6Q3kEq1c/edit?usp=sharing
+
+## Database Schema
+
+https://dbdiagram.io/d/Photomong-65f16a3db1f3d4062cce1cb5
 
 ## Installation
 
@@ -11,7 +18,7 @@ Setup guide for PhotoMong
 
 ```bash
   cd backend
-  pip install -r /path/to/requirements.txt
+  pip install -r requirements.txt
   python manage.py runserver
 ```
 
