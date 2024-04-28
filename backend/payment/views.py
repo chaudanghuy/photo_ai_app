@@ -102,7 +102,8 @@ def redeem_pay(request):
     if device_code and redeem_code:
         try:
             redeem = Redeem.objects.filter(code=redeem_code).first()
-            if redeem_code == '12345':
+            # For tesing purpose
+            if redeem_code == '12345' and settings.TEST_MODE == 1:
                 order_code = random_string_generator()
                 device = Device.objects.get(code=device_code)
                 amount = 100000

@@ -17,6 +17,9 @@ import cloudinary
 
 load_dotenv()
 
+# Test Mode
+TEST_MODE = os.getenv('TEST_MODE')
+
 # Env
 BACKEND_ENV = os.getenv('ENVIRONMENT')
 

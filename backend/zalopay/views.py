@@ -141,11 +141,7 @@ class ZaloPayWebhookAPI(APIView):
             order.status = "Fail"
         elif result.get("return_code") == 3:
             order.status = "Processing"
-        order.save()
-        
-        # Debug
-        order.status = "Success"
-        order.save()
+        order.save()                
         
         # Create Transaction if Success
         if (order.status == 'Success'):
@@ -161,7 +157,7 @@ class ZaloPayWebhookAPI(APIView):
             "return_message": result.get("return_message"),            
             "return_code": result.get("return_code"),
             "status_real": order.status,
-            "status": "Success",    #DEBUG
+            "status": order.status
         }
 
 

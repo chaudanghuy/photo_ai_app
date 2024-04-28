@@ -62,13 +62,13 @@ function Choose() {
                setLanguage(storedLanguage);
                if (storedLanguage === 'en') {
                     setBackground(background_en);
-                    setContinueButton(continue_en);
+                    setContinueButton(continue_en_hover);
                } else if (storedLanguage === 'ko') {
                     setBackground(background_kr);
-                    setContinueButton(continue_kr);
+                    setContinueButton(continue_kr_hover);
                } else if (storedLanguage === 'vi') {
                     setBackground(background_vn);
-                    setContinueButton(continue_vn);
+                    setContinueButton(continue_vn_hover);
                }
           }
 
@@ -193,6 +193,7 @@ function Choose() {
           }
 
           if (selectedPhotos.length === totalMeetsPhotos) {
+               hoverContinueButton();
                setClickedButton(true);
                copyImageApi();
                setTimeout(() => {
@@ -425,8 +426,7 @@ function Choose() {
                </div>
                <div
                     className="bottom_choose_container"
-                    style={{ backgroundImage: `url(${continueButton})` }}
-                    onMouseEnter={hoverContinueButton} onMouseLeave={hoverContinueButton}
+                    style={{ backgroundImage: `url(${continueButton})` }}                    
                     onClick={goToFilter}
                ></div>
           </div>

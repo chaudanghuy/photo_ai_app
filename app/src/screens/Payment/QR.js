@@ -113,7 +113,7 @@ function QR() {
      return (
           <div className='qr-container' style={{ backgroundImage: `url(${background})` }}>
                <div className='qr-code'>
-                    {qrCode && <QRCode value={qrCode} />}
+                    {qrCode && <QRCode value={qrCode} size={200}/>}
                </div>
                <div className="go-back" style={{ backgroundImage: `url(${goBackBg})` }} onClick={goBack} ></div>
           </div>
