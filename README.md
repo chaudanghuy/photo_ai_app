@@ -1,5 +1,5 @@
 
-# PhotoMong
+# Photo AI App
 
 Setup guide for PhotoMong
 
